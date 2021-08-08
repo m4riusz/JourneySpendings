@@ -10,9 +10,7 @@
 		9760B94826C023D600B20BCC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B94726C023D600B20BCC /* AppDelegate.swift */; };
 		9760B94A26C023D600B20BCC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B94926C023D600B20BCC /* SceneDelegate.swift */; };
 		9760B94C26C023D600B20BCC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B94B26C023D600B20BCC /* ViewController.swift */; };
-		9760B94F26C023D600B20BCC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9760B94D26C023D600B20BCC /* Main.storyboard */; };
 		9760B95126C023D800B20BCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9760B95026C023D800B20BCC /* Assets.xcassets */; };
-		9760B95426C023D800B20BCC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9760B95226C023D800B20BCC /* LaunchScreen.storyboard */; };
 		9760B95F26C023D800B20BCC /* JourneySpendingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B95E26C023D800B20BCC /* JourneySpendingsTests.swift */; };
 		9760B96A26C023D800B20BCC /* JourneySpendingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B96926C023D800B20BCC /* JourneySpendingsUITests.swift */; };
 /* End PBXBuildFile section */
@@ -39,9 +37,7 @@
 		9760B94726C023D600B20BCC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9760B94926C023D600B20BCC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9760B94B26C023D600B20BCC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		9760B94E26C023D600B20BCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9760B95026C023D800B20BCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9760B95326C023D800B20BCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9760B95526C023D800B20BCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9760B95A26C023D800B20BCC /* JourneySpendingsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JourneySpendingsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9760B95E26C023D800B20BCC /* JourneySpendingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneySpendingsTests.swift; sourceTree = "<group>"; };
@@ -102,9 +98,7 @@
 				9760B94726C023D600B20BCC /* AppDelegate.swift */,
 				9760B94926C023D600B20BCC /* SceneDelegate.swift */,
 				9760B94B26C023D600B20BCC /* ViewController.swift */,
-				9760B94D26C023D600B20BCC /* Main.storyboard */,
 				9760B95026C023D800B20BCC /* Assets.xcassets */,
-				9760B95226C023D800B20BCC /* LaunchScreen.storyboard */,
 				9760B95526C023D800B20BCC /* Info.plist */,
 			);
 			path = JourneySpendings;
@@ -231,9 +225,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9760B95426C023D800B20BCC /* LaunchScreen.storyboard in Resources */,
 				9760B95126C023D800B20BCC /* Assets.xcassets in Resources */,
-				9760B94F26C023D600B20BCC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,25 +287,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		9760B94D26C023D600B20BCC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9760B94E26C023D600B20BCC /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		9760B95226C023D800B20BCC /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9760B95326C023D800B20BCC /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		9760B96C26C023D800B20BCC /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -366,7 +339,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -421,7 +394,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -446,7 +419,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = pl.msut.JourneySpendings;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -465,7 +438,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = pl.msut.JourneySpendings;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
