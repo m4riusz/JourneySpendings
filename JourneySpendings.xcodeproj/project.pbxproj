@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,10 @@
 		9760B95126C023D800B20BCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9760B95026C023D800B20BCC /* Assets.xcassets */; };
 		9760B95F26C023D800B20BCC /* JourneySpendingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B95E26C023D800B20BCC /* JourneySpendingsTests.swift */; };
 		9760B96A26C023D800B20BCC /* JourneySpendingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B96926C023D800B20BCC /* JourneySpendingsUITests.swift */; };
+		9760B97926C02BF300B20BCC /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 9760B97826C02BF300B20BCC /* Swinject */; };
+		9760B97C26C02C2B00B20BCC /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9760B97B26C02C2B00B20BCC /* SnapKit */; };
+		9760B97F26C02C8900B20BCC /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 9760B97E26C02C8900B20BCC /* Realm */; };
+		9760B98126C02C8900B20BCC /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9760B98026C02C8900B20BCC /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +56,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9760B98126C02C8900B20BCC /* RealmSwift in Frameworks */,
+				9760B97F26C02C8900B20BCC /* Realm in Frameworks */,
+				9760B97926C02BF300B20BCC /* Swinject in Frameworks */,
+				9760B97C26C02C2B00B20BCC /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +146,12 @@
 			dependencies = (
 			);
 			name = JourneySpendings;
+			packageProductDependencies = (
+				9760B97826C02BF300B20BCC /* Swinject */,
+				9760B97B26C02C2B00B20BCC /* SnapKit */,
+				9760B97E26C02C8900B20BCC /* Realm */,
+				9760B98026C02C8900B20BCC /* RealmSwift */,
+			);
 			productName = JourneySpendings;
 			productReference = 9760B94426C023D600B20BCC /* JourneySpendings.app */;
 			productType = "com.apple.product-type.application";
@@ -209,6 +223,11 @@
 				Base,
 			);
 			mainGroup = 9760B93B26C023D600B20BCC;
+			packageReferences = (
+				9760B97726C02BF300B20BCC /* XCRemoteSwiftPackageReference "Swinject" */,
+				9760B97A26C02C2B00B20BCC /* XCRemoteSwiftPackageReference "SnapKit" */,
+				9760B97D26C02C8900B20BCC /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+			);
 			productRefGroup = 9760B94526C023D600B20BCC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -566,6 +585,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9760B97726C02BF300B20BCC /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.1;
+			};
+		};
+		9760B97A26C02C2B00B20BCC /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+		9760B97D26C02C8900B20BCC /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9760B97826C02BF300B20BCC /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9760B97726C02BF300B20BCC /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+		9760B97B26C02C2B00B20BCC /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9760B97A26C02C2B00B20BCC /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		9760B97E26C02C8900B20BCC /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9760B97D26C02C8900B20BCC /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		9760B98026C02C8900B20BCC /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9760B97D26C02C8900B20BCC /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9760B93C26C023D600B20BCC /* Project object */;
 }
