@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9760B94826C023D600B20BCC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B94726C023D600B20BCC /* AppDelegate.swift */; };
-		9760B94A26C023D600B20BCC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B94926C023D600B20BCC /* SceneDelegate.swift */; };
 		9760B94C26C023D600B20BCC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B94B26C023D600B20BCC /* ViewController.swift */; };
 		9760B95126C023D800B20BCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9760B95026C023D800B20BCC /* Assets.xcassets */; };
 		9760B95F26C023D800B20BCC /* JourneySpendingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B95E26C023D800B20BCC /* JourneySpendingsTests.swift */; };
@@ -46,7 +45,6 @@
 /* Begin PBXFileReference section */
 		9760B94426C023D600B20BCC /* JourneySpendings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JourneySpendings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9760B94726C023D600B20BCC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9760B94926C023D600B20BCC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9760B94B26C023D600B20BCC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9760B95026C023D800B20BCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9760B95526C023D800B20BCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -122,7 +120,6 @@
 				9760B98526C033E600B20BCC /* About */,
 				9760B98226C033C300B20BCC /* Main */,
 				9760B94726C023D600B20BCC /* AppDelegate.swift */,
-				9760B94926C023D600B20BCC /* SceneDelegate.swift */,
 				9760B94B26C023D600B20BCC /* ViewController.swift */,
 				9760B95026C023D800B20BCC /* Assets.xcassets */,
 				9760B95526C023D800B20BCC /* Info.plist */,
@@ -330,7 +327,6 @@
 				9760B94C26C023D600B20BCC /* ViewController.swift in Sources */,
 				9760B94826C023D600B20BCC /* AppDelegate.swift in Sources */,
 				9760B98D26C035C300B20BCC /* Coordinator.swift in Sources */,
-				9760B94A26C023D600B20BCC /* SceneDelegate.swift in Sources */,
 				9760B98426C033E100B20BCC /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

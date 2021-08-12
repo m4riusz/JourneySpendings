@@ -8,9 +8,10 @@
 import UIKit
 
 final class JourneysCoordinator: Coordinator {
-    var rootViewController: UIViewController {
-        UINavigationController(rootViewController: JourneysViewController())
-    }
+    private lazy var journeysViewController = JourneysViewController()
+    let navigationController = UINavigationController()
     
-    var childs: [Coordinator] = []
+    func start() {
+        navigationController.viewControllers = [journeysViewController]
+    }
 }

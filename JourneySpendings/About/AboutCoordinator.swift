@@ -8,9 +8,10 @@
 import UIKit
 
 final class AboutCoordinator: Coordinator {
-    var rootViewController: UIViewController {
-        UINavigationController(rootViewController: AboutViewController())
-    }
+    private lazy var aboutViewController = AboutViewController()
+    let navigationController = UINavigationController()
     
-    var childs: [Coordinator] = []
+    func start() {
+        navigationController.viewControllers = [aboutViewController]
+    }
 }
