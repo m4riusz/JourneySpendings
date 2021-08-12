@@ -17,6 +17,13 @@
 		9760B97C26C02C2B00B20BCC /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9760B97B26C02C2B00B20BCC /* SnapKit */; };
 		9760B97F26C02C8900B20BCC /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 9760B97E26C02C8900B20BCC /* Realm */; };
 		9760B98126C02C8900B20BCC /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9760B98026C02C8900B20BCC /* RealmSwift */; };
+		9760B98426C033E100B20BCC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B98326C033E100B20BCC /* MainViewController.swift */; };
+		9760B98826C0342700B20BCC /* JourneysViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B98726C0342700B20BCC /* JourneysViewController.swift */; };
+		9760B98A26C0347A00B20BCC /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B98926C0347A00B20BCC /* AboutViewController.swift */; };
+		9760B98D26C035C300B20BCC /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B98C26C035C300B20BCC /* Coordinator.swift */; };
+		9760B98F26C036DF00B20BCC /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B98E26C036DF00B20BCC /* MainCoordinator.swift */; };
+		9760B99126C0382D00B20BCC /* JourneysCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B99026C0382D00B20BCC /* JourneysCoordinator.swift */; };
+		9760B99326C0387C00B20BCC /* AboutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B99226C0387C00B20BCC /* AboutCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +56,13 @@
 		9760B96526C023D800B20BCC /* JourneySpendingsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JourneySpendingsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9760B96926C023D800B20BCC /* JourneySpendingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneySpendingsUITests.swift; sourceTree = "<group>"; };
 		9760B96B26C023D800B20BCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9760B98326C033E100B20BCC /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = ../../../MainViewController.swift; sourceTree = "<group>"; };
+		9760B98726C0342700B20BCC /* JourneysViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneysViewController.swift; sourceTree = "<group>"; };
+		9760B98926C0347A00B20BCC /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		9760B98C26C035C300B20BCC /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		9760B98E26C036DF00B20BCC /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		9760B99026C0382D00B20BCC /* JourneysCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneysCoordinator.swift; sourceTree = "<group>"; };
+		9760B99226C0387C00B20BCC /* AboutCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +117,10 @@
 		9760B94626C023D600B20BCC /* JourneySpendings */ = {
 			isa = PBXGroup;
 			children = (
+				9760B98B26C035B700B20BCC /* Core */,
+				9760B98626C033EE00B20BCC /* Journey */,
+				9760B98526C033E600B20BCC /* About */,
+				9760B98226C033C300B20BCC /* Main */,
 				9760B94726C023D600B20BCC /* AppDelegate.swift */,
 				9760B94926C023D600B20BCC /* SceneDelegate.swift */,
 				9760B94B26C023D600B20BCC /* ViewController.swift */,
@@ -128,6 +146,41 @@
 				9760B96B26C023D800B20BCC /* Info.plist */,
 			);
 			path = JourneySpendingsUITests;
+			sourceTree = "<group>";
+		};
+		9760B98226C033C300B20BCC /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				9760B98326C033E100B20BCC /* MainViewController.swift */,
+				9760B98E26C036DF00B20BCC /* MainCoordinator.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		9760B98526C033E600B20BCC /* About */ = {
+			isa = PBXGroup;
+			children = (
+				9760B98926C0347A00B20BCC /* AboutViewController.swift */,
+				9760B99226C0387C00B20BCC /* AboutCoordinator.swift */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		9760B98626C033EE00B20BCC /* Journey */ = {
+			isa = PBXGroup;
+			children = (
+				9760B98726C0342700B20BCC /* JourneysViewController.swift */,
+				9760B99026C0382D00B20BCC /* JourneysCoordinator.swift */,
+			);
+			path = Journey;
+			sourceTree = "<group>";
+		};
+		9760B98B26C035B700B20BCC /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				9760B98C26C035C300B20BCC /* Coordinator.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,9 +322,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9760B99126C0382D00B20BCC /* JourneysCoordinator.swift in Sources */,
+				9760B98A26C0347A00B20BCC /* AboutViewController.swift in Sources */,
+				9760B99326C0387C00B20BCC /* AboutCoordinator.swift in Sources */,
+				9760B98F26C036DF00B20BCC /* MainCoordinator.swift in Sources */,
+				9760B98826C0342700B20BCC /* JourneysViewController.swift in Sources */,
 				9760B94C26C023D600B20BCC /* ViewController.swift in Sources */,
 				9760B94826C023D600B20BCC /* AppDelegate.swift in Sources */,
+				9760B98D26C035C300B20BCC /* Coordinator.swift in Sources */,
 				9760B94A26C023D600B20BCC /* SceneDelegate.swift in Sources */,
+				9760B98426C033E100B20BCC /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
