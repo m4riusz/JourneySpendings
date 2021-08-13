@@ -8,6 +8,7 @@
 import UIKit
 
 final class AboutViewController: UIViewController {
+    var viewModel: AboutViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

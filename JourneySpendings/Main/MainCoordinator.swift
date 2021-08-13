@@ -6,20 +6,39 @@
 //
 
 import UIKit
+import Swinject
 
 final class MainCoordinator: Coordinator {
     private let window: UIWindow
-    private lazy var mainViewController = MainViewController()
+    private var controller: MainViewController!
     let navigationController: UINavigationController
+    let container: Container
     
-    init(window: UIWindow) {
+    init(window: UIWindow, navigationController: UINavigationController, container: Container) {
         self.window = window
-        navigationController = UINavigationController()
+        self.navigationController = navigationController
+        self.container = container
     }
     
     func start() {
-        navigationController.viewControllers = [mainViewController]
+        let journeysCoordinator = JourneysCoordinator(container: container)
+        journeysCoordinator.start()
+        let aboutCoordinator = AboutCoordinator(container: container)
+        aboutCoordinator.start()
+        controller = container.resolve(MainViewController.self)!
+        controller.viewModel.coordinator = self
+        controller.viewControllers = [journeysCoordinator.navigationController, aboutCoordinator.navigationController]
+        navigationController.viewControllers = [controller]
+        navigationController.navigationBar.isHidden = true
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
+    }
+    
+    func showJourneysTab() {
+        controller.selectTab(tag: 0)
+    }
+    
+    func showAboutTab() {
+        controller.selectTab(tag: 1)
     }
 }

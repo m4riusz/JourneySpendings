@@ -6,12 +6,20 @@
 //
 
 import UIKit
+import Swinject
 
 final class JourneysCoordinator: Coordinator {
-    private lazy var journeysViewController = JourneysViewController()
     let navigationController = UINavigationController()
+    let container: Container
+    
+    init(container: Container) {
+        self.container = container
+    }
     
     func start() {
-        navigationController.viewControllers = [journeysViewController]
+        let controller = container.resolve(JourneysViewController.self)!
+        controller.viewModel.coordinator = self
+        navigationController.viewControllers = [controller]
+        navigationController.tabBarItem = UITabBarItem(title: "Journeys", image: nil, tag: 0)
     }
 }

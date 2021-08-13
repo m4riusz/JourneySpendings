@@ -9,6 +9,8 @@ import UIKit
 
 final class JourneysViewController: UIViewController {
     
+    var viewModel: JourneysViewModel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGreen

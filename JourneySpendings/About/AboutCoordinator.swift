@@ -6,12 +6,20 @@
 //
 
 import UIKit
+import Swinject
 
 final class AboutCoordinator: Coordinator {
-    private lazy var aboutViewController = AboutViewController()
     let navigationController = UINavigationController()
+    let container: Container
+    
+    init(container: Container) {
+        self.container = container
+    }
     
     func start() {
-        navigationController.viewControllers = [aboutViewController]
+        let controller = container.resolve(AboutViewController.self)!
+        controller.viewModel.coordinator = self
+        navigationController.viewControllers = [controller]
+        navigationController.tabBarItem = UITabBarItem(title: "About", image: nil, tag: 1)
     }
 }
