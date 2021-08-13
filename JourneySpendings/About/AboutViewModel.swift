@@ -8,5 +8,5 @@
 import Foundation
 
 final class AboutViewModel {
-    var coordinator: AboutCoordinator!
+    var coordinator: AboutCoordinatorProtocol!
 }

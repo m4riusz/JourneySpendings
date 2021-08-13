@@ -8,37 +8,52 @@
 import UIKit
 import Swinject
 
+protocol MainCoordinatorProtocol {
+    func showJourneysTab()
+    func showAboutTab()
+}
+
 final class MainCoordinator: Coordinator {
-    private let window: UIWindow
     private var controller: MainViewController!
     let navigationController: UINavigationController
     let container: Container
     
-    init(window: UIWindow, navigationController: UINavigationController, container: Container) {
-        self.window = window
+    private lazy var journeysCoordinator: JourneysCoordinator = {
+        let navigationController = UINavigationController()
+        navigationController.tabBarItem = UITabBarItem(title: "Journeys", image: nil, tag: MainTab.journeys.rawValue)
+        let coordinator = JourneysCoordinator(navigationController: navigationController, container: container)
+        return coordinator
+    }()
+    
+    private lazy var aboutCoordinator: AboutCoordinator = {
+        let navigationController = UINavigationController()
+        navigationController.tabBarItem = UITabBarItem(title: "About", image: nil, tag: MainTab.about.rawValue)
+        let coordinator = AboutCoordinator(navigationController: navigationController, container: container)
+        return coordinator
+    }()
+    
+    init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
         self.container = container
     }
     
     func start() {
-        let journeysCoordinator = JourneysCoordinator(container: container)
-        journeysCoordinator.start()
-        let aboutCoordinator = AboutCoordinator(container: container)
-        aboutCoordinator.start()
         controller = container.resolve(MainViewController.self)!
         controller.viewModel.coordinator = self
+        journeysCoordinator.start()
+        aboutCoordinator.start()
         controller.viewControllers = [journeysCoordinator.navigationController, aboutCoordinator.navigationController]
         navigationController.viewControllers = [controller]
-        navigationController.navigationBar.isHidden = true
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
     }
-    
+}
+
+//MARK: - MainCoordinatorProtocol
+extension MainCoordinator: MainCoordinatorProtocol {
     func showJourneysTab() {
-        controller.selectTab(tag: 0)
+        controller.selectTab(tag: MainTab.journeys.rawValue)
     }
     
     func showAboutTab() {
-        controller.selectTab(tag: 1)
+        controller.selectTab(tag: MainTab.about.rawValue)
     }
 }

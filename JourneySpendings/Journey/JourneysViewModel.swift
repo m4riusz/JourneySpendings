@@ -8,5 +8,5 @@
 import Foundation
 
 final class JourneysViewModel {
-    var coordinator: JourneysCoordinator!
+    var coordinator: JourneysCoordinatorProtocol!
 }

@@ -8,11 +8,14 @@
 import UIKit
 import Swinject
 
+protocol AboutCoordinatorProtocol { /*Nop*/ }
+
 final class AboutCoordinator: Coordinator {
-    let navigationController = UINavigationController()
+    let navigationController: UINavigationController
     let container: Container
     
-    init(container: Container) {
+    init(navigationController: UINavigationController, container: Container) {
+        self.navigationController = navigationController
         self.container = container
     }
     
@@ -20,6 +23,8 @@ final class AboutCoordinator: Coordinator {
         let controller = container.resolve(AboutViewController.self)!
         controller.viewModel.coordinator = self
         navigationController.viewControllers = [controller]
-        navigationController.tabBarItem = UITabBarItem(title: "About", image: nil, tag: 1)
     }
 }
+
+//MARK: - AboutCoordinatorProtocol
+extension AboutCoordinator: AboutCoordinatorProtocol { /*Nop*/ }

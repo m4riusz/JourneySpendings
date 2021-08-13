@@ -11,15 +11,15 @@ import Swinject
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private lazy var container = Container()
-    private var mainCoordinator: MainCoordinator?
+    private var appCoordinator: AppCoordinator?
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupContainer(container: container)
-        mainCoordinator = MainCoordinator(window: UIWindow(frame: UIScreen.main.bounds),
-                                          navigationController: UINavigationController(),
-                                          container: container)
-        mainCoordinator?.start()
+        appCoordinator = AppCoordinator(window: UIWindow(frame: UIScreen.main.bounds),
+                                        navigationController: UINavigationController(),
+                                        container: container)
+        appCoordinator?.start()
         return true
     }
     

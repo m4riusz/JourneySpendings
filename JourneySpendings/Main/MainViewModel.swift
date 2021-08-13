@@ -13,10 +13,10 @@ enum MainTab: Int {
 }
 
 final class MainViewModel {
-    var coordinator: MainCoordinator!
+    var coordinator: MainCoordinatorProtocol!
     
-    func selectTab(index: Int) {
-        guard let tab = MainTab(rawValue: index) else { return }
+    func didTabOnTabWithTag(tag: Int) {
+        guard let tab = MainTab(rawValue: tag) else { return }
         switch tab {
         case .journeys:
             coordinator.showJourneysTab()

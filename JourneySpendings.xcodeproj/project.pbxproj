@@ -10,6 +10,7 @@
 		97388AB726C6EC3700451809 /* JourneysViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97388AB626C6EC3700451809 /* JourneysViewModel.swift */; };
 		97388AB926C6EC5300451809 /* AboutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97388AB826C6EC5300451809 /* AboutViewModel.swift */; };
 		97388ABB26C6EC6500451809 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97388ABA26C6EC6500451809 /* MainViewModel.swift */; };
+		97388ABF26C6FEE000451809 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97388ABE26C6FEE000451809 /* AppCoordinator.swift */; };
 		9760B94826C023D600B20BCC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B94726C023D600B20BCC /* AppDelegate.swift */; };
 		9760B95126C023D800B20BCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9760B95026C023D800B20BCC /* Assets.xcassets */; };
 		9760B95F26C023D800B20BCC /* JourneySpendingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9760B95E26C023D800B20BCC /* JourneySpendingsTests.swift */; };
@@ -48,6 +49,7 @@
 		97388AB626C6EC3700451809 /* JourneysViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneysViewModel.swift; sourceTree = "<group>"; };
 		97388AB826C6EC5300451809 /* AboutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewModel.swift; sourceTree = "<group>"; };
 		97388ABA26C6EC6500451809 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		97388ABE26C6FEE000451809 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		9760B94426C023D600B20BCC /* JourneySpendings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JourneySpendings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9760B94726C023D600B20BCC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9760B95026C023D800B20BCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				9760B98C26C035C300B20BCC /* Coordinator.swift */,
+				97388ABE26C6FEE000451809 /* AppCoordinator.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97388ABF26C6FEE000451809 /* AppCoordinator.swift in Sources */,
 				9760B99126C0382D00B20BCC /* JourneysCoordinator.swift in Sources */,
 				97388AB926C6EC5300451809 /* AboutViewModel.swift in Sources */,
 				9760B98A26C0347A00B20BCC /* AboutViewController.swift in Sources */,
