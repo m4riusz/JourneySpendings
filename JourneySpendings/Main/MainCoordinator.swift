@@ -8,52 +8,61 @@
 import UIKit
 import Swinject
 
-protocol MainCoordinatorProtocol {
-    func showJourneysTab()
-    func showAboutTab()
+enum MainTab {
+    case journeys
+    case about
+    
+    var tag: Int {
+        switch self {
+        case .journeys: return 0
+        case .about: return 1
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .journeys: return "Journeys"
+        case .about: return "About"
+        }
+    }
+    
+    var image: UIImage {
+        switch self {
+        case .journeys: return .add
+        case .about: return .strokedCheckmark
+        }
+    }
 }
 
 final class MainCoordinator: Coordinator {
-    private var controller: MainViewController!
+    private let tabBarController: UITabBarController
     let navigationController: UINavigationController
     let container: Container
     
     private lazy var journeysCoordinator: JourneysCoordinator = {
-        let navigationController = UINavigationController()
-        navigationController.tabBarItem = UITabBarItem(title: "Journeys", image: nil, tag: MainTab.journeys.rawValue)
-        let coordinator = JourneysCoordinator(navigationController: navigationController, container: container)
-        return coordinator
+        JourneysCoordinator(navigationController: navigationController(tab: .journeys), container: container)
     }()
     
     private lazy var aboutCoordinator: AboutCoordinator = {
-        let navigationController = UINavigationController()
-        navigationController.tabBarItem = UITabBarItem(title: "About", image: nil, tag: MainTab.about.rawValue)
-        let coordinator = AboutCoordinator(navigationController: navigationController, container: container)
-        return coordinator
+        AboutCoordinator(navigationController: navigationController(tab: .about), container: container)
     }()
     
     init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
         self.container = container
+        self.tabBarController = UITabBarController()
     }
     
     func start() {
-        controller = container.resolve(MainViewController.self)!
-        controller.viewModel.coordinator = self
         journeysCoordinator.start()
         aboutCoordinator.start()
-        controller.viewControllers = [journeysCoordinator.navigationController, aboutCoordinator.navigationController]
-        navigationController.viewControllers = [controller]
-    }
-}
-
-//MARK: - MainCoordinatorProtocol
-extension MainCoordinator: MainCoordinatorProtocol {
-    func showJourneysTab() {
-        controller.selectTab(tag: MainTab.journeys.rawValue)
+        tabBarController.viewControllers = [journeysCoordinator.navigationController, aboutCoordinator.navigationController]
+        navigationController.viewControllers = [tabBarController]
     }
     
-    func showAboutTab() {
-        controller.selectTab(tag: MainTab.about.rawValue)
+    private func navigationController(tab: MainTab) -> UINavigationController {
+        let navigationController = UINavigationController()
+        navigationController.tabBarItem = UITabBarItem(title: tab.title, image: tab.image, tag: tab.tag)
+        return navigationController
     }
 }
