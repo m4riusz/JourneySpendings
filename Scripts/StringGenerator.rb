@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 
-moduleName = "Journeys"
-inputStringsFile = "./Journeys.strings"
-outputSwiftFile = "JourneysStrings.swift"
+moduleName = $0
+inputStringsFie = $1
+outputSwiftFile = $2
 
 class StructNode
     def initialize(name, keys = [], childs = [])
