@@ -1,3 +1,9 @@
+#!/usr/bin/ruby
+
+moduleName = "Journeys"
+inputStringsFile = "./Journeys.strings"
+outputSwiftFile = "JourneysStrings.swift"
+
 class StructNode
     def initialize(name, keys = [], childs = [])
       @name = name
@@ -41,12 +47,34 @@ def insertKey(node, value)
     end
 end
 
-def printNode(node, count)
-    prefix = ""
-    count.times { prefix += " " }
-    puts "#{prefix} Name: #{node.name}"
-    puts "#{prefix} Keys: #{node.keys}"
-    puts "#{prefix} Childs:"
-    node.childs.each { |child| printNode(child, count + 1) }
+def readKeysFromFile(filePath)
+   file = File.open(filePath, "r")
+   rawKeys = []
+   lines = file.readlines.map(&:chomp)
+   lines.each { |line| rawKeys.push(line.split("=").first.chomp.delete("\"")) }
+   file.close
+   return rawKeys
 end
 
+def generateStructs(file, moduleName, node, depth)
+    prefix = ""
+    depth.times { prefix += "\t" }
+    file << "#{prefix}public struct #{node.name} {\n"
+    node.keys.each { |key| file << "#{prefix}\tstatic let #{key} = String.localized(\"#{moduleName}\", \"key\")\n" }
+    node.childs.each { |child| generateStructs(file, moduleName, child, depth + 1) }
+    file << "#{prefix}}\n"
+end
+
+def generateExtension(outputFile,moduleName, node)
+   file = File.open(outputFile, "w")
+   file << "/*\nAuto generated\nDo not modify manually!\n*/\n"
+   file << "public extension Assets.Strings {\n"
+   generateStructs(file, moduleName,  node, 1)
+   file << "}\n"
+   file.close
+end
+
+keys = readKeysFromFile(inputStringsFile)
+root = StructNode.new(moduleName)
+keys.each { |key| insertKey(root, key) }
+generateExtension(outputSwiftFile, moduleName, root) 

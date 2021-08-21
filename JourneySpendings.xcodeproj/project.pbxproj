@@ -32,6 +32,7 @@
 		9774CF4726C7EFCC007B6322 /* Journey.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9774CF4926C7EFCC007B6322 /* Journey.strings */; };
 		9774CF4A26C7EFD0007B6322 /* Journey.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9774CF4C26C7EFD0007B6322 /* Journey.strings */; };
 		9774CF5326C7F6A0007B6322 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9774CF5226C7F69F007B6322 /* StringExtension.swift */; };
+		97DD229E26D167C30093A187 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DD229D26D167C30093A187 /* Assets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		9774CF4826C7EFCC007B6322 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Journey.strings; sourceTree = "<group>"; };
 		9774CF4E26C7EFF5007B6322 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Journey.strings; sourceTree = "<group>"; };
 		9774CF5226C7F69F007B6322 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		97DD229D26D167C30093A187 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +203,7 @@
 				9774CF2526C7E843007B6322 /* Assembler.swift */,
 				9774CF2726C7E86C007B6322 /* MobileAppAssembler.swift */,
 				9774CF5226C7F69F007B6322 /* StringExtension.swift */,
+				97DD229D26D167C30093A187 /* Assets.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 				9774CF2826C7E86C007B6322 /* MobileAppAssembler.swift in Sources */,
 				9774CF5326C7F6A0007B6322 /* StringExtension.swift in Sources */,
 				9760B99126C0382D00B20BCC /* JourneysCoordinator.swift in Sources */,
+				97DD229E26D167C30093A187 /* Assets.swift in Sources */,
 				97388AB926C6EC5300451809 /* AboutViewModel.swift in Sources */,
 				9774CF2226C7E7C7007B6322 /* JourneysAssembly.swift in Sources */,
 				9760B98A26C0347A00B20BCC /* AboutViewController.swift in Sources */,

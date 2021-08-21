@@ -8,7 +8,7 @@
 import Foundation
 
 extension String {
-    func localized(_ table: String, _ key: String) -> String {
+    static func localized(_ table: String, _ key: String) -> String {
         NSLocalizedString(key, tableName: table, comment: "")
     }
 }
