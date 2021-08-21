@@ -1,31 +1,52 @@
-#!/usr/bin/ruby
-
-stringsFilePath = "args"
-outputPath = "output"
-moduleName = "Journey"
-keyValue = "\"Hello\" = \"SomeWalue\";"
-
-def stringsLineToLocalization(line, moduleName) 
-    key = line.split("=")[0]["\"".length..-"\\\" ".length]
-    return "static let #{key} = String.localized(#{moduleName},\"#{key}\")"
+class StructNode
+    def initialize(name, keys = [], childs = [])
+      @name = name
+      @keys = keys
+      @childs = childs
+   end
+   
+   attr_reader :keys
+   attr_reader :name
+   attr_reader :childs
+   attr_writer :childs
+   attr_writer :keys
 end
 
-def generateSwiftExtension(moduleName, keys)
-	text = """//Auto generated. Do not modify manually
-extension Assets.Strings {
-    struct #{moduleName} {
-        #{stringsLineToLocalization(keys, moduleName)}
-    }
-}
-"""
-	return text
+def valueIsGroup(value)
+   value.match("^.+\/.+$") != nil
 end
 
-puts "----------------------------"
-puts "Generating localized strings" 
-puts "Module: #{moduleName}"
-puts "Source: #{stringsFilePath}"
-puts "Output: #{outputPath}"
-puts "----------------------------"
+def getFirstGroup(value)
+    value.slice(0..(value.index('/') -1)).to_s
+end
 
-puts generateSwiftExtension(moduleName, keyValue)
+def dropFirstGroup(value)
+    value.match("^*\/.+$").to_s[1..-1]
+end
+
+def insertKey(node, value)
+    if valueIsGroup(value)
+        name = getFirstGroup(value)
+        nextValue = dropFirstGroup(value)
+        child = node.childs.find { |child| child.name == name }
+        if child.nil?
+            child = StructNode.new(name)
+            node.childs.push(child)
+            insertKey(child, nextValue)
+        else
+           insertKey(child, nextValue)
+        end
+    else
+        node.keys.push(value)
+    end
+end
+
+def printNode(node, count)
+    prefix = ""
+    count.times { prefix += " " }
+    puts "#{prefix} Name: #{node.name}"
+    puts "#{prefix} Keys: #{node.keys}"
+    puts "#{prefix} Childs:"
+    node.childs.each { |child| printNode(child, count + 1) }
+end
+
