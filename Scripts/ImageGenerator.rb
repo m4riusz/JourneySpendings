@@ -1,9 +1,16 @@
 #!/usr/bin/ruby
 
-imageAssetsPath = ARGV[0]
+require "./StructNode.rb"
+require "./FileUtils.rb"
 
-imageFiles = Dir["#{imageAssetsPath}/**/*"]
-   .filter { |file| file.match("^*\\.(imageset|appiconset)$") }
-   .map { |name| name.sub(/.*Assets.xcassets\//, "") }
+include FileUtils
 
-puts imageFiles
+moduleName = ARGV[0]
+imageAssetsPath = ARGV[1]
+outputSwiftFile = ARGV[2]
+
+keys = FileUtils::readKeysFromImageAssetsCatalog(imageAssetsPath)
+
+root = StructNode.new(moduleName)
+keys.each { |key| root.insertKey(key) }
+FileUtils::generateImageExtension(outputSwiftFile, moduleName ,root) 

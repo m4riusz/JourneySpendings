@@ -9,7 +9,7 @@ moduleName = ARGV[0]
 inputStringsFile = ARGV[1]
 outputSwiftFile = ARGV[2]
 
-keys = FileUtils::readKeysFromFile(inputStringsFile)
+keys = FileUtils::readKeysFromStringsFile(inputStringsFile)
 root = StructNode.new(moduleName)
 keys.each { |key| root.insertKey(key) }
-FileUtils::generateExtension(outputSwiftFile, moduleName, root) 
+FileUtils::generateStringExtension(outputSwiftFile, moduleName ,root) 
