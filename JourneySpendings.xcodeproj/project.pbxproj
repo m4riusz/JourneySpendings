@@ -29,6 +29,10 @@
 		9774CF2426C7E80E007B6322 /* AboutAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9774CF2326C7E80E007B6322 /* AboutAssembly.swift */; };
 		9774CF2626C7E843007B6322 /* Assembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9774CF2526C7E843007B6322 /* Assembler.swift */; };
 		9774CF2826C7E86C007B6322 /* MobileAppAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9774CF2726C7E86C007B6322 /* MobileAppAssembler.swift */; };
+		9774CF4726C7EFCC007B6322 /* Journey.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9774CF4926C7EFCC007B6322 /* Journey.strings */; };
+		9774CF4A26C7EFD0007B6322 /* Journey.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9774CF4C26C7EFD0007B6322 /* Journey.strings */; };
+		9774CF5326C7F6A0007B6322 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9774CF5226C7F69F007B6322 /* StringExtension.swift */; };
+		97DD229E26D167C30093A187 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DD229D26D167C30093A187 /* Assets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +77,10 @@
 		9774CF2326C7E80E007B6322 /* AboutAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAssembly.swift; sourceTree = "<group>"; };
 		9774CF2526C7E843007B6322 /* Assembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembler.swift; sourceTree = "<group>"; };
 		9774CF2726C7E86C007B6322 /* MobileAppAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileAppAssembler.swift; sourceTree = "<group>"; };
+		9774CF4826C7EFCC007B6322 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Journey.strings; sourceTree = "<group>"; };
+		9774CF4E26C7EFF5007B6322 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Journey.strings; sourceTree = "<group>"; };
+		9774CF5226C7F69F007B6322 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		97DD229D26D167C30093A187 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,12 +135,12 @@
 		9760B94626C023D600B20BCC /* JourneySpendings */ = {
 			isa = PBXGroup;
 			children = (
+				9774CF3F26C7EF13007B6322 /* Resources */,
 				9760B98B26C035B700B20BCC /* Core */,
 				9760B98626C033EE00B20BCC /* Journey */,
 				9760B98526C033E600B20BCC /* About */,
 				9760B98226C033C300B20BCC /* Main */,
 				9760B94726C023D600B20BCC /* AppDelegate.swift */,
-				9760B95026C023D800B20BCC /* Assets.xcassets */,
 				9760B95526C023D800B20BCC /* Info.plist */,
 			);
 			path = JourneySpendings;
@@ -194,8 +202,44 @@
 				9774CF1F26C7E789007B6322 /* Assembly.swift */,
 				9774CF2526C7E843007B6322 /* Assembler.swift */,
 				9774CF2726C7E86C007B6322 /* MobileAppAssembler.swift */,
+				9774CF5226C7F69F007B6322 /* StringExtension.swift */,
+				97DD229D26D167C30093A187 /* Assets.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		9774CF3F26C7EF13007B6322 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9760B95026C023D800B20BCC /* Assets.xcassets */,
+				9774CF4026C7EF1B007B6322 /* Strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9774CF4026C7EF1B007B6322 /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				9774CF4226C7EF2B007B6322 /* en */,
+				9774CF4126C7EF25007B6322 /* pl */,
+			);
+			path = Strings;
+			sourceTree = "<group>";
+		};
+		9774CF4126C7EF25007B6322 /* pl */ = {
+			isa = PBXGroup;
+			children = (
+				9774CF4C26C7EFD0007B6322 /* Journey.strings */,
+			);
+			path = pl;
+			sourceTree = "<group>";
+		};
+		9774CF4226C7EF2B007B6322 /* en */ = {
+			isa = PBXGroup;
+			children = (
+				9774CF4926C7EFCC007B6322 /* Journey.strings */,
+			);
+			path = en;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,6 +333,7 @@
 			knownRegions = (
 				en,
 				Base,
+				pl,
 			);
 			mainGroup = 9760B93B26C023D600B20BCC;
 			packageReferences = (
@@ -312,7 +357,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9774CF4A26C7EFD0007B6322 /* Journey.strings in Resources */,
 				9760B95126C023D800B20BCC /* Assets.xcassets in Resources */,
+				9774CF4726C7EFCC007B6322 /* Journey.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +388,9 @@
 				9774CF2026C7E789007B6322 /* Assembly.swift in Sources */,
 				9774CF2626C7E843007B6322 /* Assembler.swift in Sources */,
 				9774CF2826C7E86C007B6322 /* MobileAppAssembler.swift in Sources */,
+				9774CF5326C7F6A0007B6322 /* StringExtension.swift in Sources */,
 				9760B99126C0382D00B20BCC /* JourneysCoordinator.swift in Sources */,
+				97DD229E26D167C30093A187 /* Assets.swift in Sources */,
 				97388AB926C6EC5300451809 /* AboutViewModel.swift in Sources */,
 				9774CF2226C7E7C7007B6322 /* JourneysAssembly.swift in Sources */,
 				9760B98A26C0347A00B20BCC /* AboutViewController.swift in Sources */,
@@ -386,11 +435,32 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		9774CF4926C7EFCC007B6322 /* Journey.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9774CF4826C7EFCC007B6322 /* en */,
+			);
+			name = Journey.strings;
+			path = ../../../../../../Documents;
+			sourceTree = "<group>";
+		};
+		9774CF4C26C7EFD0007B6322 /* Journey.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9774CF4E26C7EFF5007B6322 /* pl */,
+			);
+			name = Journey.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		9760B96C26C023D800B20BCC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -452,6 +522,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
