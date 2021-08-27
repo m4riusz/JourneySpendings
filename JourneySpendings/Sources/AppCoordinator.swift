@@ -7,6 +7,7 @@
 
 import UIKit
 import Swinject
+import Core
 
 final class AppCoordinator: Coordinator {
     private let window: UIWindow

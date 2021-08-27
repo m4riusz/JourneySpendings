@@ -6,11 +6,12 @@
 //
 
 import Swinject
+import Core
 
-final class MobileAppAssembler: Assembler {
+final class MobileAppAssembler: AppAssembler {
     let container: Container
     
-    var assemblies: [Assembly] = [
+    var assemblies: [ModuleAssembly] = [
         JourneysAssembly(),
         AboutAssembly()
     ]

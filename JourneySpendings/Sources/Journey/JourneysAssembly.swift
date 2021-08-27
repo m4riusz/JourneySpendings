@@ -6,8 +6,9 @@
 //
 
 import Swinject
+import Core
 
-final class JourneysAssembly: Assembly {
+final class JourneysAssembly: ModuleAssembly {
     func register(container: Container) {
         container.register(JourneysViewModel.self) { r in
             JourneysViewModel()

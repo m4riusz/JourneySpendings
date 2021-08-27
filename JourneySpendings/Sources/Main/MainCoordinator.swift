@@ -7,6 +7,7 @@
 
 import UIKit
 import Swinject
+import Core
 
 enum MainTab {
     case journeys

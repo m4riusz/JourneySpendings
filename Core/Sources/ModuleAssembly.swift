@@ -1,12 +1,12 @@
 //
-//  Assembly.swift
-//  JourneySpendings
+//  ModuleAssembly.swift
+//  Core
 //
 //  Created by Mariusz Sut on 14/08/2021.
 //
 
 import Swinject
 
-protocol Assembly {
+public protocol ModuleAssembly {
     func register(container: Container)
 }

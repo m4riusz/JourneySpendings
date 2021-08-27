@@ -1,6 +1,6 @@
 //
 //  Coordinator.swift
-//  JourneySpendings
+//  Core
 //
 //  Created by Mariusz Sut on 08/08/2021.
 //

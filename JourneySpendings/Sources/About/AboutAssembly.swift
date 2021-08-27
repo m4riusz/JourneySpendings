@@ -6,8 +6,10 @@
 //
 
 import Swinject
+import Core
 
-final class AboutAssembly: Assembly {
+final class AboutAssembly: ModuleAssembly {
+    
     func register(container: Container) {
         container.register(AboutViewModel.self) { r in
             AboutViewModel()

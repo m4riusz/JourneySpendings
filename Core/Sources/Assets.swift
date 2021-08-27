@@ -1,6 +1,6 @@
 //
 //  Assets.swift
-//  JourneySpendings
+//  Core
 //
 //  Created by Mariusz Sut on 21/08/2021.
 //

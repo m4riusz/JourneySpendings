@@ -1,5 +1,5 @@
 //
-//  AboutCoordinator.swift
+//  JourneysCoordinator.swift
 //  JourneySpendings
 //
 //  Created by Mariusz Sut on 08/08/2021.
@@ -7,10 +7,11 @@
 
 import UIKit
 import Swinject
+import Core
 
-protocol AboutCoordinatorProtocol { /*Nop*/ }
+protocol JourneysCoordinatorProtocol { /*Nop*/ }
 
-final class AboutCoordinator: Coordinator {
+final class JourneysCoordinator: Coordinator {
     let navigationController: UINavigationController
     let container: Container
     
@@ -20,11 +21,11 @@ final class AboutCoordinator: Coordinator {
     }
     
     func start() {
-        let controller = container.resolve(AboutViewController.self)!
+        let controller = container.resolve(JourneysViewController.self)!
         controller.viewModel.coordinator = self
         navigationController.viewControllers = [controller]
     }
 }
 
-//MARK: - AboutCoordinatorProtocol
-extension AboutCoordinator: AboutCoordinatorProtocol { /*Nop*/ }
+//MARK: - JourneysCoordinatorProtocol
+extension JourneysCoordinator: JourneysCoordinatorProtocol { /*Nop*/ }
