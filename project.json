@@ -1,82 +1,139 @@
 {
-    "name":"MobileApp",
-    "options":{
-       "bundleIdPrefix":"pl.msut",
-       "deploymentTarget":{
-          "iOS":"13.0"
-       },
-       "createIntermediateGroups":true
-    },
-    "packages":{
-       "Swinject":{
-          "url":"https://github.com/Swinject/Swinject.git",
-          "from":"2.8.0"
-       },
-       "SnapKit":{
-          "url":"https://github.com/SnapKit/SnapKit.git",
-          "from":"5.0.1"
-       },
-       "RxSwift":{
-          "url":"https://github.com/ReactiveX/RxSwift.git",
-          "from":"6.2.0"
-       },
-       "RxCocoa":{
-          "url":"https://github.com/ReactiveX/RxSwift.git",
-          "from":"6.2.0"
-       }
-    },
-    "targets":{
-       "Core":{
-          "type":"framework",
-          "platform":"iOS",
-          "sources":[
-             {
-                "path":"Core/Info.plist"
-             },
-             {
-                "path":"Core/Sources"
-             },
-             {
-                "path":"Core/Resources"
-             }
-          ],
-          "dependencies":[
-             {
-                "package":"Swinject"
-             }
-          ]
-       },
-       "JourneySpendings":{
-          "type":"application",
-          "platform":"iOS",
-          "sources":[
-             {
-                "path":"JourneySpendings/Sources"
-             },
-             {
-                "path":"JourneySpendings/Resources"
-             },
-             {
-                "path":"JourneySpendings/Info.plist"
-             }
-          ],
-          "dependencies":[
-             {
-                "target":"Core"
-             },
-             {
-                "package":"SnapKit"
-             },
-             {
-                "package":"RxSwift"
-             },
-             {
-                "package":"RxCocoa"
-             },
-             {
-                "package":"Swinject"
-             }
-          ]
-       }
-    }
- }
+   "name": "MobileApp",
+   "options": {
+      "bundleIdPrefix": "pl.msut",
+      "deploymentTarget": {
+         "iOS": "13.0"
+      },
+      "createIntermediateGroups": true
+   },
+   "packages": {
+      "Swinject": {
+         "url": "https://github.com/Swinject/Swinject.git",
+         "from": "2.8.0"
+      },
+      "SnapKit": {
+         "url": "https://github.com/SnapKit/SnapKit.git",
+         "from": "5.0.1"
+      },
+      "RxSwift": {
+         "url": "https://github.com/ReactiveX/RxSwift.git",
+         "from": "6.2.0"
+      },
+      "RxCocoa": {
+         "url": "https://github.com/ReactiveX/RxSwift.git",
+         "from": "6.2.0"
+      }
+   },
+   "targets": {
+      "Core": {
+         "type": "framework",
+         "platform": "iOS",
+         "sources": [
+            {
+               "path": "Core/Info.plist"
+            },
+            {
+               "path": "Core/Sources"
+            },
+            {
+               "path": "Core/Resources"
+            }
+         ],
+         "dependencies": [
+            {
+               "package": "Swinject"
+            }
+         ]
+      },
+      "CoreTests": {
+         "type": "bundle.unit-test",
+         "platform": "iOS",
+         "dependencies": [
+            {
+               "framework": "Core"
+            }
+         ],
+         "sources": [
+            {
+               "path": "Core/Tests"
+            },
+            {
+               "path": "Core/Info.plist"
+            }
+         ]
+      },
+      "JourneySpendings": {
+         "type": "application",
+         "platform": "iOS",
+         "sources": [
+            {
+               "path": "JourneySpendings/Sources"
+            },
+            {
+               "path": "JourneySpendings/Resources"
+            },
+            {
+               "path": "JourneySpendings/Info.plist"
+            }
+         ],
+         "dependencies": [
+            {
+               "target": "Core"
+            },
+            {
+               "package": "SnapKit"
+            },
+            {
+               "package": "RxSwift"
+            },
+            {
+               "package": "RxCocoa"
+            },
+            {
+               "package": "Swinject"
+            }
+         ]
+      },
+      "JourneySpendingsTests": {
+         "type": "bundle.unit-test",
+         "platform": "iOS",
+         "sources": [
+            {
+               "path": "JourneySpendings/Tests"
+            },
+            {
+               "path": "JourneySpendings/Info.plist"
+            }
+         ],
+         "dependencies": [
+            {
+               "target": "JourneySpendings"
+            }
+         ],
+         "settings": {
+            "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/JourneySpendings.app/JourneySpendings"
+         }
+      },
+      "JourneySpendingsUITests": {
+         "type": "bundle.ui-testing",
+         "platform": "iOS",
+         "sources": [
+            {
+               "path": "JourneySpendingsUITests/Sources"
+            },
+            {
+               "path": "JourneySpendingsUITests/Info.plist"
+            }
+         ],
+         "dependencies": [
+            {
+               "target": "JourneySpendings"
+            }
+         ],
+         "settings": {
+            "TEST_TARGET_NAME": "JourneySpendings"
+         }
+      }
+   }
+}
