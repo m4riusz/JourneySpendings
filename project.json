@@ -27,72 +27,21 @@
    },
    "targets": {
       "Core": {
-         "type": "framework",
-         "platform": "iOS",
-         "sources": [
-            {
-               "path": "Core/Info.plist"
-            },
-            {
-               "path": "Core/Sources"
-            },
-            {
-               "path": "Core/Resources"
-            }
-         ],
-         "dependencies": [
-            {
-               "package": "Swinject"
-            }
+         "templates": [
+            "BaseFramework"
          ]
       },
       "CoreTests": {
-         "type": "bundle.unit-test",
-         "platform": "iOS",
-         "dependencies": [
-            {
-               "framework": "Core"
-            }
+         "templates": [
+            "BaseFrameworkUnitTest"
          ],
-         "sources": [
-            {
-               "path": "Core/Tests"
-            },
-            {
-               "path": "Core/Info.plist"
-            }
-         ]
+         "templateAttributes": {
+            "framework_name": "Core"
+         }
       },
       "JourneySpendings": {
-         "type": "application",
-         "platform": "iOS",
-         "sources": [
-            {
-               "path": "JourneySpendings/Sources"
-            },
-            {
-               "path": "JourneySpendings/Resources"
-            },
-            {
-               "path": "JourneySpendings/Info.plist"
-            }
-         ],
-         "dependencies": [
-            {
-               "target": "Core"
-            },
-            {
-               "package": "SnapKit"
-            },
-            {
-               "package": "RxSwift"
-            },
-            {
-               "package": "RxCocoa"
-            },
-            {
-               "package": "Swinject"
-            }
+         "templates": [
+            "BaseApp"
          ]
       },
       "JourneySpendingsTests": {
@@ -134,6 +83,77 @@
          "settings": {
             "TEST_TARGET_NAME": "JourneySpendings"
          }
+      }
+   },
+   "targetTemplates": {
+      "BaseApp": {
+         "type": "application",
+         "platform": "iOS",
+         "sources": [
+            {
+               "path": "${target_name}/Info.plist"
+            },
+            {
+               "path": "${target_name}/Sources"
+            },
+            {
+               "path": "${target_name}/Resources"
+            }
+         ],
+         "dependencies": [
+            {
+               "target": "Core"
+            },
+            {
+               "package": "SnapKit"
+            },
+            {
+               "package": "RxSwift"
+            },
+            {
+               "package": "RxCocoa"
+            },
+            {
+               "package": "Swinject"
+            }
+         ]
+      },
+      "BaseFramework": {
+         "type": "framework",
+         "platform": "iOS",
+         "sources": [
+            {
+               "path": "${target_name}/Info.plist"
+            },
+            {
+               "path": "${target_name}/Sources"
+            },
+            {
+               "path": "${target_name}/Resources"
+            }
+         ],
+         "dependencies": [
+            {
+               "package": "Swinject"
+            }
+         ]
+      },
+      "BaseFrameworkUnitTest": {
+         "type": "bundle.ui-testing",
+         "platform": "iOS",
+         "sources": [
+            {
+               "path": "${framework_name}/Tests"
+            },
+            {
+               "path": "${framework_name}/Info.plist"
+            }
+         ],
+         "dependencies": [
+            {
+               "framework": "${framework_name}"
+            }
+         ]
       }
    }
 }
