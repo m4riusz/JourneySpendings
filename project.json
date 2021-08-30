@@ -42,6 +42,16 @@
       "JourneySpendings": {
          "templates": [
             "BaseApp"
+         ],
+         "preBuildScripts": [
+            {
+               "name": "Generate String struct",
+               "script": "./Scripts/StringGenerator.rb Journey JourneySpendings/Resources/Strings/pl.lproj/Journey.strings JourneySpendings/Resources/Generated/JourneyStrings.swift"
+            },
+            {
+               "name": "Generate Image struct",
+               "script": "./Scripts/ImageGenerator.rb Journey JourneySpendings/Resources/Assets.xcassets JourneySpendings/Resources/Generated/JourneyImages.swift"
+            }
          ]
       },
       "JourneySpendingsTests": {

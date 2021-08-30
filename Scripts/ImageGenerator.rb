@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
-require "./StructNode.rb"
-require "./FileUtils.rb"
+require_relative "./StructNode.rb"
+require_relative "./FileUtils.rb"
 
 include FileUtils
 
@@ -13,4 +13,4 @@ keys = FileUtils::readKeysFromImageAssetsCatalog(imageAssetsPath)
 
 root = StructNode.new(moduleName)
 keys.each { |key| root.insertKey(key) }
-FileUtils::generateImageExtension(outputSwiftFile, moduleName ,root) 
+FileUtils::generateImageExtension(outputSwiftFile, moduleName ,root)

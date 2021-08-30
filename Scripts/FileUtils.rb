@@ -5,7 +5,7 @@ module FileUtils
         file = File.open(filePath, "r")
         rawKeys = []
         lines = file.readlines.map(&:chomp)
-        lines.each { |line| rawKeys.push(line.split("=").first.chomp.delete("\"")) }
+        lines.each { |line| rawKeys.push(line.split("=").first.chomp.delete("\"").strip) }
         file.close
         return rawKeys
     end
@@ -17,9 +17,10 @@ module FileUtils
           .map { |name| name.sub(/\.\w*/, "") }
     end
     
-    def generateStringExtension(outputFile, moduleName, assetExtension, node)
+    def generateStringExtension(outputFile, moduleName, node)
        file = File.open(outputFile, "w")
        file << "/*\nAuto generated\nDo not modify manually!\n*/\n"
+       file << "import Core\n"
        file << "public extension Assets.Strings {\n"
        generateStringStructs(file, moduleName,  node, 1)
        file << "}\n"
@@ -38,6 +39,8 @@ module FileUtils
     def generateImageExtension(outputFile, moduleName, node)
         file = File.open(outputFile, "w")
         file << "/*\nAuto generated\nDo not modify manually!\n*/\n"
+        file << "import Core\n"
+        file << "import UIKit\n\n"
         file << "public extension Assets.Images {\n"
         generateImageStructs(file, moduleName,  node, 1, "")
         file << "}\n"
@@ -51,7 +54,7 @@ module FileUtils
             fullPath += "#{node.name}/"
          end
          file << "#{prefix}public struct #{node.name} {\n"
-         node.keys.each { |key| file << "#{prefix}\tstatic let #{key} = Image(named: \"#{fullPath}#{key}\")\n" }
+         node.keys.each { |key| file << "#{prefix}\tstatic let #{key} = UIImage(named: \"#{fullPath}#{key}\")\n" }
          node.childs.each { |child| generateImageStructs(file, moduleName, child, depth + 1, fullPath) }
          file << "#{prefix}}\n"
      end

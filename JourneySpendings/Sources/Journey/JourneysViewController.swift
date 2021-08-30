@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Core
 
 final class JourneysViewController: UIViewController {
     
@@ -14,8 +15,8 @@ final class JourneysViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let label = UILabel(frame: CGRect(x: 50, y: 100, width: 100, height: 24))
-        label.text = NSLocalizedString("Hello", tableName: "Journey", bundle: Bundle.main, comment: "")
-        
+        label.text = Assets.Strings.Journey.Hello
+
         view.addSubview(label)
         view.backgroundColor = .systemGreen
     }
