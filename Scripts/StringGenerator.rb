@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
-require "./StructNode.rb"
-require "./FileUtils.rb"
+require_relative "StructNode.rb"
+require_relative "FileUtils.rb"
 
 include FileUtils
 
@@ -12,4 +12,4 @@ outputSwiftFile = ARGV[2]
 keys = FileUtils::readKeysFromStringsFile(inputStringsFile)
 root = StructNode.new(moduleName)
 keys.each { |key| root.insertKey(key) }
-FileUtils::generateStringExtension(outputSwiftFile, moduleName ,root) 
+FileUtils::generateStringExtension(outputSwiftFile, moduleName ,root)
