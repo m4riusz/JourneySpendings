@@ -5,7 +5,8 @@
 		"deploymentTarget":{
 		   "iOS":"13.0"
 		},
-		"createIntermediateGroups":true
+		"createIntermediateGroups":true,
+      "generateEmptyDirectories":true
 	},
 	"packages":{
 		"Swinject":{

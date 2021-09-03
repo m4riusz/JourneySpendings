@@ -5,7 +5,12 @@ module FileUtils
         file = File.open(filePath, "r")
         rawKeys = []
         lines = file.readlines.map(&:chomp)
-        lines.each { |line| rawKeys.push(line.split("=").first.chomp.delete("\"").strip) }
+        lines.each { |line| 
+            key = line.split("=").first
+            unless key.nil?
+                rawKeys.push(key.chomp.delete("\"").strip) 
+            end
+        }
         file.close
         return rawKeys
     end
