@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import JourneySpendings
+@testable import MobileApp
 
 class JourneySpendingsTests: XCTestCase {
 

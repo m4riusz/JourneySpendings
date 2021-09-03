@@ -7,6 +7,8 @@
 
 import Swinject
 import Core
+import Journey
+import About
 
 final class MobileAppAssembler: AppAssembler {
     let container: Container

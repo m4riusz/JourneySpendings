@@ -8,6 +8,8 @@
 import UIKit
 import Swinject
 import Core
+import Journey
+import About
 
 enum MainTab {
     case journeys
