@@ -11,6 +11,6 @@ import Swinject
 public protocol Coordinator {
     var navigationController: UINavigationController { get }
     var container: Container { get }
-    
+
     func start()
 }
