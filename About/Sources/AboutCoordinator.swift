@@ -14,12 +14,12 @@ public protocol AboutCoordinatorProtocol { /*Nop*/ }
 final public class AboutCoordinator: Coordinator {
     public let navigationController: UINavigationController
     public let container: Container
-    
+
     public init(navigationController: UINavigationController, container: Container) {
         self.navigationController = navigationController
         self.container = container
     }
-    
+
     public func start() {
         let controller = container.resolve(AboutViewController.self)!
         controller.viewModel.coordinator = self
@@ -27,5 +27,5 @@ final public class AboutCoordinator: Coordinator {
     }
 }
 
-//MARK: - AboutCoordinatorProtocol
+// MARK: - AboutCoordinatorProtocol
 extension AboutCoordinator: AboutCoordinatorProtocol { /*Nop*/ }

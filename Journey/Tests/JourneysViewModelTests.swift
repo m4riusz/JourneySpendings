@@ -10,7 +10,7 @@ import XCTest
 
 final class JourneysViewModelTests: XCTestCase {
     private lazy var sut = JourneysViewModel()
-    
+
     func testSample() {
         XCTAssertNil(sut.coordinator)
     }

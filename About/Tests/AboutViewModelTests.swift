@@ -10,7 +10,7 @@ import XCTest
 
 final class AboutViewModelTests: XCTestCase {
     private lazy var sut = AboutViewModel()
-    
+
     func testSample() {
         XCTAssertNil(sut.coordinator)
     }

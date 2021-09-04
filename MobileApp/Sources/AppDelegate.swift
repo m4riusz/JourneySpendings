@@ -12,7 +12,7 @@ import Swinject
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private lazy var assembler = MobileAppAssembler(container: Container(), enviroment: ProcessInfo().environment)
     private var appCoordinator: AppCoordinator?
-    
+
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         assembler.assembly()

@@ -1,14 +1,14 @@
 
 namespace :project do
     desc "Generate project"
-    task :generate => [:generateAssetsFiles] do
+    task :generate => [:assets] do
         puts "Generating project file"
         sh "rm -rf JourneySpendings.xcodeproj/"
         sh "xcodegen generate --spec project.json"
     end
 
     desc "Generate assets files"
-    task :generateAssetsFiles do
+    task :assets do
         puts "Generate assets files for About"
         sh "mkdir -p About/Resources/Generated/"
         sh "touch About/Resources/Generated/AboutStrings.swift"
@@ -20,8 +20,8 @@ namespace :project do
         sh "mkdir -p Core/Resources/Generated/"
         sh "touch Core/Resources/Generated/CoreStrings.swift"
         sh "touch Core/Resources/Generated/CoreImages.swift"
-        sh "./Scripts/StringGenerator.rb Core Core/Resources/en.lproj/Core.strings Core/Resources/Generated/CoreStrings.swift"
-        sh "./Scripts/ImageGenerator.rb Core Core/Resources/Assets.xcassets Core/Resources/Generated/CoreImages.swift"
+        sh "./Scripts/StringGenerator.rb Core Core/Resources/en.lproj/Core.strings Core/Resources/Generated/CoreStrings.swift false"
+        sh "./Scripts/ImageGenerator.rb Core Core/Resources/Assets.xcassets Core/Resources/Generated/CoreImages.swift false"
 
         puts "Generate assets files for Journey"
         sh "mkdir -p Journey/Resources/Generated/"

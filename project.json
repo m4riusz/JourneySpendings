@@ -79,6 +79,12 @@
 		"MobileApp":{
 			"templates":[
 				"BaseApp"
+			],
+			"preBuildScripts": [
+				{
+					"name": "Swiftlint",
+					"path": "Scripts/swiftlint.sh"
+				}
 			]
 		},
 		"MobileAppTests":{
