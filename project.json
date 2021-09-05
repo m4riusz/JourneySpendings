@@ -220,7 +220,7 @@
 			]
 		},
 		"BaseFrameworkUnitTest":{
-			"type":"bundle.ui-testing",
+			"type":"bundle.unit-test",
 			"platform":"iOS",
 			"sources":[
 				{
@@ -232,11 +232,12 @@
 			],
 			"dependencies":[
 				{
-					"framework":"${framework_name}"
+					"framework":"${framework_name}",
+					"target": "MobileApp"
 				}
 			],
 			"settings":{
-				"TEST_TARGET_NAME":"MobileApp"
+				"TEST_HOST":"$(BUILT_PRODUCTS_DIR)/MobileApp.app/MobileApp"
 			}
 		}
 	}
