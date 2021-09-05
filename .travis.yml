@@ -1,0 +1,22 @@
+os: osx
+language: swift
+osx_image: xcode12.5
+
+addons:
+  homebrew:
+    packages:
+      - swiftlint
+      - xcodegen
+
+install:
+ - rake project:generate
+
+jobs:
+  include:
+    - stage: tests
+      name: Unit tests
+      script: Scripts/RunUnitTests.sh
+    - stage: tests
+      name: UI tests
+      script: Scripts/RunUITests.sh
+
