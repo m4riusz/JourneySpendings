@@ -123,13 +123,6 @@
 					"target":"MobileApp"
 				}
 			],
-			"scheme":{
-				"testTargets":[
-					{
-						"name":"MobileAppUITests"
-					}
-				]
-			},
 			"settings":{
 				"TEST_TARGET_NAME":"MobileApp"
 			}
@@ -172,23 +165,7 @@
 				{
 					"package":"Swinject"
 				}
-			],
-			"scheme":{
-				"testTargets":[
-					{
-						"name":"AboutTests"
-					},
-					{
-						"name":"CoreTests"
-					},
-					{
-						"name":"JourneyTests"
-					},
-					{
-						"name":"MobileAppTests"
-					}
-				]
-			}
+			]
 		},
 		"BaseFramework":{
 			"type":"framework",
@@ -238,6 +215,30 @@
 			],
 			"settings":{
 				"TEST_HOST":"$(BUILT_PRODUCTS_DIR)/MobileApp.app/MobileApp"
+			}
+		}
+	},
+	"schemes":{
+		"MobileApp": {
+			"build": {
+				"targets": {
+					"MobileApp": "all"
+				}
+			},
+			"test": {
+				"gatherCoverageData": true,
+				"coverageTargets": ["Core", "About", "Journey", "MobileApp"],
+				"targets": ["CoreTests", "AboutTests", "JourneyTests", "MobileAppTests"]
+			}
+		},
+		"MobileAppUITests": {
+			"build": {
+				"targets": {
+					"MobileAppUITests": ["run", "test"]
+				}
+			},
+			"test": {
+				"targets": ["MobileAppUITests"]
 			}
 		}
 	}
