@@ -129,8 +129,7 @@
 		}
 	},
 	"targetTemplates":{
-		"BaseApp":{
-			"type":"application",
+		"BaseTarget": {
 			"platform":"iOS",
 			"sources":[
 				{
@@ -144,15 +143,6 @@
 				}
 			],
 			"dependencies":[
-				{
-					"target":"About"
-				},
-				{
-					"target":"Core"
-				},
-				{
-					"target":"Journey"
-				},
 				{
 					"package":"SnapKit"
 				},
@@ -167,33 +157,27 @@
 				}
 			]
 		},
-		"BaseFramework":{
-			"type":"framework",
-			"platform":"iOS",
-			"sources":[
-				{
-					"path":"${target_name}/Info.plist"
-				},
-				{
-					"path":"${target_name}/Sources"
-				},
-				{
-					"path":"${target_name}/Resources"
-				}
+		"BaseApp":{
+			"type":"application",
+			"templates":[
+				"BaseTarget"
 			],
 			"dependencies":[
 				{
-					"package":"SnapKit"
+					"target":"About"
 				},
 				{
-					"package":"RxSwift"
+					"target":"Core"
 				},
 				{
-					"package":"RxCocoa"
-				},
-				{
-					"package":"Swinject"
+					"target":"Journey"
 				}
+			]
+		},
+		"BaseFramework":{
+			"type":"framework",
+			"templates":[
+				"BaseTarget"
 			]
 		},
 		"BaseFrameworkUnitTest":{
