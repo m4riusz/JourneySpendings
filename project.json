@@ -28,7 +28,7 @@
 				"BaseFrameworkUnitTest"
 			],
 			"templateAttributes": {
-				"framework_name": "About"
+				"tests_parent": "About"
 			}
 		},
 		"Core": {
@@ -41,7 +41,7 @@
 				"BaseFrameworkUnitTest"
 			],
 			"templateAttributes": {
-				"framework_name": "Core"
+				"tests_parent": "Core"
 			}
 		},
 		"Journey": {
@@ -59,12 +59,24 @@
 				"BaseFrameworkUnitTest"
 			],
 			"templateAttributes": {
-				"framework_name": "Journey"
+				"tests_parent": "Journey"
 			}
 		},
 		"MobileApp": {
+			"type": "application",
 			"templates": [
-				"BaseApp"
+				"BaseTarget"
+			],
+			"dependencies": [
+				{
+					"target": "About"
+				},
+				{
+					"target": "Core"
+				},
+				{
+					"target": "Journey"
+				}
 			],
 			"preBuildScripts": [
 				{
@@ -74,23 +86,11 @@
 			]
 		},
 		"MobileAppTests": {
-			"type": "bundle.unit-test",
-			"platform": "iOS",
-			"sources": [
-				{
-					"path": "MobileApp/Tests"
-				},
-				{
-					"path": "MobileApp/Info.plist"
-				}
+			"templates": [
+				"BaseUnitTest"
 			],
-			"dependencies": [
-				{
-					"target": "MobileApp"
-				}
-			],
-			"settings": {
-				"TEST_HOST": "$(BUILT_PRODUCTS_DIR)/MobileApp.app/MobileApp"
+			"templateAttributes": {
+				"tests_parent": "MobileApp"
 			}
 		},
 		"MobileAppUITests": {

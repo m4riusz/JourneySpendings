@@ -28,23 +28,26 @@
 				}
 			]
 		},
-		"BaseApp": {
-			"type": "application",
-			"templates": [
-				"BaseTarget"
-			],
-			"dependencies": [
+        "BaseUnitTest": {
+            "type": "bundle.unit-test",
+			"platform": "iOS",
+			"sources": [
 				{
-					"target": "About"
+					"path": "${tests_parent}/Tests"
 				},
 				{
-					"target": "Core"
-				},
-				{
-					"target": "Journey"
+					"path": "${tests_parent}/Info.plist"
 				}
-			]
-		},
+			],
+            "dependencies": [
+				{
+					"target": "MobileApp"
+				}
+			],
+            "settings": {
+				"TEST_HOST": "$(BUILT_PRODUCTS_DIR)/MobileApp.app/MobileApp"
+			}
+        },
 		"BaseFramework": {
 			"type": "framework",
 			"templates": [
@@ -52,25 +55,14 @@
 			]
 		},
 		"BaseFrameworkUnitTest": {
-			"type": "bundle.unit-test",
-			"platform": "iOS",
-			"sources": [
-				{
-					"path": "${framework_name}/Tests"
-				},
-				{
-					"path": "${framework_name}/Info.plist"
-				}
+            "templates": [
+				"BaseUnitTest"
 			],
 			"dependencies": [
-				{
-					"framework": "${framework_name}",
-					"target": "MobileApp"
+                {
+					"framework": "${tests_parent}"
 				}
-			],
-			"settings": {
-				"TEST_HOST": "$(BUILT_PRODUCTS_DIR)/MobileApp.app/MobileApp"
-			}
+			]
 		}
 	}
 }
