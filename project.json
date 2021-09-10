@@ -1,4 +1,8 @@
 {
+	"include": [
+		"packages.json",
+		"templates.json"
+	],
 	"name": "JourneySpendings",
 	"options": {
 		"bundleIdPrefix": "pl.msut",
@@ -7,24 +11,6 @@
 		},
 		"createIntermediateGroups": true,
 		"generateEmptyDirectories": true
-	},
-	"packages": {
-		"Swinject": {
-			"url": "https://github.com/Swinject/Swinject.git",
-			"from": "2.8.0"
-		},
-		"SnapKit": {
-			"url": "https://github.com/SnapKit/SnapKit.git",
-			"from": "5.0.1"
-		},
-		"RxSwift": {
-			"url": "https://github.com/ReactiveX/RxSwift.git",
-			"from": "6.2.0"
-		},
-		"RxCocoa": {
-			"url": "https://github.com/ReactiveX/RxSwift.git",
-			"from": "6.2.0"
-		}
 	},
 	"targets": {
 		"About": {
@@ -125,80 +111,6 @@
 			],
 			"settings": {
 				"TEST_TARGET_NAME": "MobileApp"
-			}
-		}
-	},
-	"targetTemplates": {
-		"BaseTarget": {
-			"platform": "iOS",
-			"sources": [
-				{
-					"path": "${target_name}/Info.plist"
-				},
-				{
-					"path": "${target_name}/Sources"
-				},
-				{
-					"path": "${target_name}/Resources"
-				}
-			],
-			"dependencies": [
-				{
-					"package": "SnapKit"
-				},
-				{
-					"package": "RxSwift"
-				},
-				{
-					"package": "RxCocoa"
-				},
-				{
-					"package": "Swinject"
-				}
-			]
-		},
-		"BaseApp": {
-			"type": "application",
-			"templates": [
-				"BaseTarget"
-			],
-			"dependencies": [
-				{
-					"target": "About"
-				},
-				{
-					"target": "Core"
-				},
-				{
-					"target": "Journey"
-				}
-			]
-		},
-		"BaseFramework": {
-			"type": "framework",
-			"templates": [
-				"BaseTarget"
-			]
-		},
-		"BaseFrameworkUnitTest": {
-			"type": "bundle.unit-test",
-			"platform": "iOS",
-			"sources": [
-				{
-					"path": "${framework_name}/Tests"
-				},
-				{
-					"path": "${framework_name}/Info.plist"
-				}
-			],
-			"dependencies": [
-				{
-					"framework": "${framework_name}",
-					"target": "MobileApp"
-				}
-			],
-			"settings": {
-				"TEST_HOST": "$(BUILT_PRODUCTS_DIR)/MobileApp.app/MobileApp"
 			}
 		}
 	},
