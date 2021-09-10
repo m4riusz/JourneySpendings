@@ -1,84 +1,82 @@
 {
-	"name":"JourneySpendings",
-	"options":{
-	   "bundleIdPrefix":"pl.msut",
-		"deploymentTarget":{
-		   "iOS":"13.0"
+	"include": [
+		"packages.json",
+		"templates.json"
+	],
+	"name": "JourneySpendings",
+	"options": {
+		"bundleIdPrefix": "pl.msut",
+		"deploymentTarget": {
+			"iOS": "13.0"
 		},
-		"createIntermediateGroups":true,
-      "generateEmptyDirectories":true
+		"createIntermediateGroups": true,
+		"generateEmptyDirectories": true
 	},
-	"packages":{
-		"Swinject":{
-			"url":"https://github.com/Swinject/Swinject.git",
-			"from":"2.8.0"
-		},
-		"SnapKit":{
-			"url":"https://github.com/SnapKit/SnapKit.git",
-			"from":"5.0.1"
-		},
-		"RxSwift":{
-			"url":"https://github.com/ReactiveX/RxSwift.git",
-			"from":"6.2.0"
-		},
-		"RxCocoa":{
-			"url":"https://github.com/ReactiveX/RxSwift.git",
-			"from":"6.2.0"
-		}
-	},
-	"targets":{
-		"About":{
-			"templates":[
+	"targets": {
+		"About": {
+			"templates": [
 				"BaseFramework"
 			],
-			"dependencies":[
+			"dependencies": [
 				{
-					"target":"Core"
+					"target": "Core"
 				}
 			]
 		},
-		"AboutTests":{
-			"templates":[
+		"AboutTests": {
+			"templates": [
 				"BaseFrameworkUnitTest"
 			],
-			"templateAttributes":{
-				"framework_name":"About"
+			"templateAttributes": {
+				"tests_parent": "About"
 			}
 		},
-		"Core":{
-			"templates":[
+		"Core": {
+			"templates": [
 				"BaseFramework"
 			]
 		},
-		"CoreTests":{
-			"templates":[
+		"CoreTests": {
+			"templates": [
 				"BaseFrameworkUnitTest"
 			],
-			"templateAttributes":{
-				"framework_name":"Core"
+			"templateAttributes": {
+				"tests_parent": "Core"
 			}
 		},
-		"Journey":{
-			"templates":[
+		"Journey": {
+			"templates": [
 				"BaseFramework"
 			],
-			"dependencies":[
+			"dependencies": [
 				{
-					"target":"Core"
+					"target": "Core"
 				}
 			]
 		},
-		"JourneyTests":{
-			"templates":[
+		"JourneyTests": {
+			"templates": [
 				"BaseFrameworkUnitTest"
 			],
-			"templateAttributes":{
-				"framework_name":"Journey"
+			"templateAttributes": {
+				"tests_parent": "Journey"
 			}
 		},
-		"MobileApp":{
-			"templates":[
-				"BaseApp"
+		"MobileApp": {
+			"type": "application",
+			"templates": [
+				"BaseTarget"
+			],
+			"dependencies": [
+				{
+					"target": "About"
+				},
+				{
+					"target": "Core"
+				},
+				{
+					"target": "Journey"
+				}
 			],
 			"preBuildScripts": [
 				{
@@ -87,157 +85,71 @@
 				}
 			]
 		},
-		"MobileAppTests":{
-			"type":"bundle.unit-test",
-			"platform":"iOS",
-			"sources":[
-				{
-					"path":"MobileApp/Tests"
-				},
-				{
-					"path":"MobileApp/Info.plist"
-				}
+		"MobileAppTests": {
+			"templates": [
+				"BaseUnitTest"
 			],
-			"dependencies":[
-				{
-					"target":"MobileApp"
-				}
-			],
-			"settings":{
-				"TEST_HOST":"$(BUILT_PRODUCTS_DIR)/MobileApp.app/MobileApp"
+			"templateAttributes": {
+				"tests_parent": "MobileApp"
 			}
 		},
-		"MobileAppUITests":{
-			"type":"bundle.ui-testing",
-			"platform":"iOS",
-			"sources":[
+		"MobileAppUITests": {
+			"type": "bundle.ui-testing",
+			"platform": "iOS",
+			"sources": [
 				{
-					"path":"MobileAppUITests/Sources"
+					"path": "MobileAppUITests/Sources"
 				},
 				{
-					"path":"MobileAppUITests/Info.plist"
+					"path": "MobileAppUITests/Info.plist"
 				}
 			],
-			"dependencies":[
+			"dependencies": [
 				{
-					"target":"MobileApp"
-				}
-			],
-			"scheme":{
-				"testTargets":[
-					{
-						"name":"MobileAppUITests"
-					}
-				]
-			},
-			"settings":{
-				"TEST_TARGET_NAME":"MobileApp"
-			}
-		}
-	},
-	"targetTemplates":{
-		"BaseApp":{
-			"type":"application",
-			"platform":"iOS",
-			"sources":[
-				{
-					"path":"${target_name}/Info.plist"
-				},
-				{
-					"path":"${target_name}/Sources"
-				},
-				{
-					"path":"${target_name}/Resources"
-				}
-			],
-			"dependencies":[
-				{
-					"target":"About"
-				},
-				{
-					"target":"Core"
-				},
-				{
-					"target":"Journey"
-				},
-				{
-					"package":"SnapKit"
-				},
-				{
-					"package":"RxSwift"
-				},
-				{
-					"package":"RxCocoa"
-				},
-				{
-					"package":"Swinject"
-				}
-			],
-			"scheme":{
-				"testTargets":[
-					{
-						"name":"AboutTests"
-					},
-					{
-						"name":"CoreTests"
-					},
-					{
-						"name":"JourneyTests"
-					},
-					{
-						"name":"MobileAppTests"
-					}
-				]
-			}
-		},
-		"BaseFramework":{
-			"type":"framework",
-			"platform":"iOS",
-			"sources":[
-				{
-					"path":"${target_name}/Info.plist"
-				},
-				{
-					"path":"${target_name}/Sources"
-				},
-				{
-					"path":"${target_name}/Resources"
-				}
-			],
-			"dependencies":[
-				{
-					"package":"SnapKit"
-				},
-				{
-					"package":"RxSwift"
-				},
-				{
-					"package":"RxCocoa"
-				},
-				{
-					"package":"Swinject"
-				}
-			]
-		},
-		"BaseFrameworkUnitTest":{
-			"type":"bundle.unit-test",
-			"platform":"iOS",
-			"sources":[
-				{
-					"path":"${framework_name}/Tests"
-				},
-				{
-					"path":"${framework_name}/Info.plist"
-				}
-			],
-			"dependencies":[
-				{
-					"framework":"${framework_name}",
 					"target": "MobileApp"
 				}
 			],
-			"settings":{
-				"TEST_HOST":"$(BUILT_PRODUCTS_DIR)/MobileApp.app/MobileApp"
+			"settings": {
+				"TEST_TARGET_NAME": "MobileApp"
+			}
+		}
+	},
+	"schemes": {
+		"MobileApp": {
+			"build": {
+				"targets": {
+					"MobileApp": "all"
+				}
+			},
+			"test": {
+				"gatherCoverageData": true,
+				"coverageTargets": [
+					"Core",
+					"About",
+					"Journey",
+					"MobileApp"
+				],
+				"targets": [
+					"CoreTests",
+					"AboutTests",
+					"JourneyTests",
+					"MobileAppTests"
+				]
+			}
+		},
+		"MobileAppUITests": {
+			"build": {
+				"targets": {
+					"MobileAppUITests": [
+						"run",
+						"test"
+					]
+				}
+			},
+			"test": {
+				"targets": [
+					"MobileAppUITests"
+				]
 			}
 		}
 	}

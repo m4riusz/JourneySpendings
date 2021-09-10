@@ -1,0 +1,68 @@
+{
+    "targetTemplates": {
+		"BaseTarget": {
+			"platform": "iOS",
+			"sources": [
+				{
+					"path": "${target_name}/Info.plist"
+				},
+				{
+					"path": "${target_name}/Sources"
+				},
+				{
+					"path": "${target_name}/Resources"
+				}
+			],
+			"dependencies": [
+				{
+					"package": "SnapKit"
+				},
+				{
+					"package": "RxSwift"
+				},
+				{
+					"package": "RxCocoa"
+				},
+				{
+					"package": "Swinject"
+				}
+			]
+		},
+        "BaseUnitTest": {
+            "type": "bundle.unit-test",
+			"platform": "iOS",
+			"sources": [
+				{
+					"path": "${tests_parent}/Tests"
+				},
+				{
+					"path": "${tests_parent}/Info.plist"
+				}
+			],
+            "dependencies": [
+				{
+					"target": "MobileApp"
+				}
+			],
+            "settings": {
+				"TEST_HOST": "$(BUILT_PRODUCTS_DIR)/MobileApp.app/MobileApp"
+			}
+        },
+		"BaseFramework": {
+			"type": "framework",
+			"templates": [
+				"BaseTarget"
+			]
+		},
+		"BaseFrameworkUnitTest": {
+            "templates": [
+				"BaseUnitTest"
+			],
+			"dependencies": [
+                {
+					"framework": "${tests_parent}"
+				}
+			]
+		}
+	}
+}
