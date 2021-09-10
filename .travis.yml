@@ -11,6 +11,9 @@ addons:
 install:
  - rake project:generate
 
+after_success:
+ - Scripts/RunCodecov.sh
+
 jobs:
   include:
     - stage: tests
