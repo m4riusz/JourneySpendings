@@ -10,4 +10,5 @@ import Foundation
 public struct Assets {
     public struct Strings { /*Nop*/ }
     public struct Images { /*Nop*/ }
+    public struct Colors { /*Nop*/ }
 }
