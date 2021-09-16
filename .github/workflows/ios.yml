@@ -12,7 +12,8 @@ defaults:
   run:
     working-directory: Scripts
 jobs:
-  - unit-tests:
+  unit-tests:
+    runs-on: macos-latest
     name: Runs unit tests
     steps:
       - name: Checkout
@@ -28,7 +29,8 @@ jobs:
         run: RunUnitTests.sh
       - name: Gather code coverage
         run: RunCodecov.sh
-  - ui-tests:
+  ui-tests:
+    runs-on: macos-latest
     name: Runs UI tests
     steps:
       - name: Checkout
