@@ -18,13 +18,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install swiftlint & xcodegen
-        run: |
-          brew install swiftlint xcodegen
       - name: Print swiftlint & xcodegen versions
         run: |
           swiftlint version
           xcodegen version
+      - name: Install swiftlint & xcodegen
+        run: |
+          brew install swiftlint xcodegen
       - name: Run unit tests
         run: RunUnitTests.sh
       - name: Gather code coverage
