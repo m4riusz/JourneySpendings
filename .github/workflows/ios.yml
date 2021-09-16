@@ -1,0 +1,44 @@
+name: Tests
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+defaults:
+  run:
+    working-directory: Scripts
+jobs:
+  - unit-tests:
+    name: Runs unit tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install swiftlint & xcodegen
+        run: |
+          brew install swiftlint xcodegen
+      - name: Print swiftlint & xcodegen versions
+        run: |
+          swiftlint version
+          xcodegen version
+      - name: Run unit tests
+        run: RunUnitTests.sh
+      - name: Gather code coverage
+        run: RunCodecov.sh
+  - ui-tests:
+    name: Runs UI tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install swiftlint & xcodegen
+        run: |
+          brew install swiftlint xcodegen
+      - name: Print swiftlint & xcodegen versions
+        run: |
+          swiftlint version
+          xcodegen version
+      - name: Run UI tests
+        run: RunUiTests.sh
