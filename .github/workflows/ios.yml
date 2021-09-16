@@ -8,37 +8,40 @@ on:
     branches:
       - master
       - develop
-defaults:
-  run:
-    working-directory: Scripts
 jobs:
-  - unit-tests:
+  unit-tests:
+    runs-on: macos-11
     name: Runs unit tests
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install swiftlint & xcodegen
+      - name: Install xcodegen
         run: |
-          brew install swiftlint xcodegen
+          brew install xcodegen
       - name: Print swiftlint & xcodegen versions
         run: |
           swiftlint version
           xcodegen version
+      - name: Generate .xcodeproj file
+        run: rake project:generate
       - name: Run unit tests
-        run: RunUnitTests.sh
+        run: ./Scripts/RunUnitTests.sh
       - name: Gather code coverage
-        run: RunCodecov.sh
-  - ui-tests:
+        run: ./Scripts/RunCodecov.sh
+  ui-tests:
+    runs-on: macos-11
     name: Runs UI tests
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install swiftlint & xcodegen
+      - name: Install xcodegen
         run: |
-          brew install swiftlint xcodegen
+          brew install xcodegen
       - name: Print swiftlint & xcodegen versions
         run: |
           swiftlint version
           xcodegen version
+      - name: Generate .xcodeproj file
+        run: rake project:generate
       - name: Run UI tests
-        run: RunUiTests.sh
+        run: ./Scripts/RunUiTests.sh
