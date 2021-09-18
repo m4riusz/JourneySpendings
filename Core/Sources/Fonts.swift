@@ -22,29 +22,30 @@ public enum FontStyles {
     case capition2
 
     var style: FontStyle {
+        typealias Colors = Assets.Colors.Core.Label
         switch self {
         case .largeTitle:
-            return .init(font: UIFont(name: FontName.regular.string, size: 34)!, lineHeight: 41, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 34)!, lineHeight: 41, color: Colors.primary)
         case .title1:
-            return .init(font: UIFont(name: FontName.regular.string, size: 28)!, lineHeight: 34, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 28)!, lineHeight: 34, color: Colors.primary)
         case .title2:
-            return .init(font: UIFont(name: FontName.regular.string, size: 22)!, lineHeight: 28, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 22)!, lineHeight: 28, color: Colors.primary)
         case .title3:
-            return .init(font: UIFont(name: FontName.regular.string, size: 20)!, lineHeight: 25, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 20)!, lineHeight: 25, color: Colors.primary)
         case .headline:
-            return .init(font: UIFont(name: FontName.semibold.string, size: 17)!, lineHeight: 22, color: .black)
+            return .init(font: UIFont(name: FontName.semibold.string, size: 17)!, lineHeight: 22, color: Colors.primary)
         case .body:
-            return .init(font: UIFont(name: FontName.regular.string, size: 17)!, lineHeight: 22, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 17)!, lineHeight: 22, color: Colors.secondary)
         case .callout:
-            return .init(font: UIFont(name: FontName.regular.string, size: 16)!, lineHeight: 21, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 16)!, lineHeight: 21, color: Colors.tertiary)
         case .subhead:
-            return .init(font: UIFont(name: FontName.regular.string, size: 15)!, lineHeight: 20, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 15)!, lineHeight: 20, color: Colors.primary)
         case .footnote:
-            return .init(font: UIFont(name: FontName.regular.string, size: 13)!, lineHeight: 18, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 13)!, lineHeight: 18, color: Colors.tertiary)
         case .capition1:
-            return .init(font: UIFont(name: FontName.regular.string, size: 12)!, lineHeight: 16, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 12)!, lineHeight: 16, color: Colors.tertiary)
         case .capition2:
-            return .init(font: UIFont(name: FontName.regular.string, size: 11)!, lineHeight: 13, color: .black)
+            return .init(font: UIFont(name: FontName.regular.string, size: 11)!, lineHeight: 13, color: Colors.quaternary)
         }
     }
 }
