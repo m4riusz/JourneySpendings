@@ -14,6 +14,7 @@ final class MobileAppAssembler: AppAssembler {
     let container: Container
 
     var assemblies: [ModuleAssembly] = [
+        CoreAssembly(),
         JourneysAssembly(),
         AboutAssembly()
     ]
