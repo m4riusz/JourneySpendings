@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Core
 import Swinject
 
 @main
@@ -19,6 +20,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         appCoordinator = AppCoordinator(window: UIWindow(frame: UIScreen.main.bounds),
                                         navigationController: UINavigationController(),
                                         container: assembler.container)
+        try! FontLoader().load()
         appCoordinator?.start()
         return true
     }
