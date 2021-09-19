@@ -3,7 +3,7 @@
     {
       "color" : {
         "platform" : "ios",
-        "reference" : "systemBackgroundColor"
+        "reference" : "systemGroupedBackgroundColor"
       },
       "idiom" : "universal"
     },
@@ -18,9 +18,9 @@
         "color-space" : "display-p3",
         "components" : {
           "alpha" : "1.000",
-          "blue" : "0.067",
-          "green" : "0.040",
-          "red" : "0.072"
+          "blue" : "0.102",
+          "green" : "0.084",
+          "red" : "0.102"
         }
       },
       "idiom" : "universal"
