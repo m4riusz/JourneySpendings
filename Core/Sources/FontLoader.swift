@@ -17,7 +17,6 @@ enum FontLoaderError: Error {
 final public class FontLoader {
 
     private struct Constants {
-        static let fontNames = ["OpenSans-Bold", "OpenSans-Light", "OpenSans-Regular", "OpenSans-SemiBold"]
         static let fontExtension = ".ttf"
     }
 
@@ -25,7 +24,7 @@ final public class FontLoader {
 
     public func load() throws {
         let bundle = Bundle(for: Self.self)
-        try Constants.fontNames.forEach { try loadCustomFont(bundle: bundle, name: $0) }
+        try FontName.allCases.forEach { try loadCustomFont(bundle: bundle, name: $0.string) }
     }
 
     private func loadCustomFont(bundle: Bundle, name: String) throws {

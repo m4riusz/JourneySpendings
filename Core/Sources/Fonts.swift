@@ -39,7 +39,7 @@ public enum FontStyles {
         case .callout:
             return .init(font: UIFont(name: FontName.regular.string, size: 16)!, lineHeight: 21, color: Colors.tertiary)
         case .subhead:
-            return .init(font: UIFont(name: FontName.regular.string, size: 15)!, lineHeight: 20, color: Colors.primary)
+            return .init(font: UIFont(name: FontName.bold.string, size: 15)!, lineHeight: 20, color: Colors.primary)
         case .footnote:
             return .init(font: UIFont(name: FontName.regular.string, size: 13)!, lineHeight: 18, color: Colors.tertiary)
         case .capition1:
@@ -56,7 +56,7 @@ struct FontStyle {
     let color: UIColor
 }
 
-enum FontName {
+enum FontName: CaseIterable {
     case bold
     case semibold
     case regular
