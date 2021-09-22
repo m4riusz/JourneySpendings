@@ -56,7 +56,7 @@ struct FontStyle {
     let color: UIColor
 }
 
-enum FontName {
+enum FontName: CaseIterable {
     case bold
     case semibold
     case regular

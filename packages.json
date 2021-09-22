@@ -15,6 +15,10 @@
 		"RxCocoa": {
 			"url": "https://github.com/ReactiveX/RxSwift.git",
 			"from": "6.2.0"
+		},
+		"SnapshotTesting": {
+			"url": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+			"from": "1.9.0"
 		}
 	}
 }

@@ -10,6 +10,7 @@ import UIKit
 final public class Button: UIButton {
     private typealias Colors = Assets.Colors.Core
     private struct Constants {
+        static let edgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
         struct Border {
             static let normal: CGFloat = 2
         }
@@ -23,6 +24,15 @@ final public class Button: UIButton {
         case primary
         case secondary
         case tertiary
+    }
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentEdgeInsets = Constants.edgeInsets
+    }
+
+    public required init?(coder: NSCoder) {
+        super.init(frame: .zero)
     }
 
     convenience init(text: String) {
