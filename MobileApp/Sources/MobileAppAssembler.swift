@@ -16,7 +16,8 @@ final class MobileAppAssembler: AppAssembler {
     var assemblies: [ModuleAssembly] = [
         CoreAssembly(),
         JourneysAssembly(),
-        AboutAssembly()
+        AboutAssembly(),
+        MobileAppAssembly()
     ]
 
     init(container: Container, enviroment: [String: String]) {

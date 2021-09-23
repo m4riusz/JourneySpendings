@@ -14,9 +14,9 @@ final class AppCoordinator: Coordinator {
     let navigationController: UINavigationController
     let container: Container
 
-    init(window: UIWindow, navigationController: UINavigationController, container: Container) {
+    init(window: UIWindow, container: Container) {
         self.window = window
-        self.navigationController = navigationController
+        self.navigationController = UINavigationController()
         self.container = container
     }
 
