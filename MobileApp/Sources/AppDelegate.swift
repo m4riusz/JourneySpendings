@@ -17,10 +17,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         assembler.assembly()
-        appCoordinator = AppCoordinator(window: UIWindow(frame: UIScreen.main.bounds),
-                                        navigationController: UINavigationController(),
-                                        container: assembler.container)
         try! FontLoader().load()
+        appCoordinator = AppCoordinator(window: UIWindow(frame: UIScreen.main.bounds),
+                                        container: assembler.container)
         appCoordinator?.start()
         return true
     }
