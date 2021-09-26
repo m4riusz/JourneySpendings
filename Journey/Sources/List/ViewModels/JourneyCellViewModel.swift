@@ -7,13 +7,21 @@
 
 import Core
 import UIKit
+import RxDataSources
 
 struct JourneysItemCellViewModel {
-
+    let uuid: String
+    let name: String
+    let startDate: String
+    let totalCost: String
 }
 
-extension JourneysItemCellViewModel: CellConfiguratorProtocol {
-    var cellConfigurator: CellRepresentable {
-        CellConfigurator<JourneyItemCell, JourneysItemCellViewModel>(item: self)
+// MARK: - Equatable
+extension JourneysItemCellViewModel: Equatable { /*Nop*/ }
+
+// MARK: - IdentifiableType
+extension JourneysItemCellViewModel: IdentifiableType {
+    var identity: String {
+        uuid
     }
 }

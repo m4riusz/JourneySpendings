@@ -9,6 +9,7 @@ import UIKit
 import Core
 import RxSwift
 import RxCocoa
+import RxDataSources
 import SnapKit
 
 final class JourneysViewController: UIViewController {
@@ -17,37 +18,40 @@ final class JourneysViewController: UIViewController {
     var viewModel: JourneysViewModel!
 
     override func viewDidLoad() {
-        super.viewDidLoad()
         setupView()
+        bindViewModel()
     }
 
     private func bindViewModel() {
-        let load = rx.methodInvoked(#selector(JourneysViewController.viewDidLoad))
+        let loadTrigger = rx.methodInvoked(#selector(viewWillAppear))
             .mapToVoid()
             .asDriver()
 
-        let output = viewModel.transform(input: .init(load: load))
-//        output.items.drive(tableView.rx.items(dataSource: RxTableViewDataSourceType & UITableViewDataSource))
-        output.items.drive().disposed(by: disposeBag)
+        let output = viewModel.transform(input: .init(load: loadTrigger))
+        output.items.drive(tableView.rx.items(dataSource: RxTableViewSectionedAnimatedDataSource(
+            configureCell: { _, tableView, indexPath, item in
+                let cell = tableView.dequeueCell(JourneyItemCell.self, indexPath: indexPath)
+                cell.load(viewModel: item)
+                return cell
+            }, titleForHeaderInSection: { dataSource, section in
+                dataSource.sectionModels[section].title
+            })))
+            .disposed(by: disposeBag)
+
+        output.items
+            .drive()
+            .disposed(by: disposeBag)
     }
 
     private func setupView() {
+        title = "Wyjazdy"
         view.addSubview(tableView)
+        tableView.register(JourneyItemCell.self)
         tableView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
-    }
-}
-
-extension ObservableType {
-    func mapToVoid() -> Observable<Void> {
-        map { _ in }
-    }
-
-    func asDriver() -> Driver<Element> {
-        asDriver { _ in .empty() }
     }
 }
