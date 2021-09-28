@@ -44,7 +44,7 @@ final class JourneysViewController: UIViewController {
     }
 
     private func setupView() {
-        title = "Wyjazdy"
+        title = Assets.Strings.Journey.journeyListTitle
         view.addSubview(tableView)
         tableView.register(JourneyItemCell.self)
         tableView.snp.makeConstraints { make in

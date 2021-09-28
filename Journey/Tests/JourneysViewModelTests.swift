@@ -9,9 +9,11 @@ import XCTest
 @testable import Journey
 
 final class JourneysViewModelTests: XCTestCase {
-    private lazy var sut = JourneysViewModel()
+    private let repository = JourneyRepositoryMock()
+    private lazy var sut = JourneysViewModel(repository: repository)
 
     func testSample() {
         XCTAssertNil(sut.coordinator)
     }
+    //TODO: - add RxTest && rest of the tests
 }

@@ -12,6 +12,8 @@ final public class CoreAssembly: ModuleAssembly {
     public init() { /*Nop*/ }
 
     public func register(container: Container) {
-        /*Nop*/
+        container.register(DateProviderProtocol.self) { _ in
+            DateProvider()
+        }
     }
 }

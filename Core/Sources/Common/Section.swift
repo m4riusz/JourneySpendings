@@ -11,6 +11,10 @@ public struct Section<T: IdentifiableType & Equatable> {
     public var title: String
     public var items: [T]
 
+    public init(items: [T]) {
+        self.init(title: "", items: items)
+    }
+
     public init(title: String, items: [T]) {
         self.title = title
         self.items = items

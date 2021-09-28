@@ -8,6 +8,7 @@
 import Core
 import RxSwift
 import RxCocoa
+import Foundation
 
 final class JourneysViewModel: ViewModelType {
     struct Input {
@@ -16,20 +17,24 @@ final class JourneysViewModel: ViewModelType {
     struct Output {
         var items: Driver<[Section<JourneysItemCellViewModel>]>
     }
+    private let repository: JourneysRepositoryProtocol
     var coordinator: JourneysCoordinatorProtocol!
+
+    init(repository: JourneysRepositoryProtocol) {
+        self.repository = repository
+    }
 
     func transform(input: Input) -> Output {
         let items = input.load.asObservable()
-            .flatMapLatest { _ -> Observable<[Section<JourneysItemCellViewModel>]> in
-                .just([Section(title: "Aktualne",
-                               items: [.init(uuid: "1", name: "Bieszczady", startDate: "10-10-2021", totalCost: "100,00 zł")]
-                              ),
-                       Section(title: "Archiwalne",
-                                      items: [.init(uuid: "1", name: "Zakopane", startDate: "10-10-2000", totalCost: "2137,00 zł")]
-                                     )
-                      ])
+            .flatMapLatest(repository.getCurrentJourneys)
+            .map { items -> [Section<JourneysItemCellViewModel>] in
+                [Section(items: items.map { .init(uuid: $0.uuid,
+                                                  name: $0.name,
+                                                  startDate: $0.startDate.ddMMyyyy,
+                                                  totalCost: "") })] // TODO: - create amount formatter
             }
+            .asDriver()
 
-        return Output(items: items.asDriver())
+        return Output(items: items)
     }
 }
