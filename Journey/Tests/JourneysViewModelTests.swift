@@ -15,5 +15,5 @@ final class JourneysViewModelTests: XCTestCase {
     func testSample() {
         XCTAssertNil(sut.coordinator)
     }
-    //TODO: - add RxTest && rest of the tests
+    // TODO: - add RxTest && rest of the tests
 }
