@@ -28,13 +28,19 @@ final class JourneysViewModel: ViewModelType {
         let items = input.load.asObservable()
             .flatMapLatest(repository.getCurrentJourneys)
             .map { items -> [Section<JourneysItemCellViewModel>] in
-                [Section(items: items.map { .init(uuid: $0.uuid,
-                                                  name: $0.name,
-                                                  startDate: $0.startDate.ddMMyyyy,
-                                                  totalCost: "") })] // TODO: - create amount formatter
+                [Section(items: items.map { $0.asViewModel })]
             }
             .asDriver()
 
         return Output(items: items)
+    }
+}
+
+fileprivate extension Journey {
+    var asViewModel: JourneysItemCellViewModel {
+        .init(uuid: uuid,
+              name: name,
+              startDate: startDate.ddMMyyyy,
+              totalCost: Amount(value: totalCost, currency: currency).formated())
     }
 }

@@ -22,7 +22,7 @@ public struct Amount {
         self.currency = currency
     }
 
-    func formated() -> String {
+    public func formated() -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = Constants.minFractionDigits
