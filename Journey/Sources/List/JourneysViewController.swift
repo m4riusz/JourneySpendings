@@ -30,9 +30,16 @@ final class JourneysViewController: UIViewController {
         let output = viewModel.transform(input: .init(load: loadTrigger))
         output.items.drive(tableView.rx.items(dataSource: RxTableViewSectionedAnimatedDataSource(
             configureCell: { _, tableView, indexPath, item in
-                let cell = tableView.dequeueCell(JourneyItemCell.self, indexPath: indexPath)
-                cell.load(viewModel: item)
-                return cell
+                switch item {
+                case .journey(let viewModel):
+                    let cell = tableView.dequeueCell(JourneyItemCell.self, indexPath: indexPath)
+                    cell.load(viewModel: viewModel)
+                    return cell
+                case .empty(let viewModel):
+                    let cell = tableView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
+                    cell.load(viewModel: viewModel)
+                    return cell
+                }
             }, titleForHeaderInSection: { dataSource, section in
                 dataSource.sectionModels[section].title
             })))
@@ -47,6 +54,7 @@ final class JourneysViewController: UIViewController {
         title = Assets.Strings.Journey.journeyListTitle
         view.addSubview(tableView)
         tableView.register(JourneyItemCell.self)
+        tableView.register(EmptyViewCell.self)
         tableView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
