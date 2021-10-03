@@ -32,4 +32,14 @@ extension UIView {
         view.overrideUserInterfaceStyle = mode
         return view
     }
+
+    static func cellContainer(sut: UITableViewCell,
+                              mode: UIUserInterfaceStyle = .light,
+                              backgroundColor: UIColor = Assets.Colors.Core.Background.primary) -> UIView {
+        container(sut: sut.contentView,
+                  mode: mode,
+                  size: CGSize(width: 376, height: 0),
+                  insets: .zero,
+                  backgroundColor: backgroundColor)
+    }
 }

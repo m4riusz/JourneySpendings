@@ -7,13 +7,16 @@
 
 import Foundation
 import RxDataSources
+import UIKit
 
 public struct EmptyViewCellViewModel {
+    public let image: UIImage
     public let title: String
     public let description: String
     public let buttonText: String
 
-    public init(title: String, description: String, buttonText: String) {
+    public init(image: UIImage, title: String, description: String, buttonText: String) {
+        self.image = image
         self.title = title
         self.description = description
         self.buttonText = buttonText
