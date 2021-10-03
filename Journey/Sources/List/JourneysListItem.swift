@@ -13,6 +13,7 @@ enum JourneysListItem {
     case empty(viewModel: EmptyViewCellViewModel)
 }
 
+// MARK: - IdentifiableType
 extension JourneysListItem: IdentifiableType {
     var identity: AnyHashable {
         switch self {
@@ -24,4 +25,5 @@ extension JourneysListItem: IdentifiableType {
     }
 }
 
+// MARK: - Equatable
 extension JourneysListItem: Equatable { /*Nop*/ }
