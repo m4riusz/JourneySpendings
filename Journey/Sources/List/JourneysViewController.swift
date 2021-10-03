@@ -51,10 +51,11 @@ final class JourneysViewController: UIViewController {
     }
 
     private func setupView() {
-        title = Assets.Strings.Journey.journeyListTitle
+        title = Assets.Strings.Journey.List.title
         view.addSubview(tableView)
         tableView.register(JourneyItemCell.self)
         tableView.register(EmptyViewCell.self)
+        tableView.separatorStyle = .none
         tableView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.equalToSuperview()

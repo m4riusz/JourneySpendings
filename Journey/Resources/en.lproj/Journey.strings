@@ -1,1 +1,4 @@
-"journeyListTitle" = "My journeys";
+"List/title" = "My journeys";
+"List/Empty/title" = "No journeys";
+"List/Empty/descrption" = "To create new jurney tap \"ADD\" button";
+"List/Empty/action" = "ADD";
