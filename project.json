@@ -123,6 +123,8 @@
 			},
 			"test": {
 				"gatherCoverageData": true,
+				"language": "pl",
+				"region": "PL",
 				"coverageTargets": [
 					"Core",
 					"About",
