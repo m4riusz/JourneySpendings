@@ -50,6 +50,8 @@ public enum FontStyles {
     }
 }
 
+extension FontStyles: CaseIterable { /*Nop*/ }
+
 struct FontStyle {
     let font: UIFont
     let lineHeight: CGFloat

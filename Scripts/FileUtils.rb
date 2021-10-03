@@ -39,17 +39,20 @@ module FileUtils
        file << "public extension Assets.Strings {\n"
        file << "\tprivate class BundleClass { /*Nop*/ }\n"
        file << "\tprivate static let bundle = Bundle(for: BundleClass.self)\n"
-       generateStringStructs(file, moduleName,  node, 1)
+       generateStringStructs(file, moduleName,  node, 1, "")
        file << "}\n"
        file.close
     end
 
-    def generateStringStructs(file, moduleName, node, depth)
+    def generateStringStructs(file, moduleName, node, depth, fullPath)
         prefix = ""
         depth.times { prefix += "\t" }
+        if depth > 1
+            fullPath += "#{node.name}/"
+         end
         file << "#{prefix}public struct #{node.name} {\n"
-        node.keys.each { |key| file << "#{prefix}\tpublic static let #{key} = String.localized(\"#{moduleName}\", \"#{key}\", bundle)\n" }
-        node.childs.each { |child| generateStringStructs(file, moduleName, child, depth + 1) }
+        node.keys.each { |key| file << "#{prefix}\tpublic static let #{key} = String.localized(\"#{moduleName}\", \"#{fullPath}#{key}\", bundle)\n" }
+        node.childs.each { |child| generateStringStructs(file, moduleName, child, depth + 1, fullPath) }
         file << "#{prefix}}\n"
     end
 

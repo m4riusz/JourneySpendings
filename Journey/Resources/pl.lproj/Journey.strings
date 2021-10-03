@@ -1,1 +1,4 @@
-"HelloWorld" = "Cześć Journey";
+"List/title" = "Moje podróże";
+"List/Empty/title" = "Brak podróży";
+"List/Empty/descrption" = "Aby dodać nową podróż naciśnij przycisk \"DODAJ\"";
+"List/Empty/action" = "DODAJ";

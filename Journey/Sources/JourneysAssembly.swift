@@ -13,8 +13,12 @@ final public class JourneysAssembly: ModuleAssembly {
     public init() { /*Nop*/ }
 
     public func register(container: Container) {
-        container.register(JourneysViewModel.self) { _ in
-            JourneysViewModel()
+        container.register(JourneysViewModel.self) { r in
+            JourneysViewModel(repository: r.resolve(JourneysRepositoryProtocol.self)!)
+        }
+
+        container.register(JourneysRepositoryProtocol.self) { _ in
+            JourneysRepository()
         }
 
         container.register(JourneysViewController.self) { r in

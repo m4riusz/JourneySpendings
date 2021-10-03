@@ -25,6 +25,9 @@
 				},
 				{
 					"package": "Swinject"
+				},
+				{
+					"package": "RxDataSources"
 				}
 			]
 		},

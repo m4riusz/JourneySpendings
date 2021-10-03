@@ -16,6 +16,10 @@
 			"url": "https://github.com/ReactiveX/RxSwift.git",
 			"from": "6.2.0"
 		},
+		"RxDataSources": {
+			"url": "https://github.com/RxSwiftCommunity/RxDataSources.git",
+			"from": "5.0.2"
+		},
 		"SnapshotTesting": {
 			"url": "https://github.com/pointfreeco/swift-snapshot-testing.git",
 			"from": "1.9.0"

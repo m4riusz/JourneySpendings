@@ -54,13 +54,13 @@ final class ButtonTests: XCTestCase {
 
     func testSecondaryNormalLightMode() {
         sut.style = .secondary
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .image(precision: 0.95))
     }
 
     func testSecondaryHighlitedLightMode() {
         sut.style = .secondary
         sut.isHighlighted = true
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .image(precision: 0.95))
     }
 
     func testSecondaryDisabledLightMode() {
@@ -72,14 +72,14 @@ final class ButtonTests: XCTestCase {
     func testSecondaryNormalDarkMode() {
         mode = .dark
         sut.style = .secondary
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .image(precision: 0.95))
     }
 
     func testSecondaryHighlitedDarkMode() {
         mode = .dark
         sut.style = .secondary
         sut.isHighlighted = true
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .image(precision: 0.95))
     }
 
     func testSecondaryDisabledDarkMode() {
