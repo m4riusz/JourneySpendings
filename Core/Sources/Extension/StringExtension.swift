@@ -16,7 +16,8 @@ public extension String {
         AttributedStringBuilder(attributes: [
             .font(font.style.font),
             .lineHeight(font.style.lineHeight),
-            .color(font.style.color)
+            .color(font.style.color),
+            .lineBreakMode(.byTruncatingTail)
         ] + attributes)
             .build(text: self)
     }

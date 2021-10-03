@@ -15,6 +15,7 @@ public class AttributedStringBuilder {
         case color(_ color: UIColor)
         case lineHeight(_ lineHeight: CGFloat)
         case alignment(_ alignment: NSTextAlignment)
+        case lineBreakMode(_ lineBreakMode: NSLineBreakMode)
     }
 
     public init(attributes: [StringAttribute]) {
@@ -40,6 +41,9 @@ public class AttributedStringBuilder {
         case .alignment(let alignment):
             let paragraph = paragraphFrom(currentAttributes: &currentAttributes)
             paragraph.alignment = alignment
+        case .lineBreakMode(let lineBreakMode):
+            let paragraph = paragraphFrom(currentAttributes: &currentAttributes)
+            paragraph.lineBreakMode = lineBreakMode
         }
     }
 
