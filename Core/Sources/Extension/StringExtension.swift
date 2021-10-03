@@ -12,17 +12,12 @@ public extension String {
         NSLocalizedString(key, tableName: table, bundle: bundle, comment: "")
     }
 
-    func styled(_ font: FontStyles, attributes: [NSAttributedString.Key: Any] = [:]) -> NSAttributedString {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .byTruncatingTail
-        paragraphStyle.minimumLineHeight = font.style.lineHeight
-        paragraphStyle.maximumLineHeight = font.style.lineHeight
-
-        let finalAttributes: [NSAttributedString.Key: Any] = [
-            .font: font.style.font,
-            .paragraphStyle: paragraphStyle,
-            .foregroundColor: font.style.color
-        ].merging(attributes) { $1 }
-        return NSAttributedString(string: self, attributes: finalAttributes)
+    func styled(_ font: FontStyles, attributes: [AttributedStringBuilder.StringAttribute] = []) -> NSAttributedString {
+        AttributedStringBuilder(attributes: [
+            .font(font.style.font),
+            .lineHeight(font.style.lineHeight),
+            .color(font.style.color)
+        ] + attributes)
+            .build(text: self)
     }
 }

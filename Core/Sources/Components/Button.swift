@@ -57,9 +57,9 @@ final public class Button: UIButton {
     }
 
     private func update() {
-        setAttributedTitle(text.styled(.subhead, attributes: [.foregroundColor: normalTextColor]), for: .normal)
-        setAttributedTitle(text.styled(.subhead, attributes: [.foregroundColor: highlightedTextColor]), for: .highlighted)
-        setAttributedTitle(text.styled(.subhead, attributes: [.foregroundColor: disabledTextColor]), for: .disabled)
+        setAttributedTitle(text.styled(.subhead, attributes: [.color(normalTextColor)]), for: .normal)
+        setAttributedTitle(text.styled(.subhead, attributes: [.color(highlightedTextColor)]), for: .highlighted)
+        setAttributedTitle(text.styled(.subhead, attributes: [.color(disabledTextColor)]), for: .disabled)
         backgroundColor = backgroundColorForState
         layer.borderWidth = borderWidthForStyle
         layer.borderColor = borderColorForState.cgColor
