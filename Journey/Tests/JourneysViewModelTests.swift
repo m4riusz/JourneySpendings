@@ -51,7 +51,7 @@ final class JourneysViewModelTests: XCTestCase {
                                                            totalCost: 100,
                                                            currency: "zł")])
         let loadEvent = PublishSubject<Void>()
-        let output = sut.transform(input: JourneysViewModel.Input(load: loadEvent.asDriver()))
+        let output = sut.transform(input: .init(load: loadEvent.asDriver()))
         let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
 
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
@@ -74,7 +74,7 @@ final class JourneysViewModelTests: XCTestCase {
     }
 
     func testLoadError() {
-        repository.getCurrentJourneysResult = .error(NSError(domain: "", code: 1, userInfo: nil))
+        repository.getCurrentJourneysResult = .error(NSError.internal)
         let loadEvent = PublishSubject<Void>()
         let output = sut.transform(input: JourneysViewModel.Input(load: loadEvent.asDriver()))
         let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)

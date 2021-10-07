@@ -21,9 +21,8 @@ public struct Section<T: IdentifiableType & Equatable> {
     }
 }
 
-extension Section: Equatable {
-
-}
+// MARK: - Equatable
+extension Section: Equatable { /*Nop*/ }
 
 // MARK: - AnimatableSectionModelType
 extension Section: AnimatableSectionModelType {
