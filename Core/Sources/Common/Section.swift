@@ -21,6 +21,10 @@ public struct Section<T: IdentifiableType & Equatable> {
     }
 }
 
+extension Section: Equatable {
+
+}
+
 // MARK: - AnimatableSectionModelType
 extension Section: AnimatableSectionModelType {
     public typealias Item = T

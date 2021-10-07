@@ -29,7 +29,10 @@ final class JourneysViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
         let items = input.load.asObservable()
-            .flatMapLatest(repository.getCurrentJourneys)
+            .flatMapLatest { _ in
+                return self.repository.getCurrentJourneys()
+                    .catchAndReturn([])
+            }
             .map { items -> [JourneysListItem] in
                 guard !items.isEmpty else {
                     return [.empty(viewModel: .init(image: CoreImages.bagSuitcaseOutline,
