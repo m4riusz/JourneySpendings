@@ -12,10 +12,6 @@
 			"url": "https://github.com/ReactiveX/RxSwift.git",
 			"from": "6.2.0"
 		},
-		"RxCocoa": {
-			"url": "https://github.com/ReactiveX/RxSwift.git",
-			"from": "6.2.0"
-		},
 		"RxDataSources": {
 			"url": "https://github.com/RxSwiftCommunity/RxDataSources.git",
 			"from": "5.0.2"

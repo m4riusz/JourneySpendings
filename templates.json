@@ -18,10 +18,12 @@
 					"package": "SnapKit"
 				},
 				{
-					"package": "RxSwift"
+					"package": "RxSwift",
+					"product": "RxSwift"
 				},
 				{
-					"package": "RxCocoa"
+					"package": "RxSwift",
+					"product": "RxCocoa"
 				},
 				{
 					"package": "Swinject"
@@ -46,6 +48,18 @@
             "dependencies": [
 				{
 					"target": "MobileApp"
+				},
+				{
+					"package": "RxSwift",
+					"product": "RxSwift"
+				},
+				{
+					"package": "RxSwift",
+					"product": "RxTest"
+				},
+				{
+					"package": "RxSwift",
+					"product": "RxCocoa"
 				}
 			],
             "settings": {
