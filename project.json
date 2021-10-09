@@ -4,6 +4,14 @@
 		"templates.json"
 	],
 	"name": "JourneySpendings",
+	"configs": {
+		"Dev": "debug",
+		"Prod": "release"
+	},
+	"configFiles": {
+		"Dev": "Settings/Dev.xcconfig",
+		"Prod": "Settings/Prod.xcconfig"
+	},
 	"options": {
 		"bundleIdPrefix": "pl.msut",
 		"deploymentTarget": {
@@ -67,6 +75,10 @@
 			"templates": [
 				"BaseTarget"
 			],
+			"configFiles": {
+				"Dev": "Settings/AppDev.xcconfig",
+				"Prod": "Settings/AppProd.xcconfig"
+			},
 			"dependencies": [
 				{
 					"target": "About"

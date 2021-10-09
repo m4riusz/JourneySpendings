@@ -1,0 +1,4 @@
+#include "Prod.xcconfig"
+
+APP_NAME = JourneySpendings
+PRODUCT_BUNDLE_IDENTIFIER = pl.msut.journeyspendings
