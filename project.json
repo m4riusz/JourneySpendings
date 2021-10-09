@@ -75,6 +75,10 @@
 			"templates": [
 				"BaseTarget"
 			],
+			"configFiles": {
+				"Dev": "Settings/AppDev.xcconfig",
+				"Prod": "Settings/AppProd.xcconfig"
+			},
 			"dependencies": [
 				{
 					"target": "About"
