@@ -131,6 +131,6 @@ final class ButtonTests: XCTestCase {
 // TODO: - Create TestKit target and move this code to it
 extension Snapshotting where Value == UIView, Format == UIImage {
   public static var standardPrecissionImage: Snapshotting {
-      .image(drawHierarchyInKeyWindow: true, precision: 0.99)
+      .image(precision: 0.95)
   }
 }
