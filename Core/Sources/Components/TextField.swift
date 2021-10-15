@@ -8,9 +8,12 @@
 import UIKit
 
 final public class TextField: UITextField {
+    private typealias Colors = Assets.Colors.Core
     private let titleLabel = UILabel()
     private let errorLabel = UILabel()
     private let helperLabel = UILabel()
+    private let underlineView = UIView()
+    private static let textStyle = FontStyles.body
 
     public var titleText: String? {
         didSet { update() }
@@ -24,6 +27,11 @@ final public class TextField: UITextField {
         didSet { update() }
     }
 
+    public override var placeholder: String? {
+        get { attributedPlaceholder?.string }
+        set { attributedPlaceholder = newValue?.styled(TextField.textStyle) }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -31,21 +39,26 @@ final public class TextField: UITextField {
 
     required init?(coder: NSCoder) {
         super.init(frame: .zero)
+        commonInit()
     }
 
     private func commonInit() {
         titleLabel.numberOfLines = 1
         errorLabel.numberOfLines = 0
         helperLabel.numberOfLines = 0
+        defaultTextAttributes = TextField.textStyle.style.rawAttributes
+            .merging([.foregroundColor: Colors.Label.primary], uniquingKeysWith: { $1 })
         addSubview(titleLabel)
+        addSubview(underlineView)
         addSubview(errorLabel)
         addSubview(helperLabel)
     }
 
     private func update() {
-        titleLabel.attributedText = titleText?.styled(.callout)
-        errorLabel.attributedText = errorText?.styled(.capition1, attributes: [.color(Assets.Colors.Core.error)])
-        helperLabel.attributedText = helperText?.styled(.capition2)
+        titleLabel.attributedText = titleText?.styled(.subhead, attributes: [.color(Colors.Label.secondary)])
+        errorLabel.attributedText = errorText?.styled(.subhead, attributes: [.color(Colors.error)])
+        helperLabel.attributedText = helperText?.styled(.footnote)
+        underlineView.backgroundColor = errorText.isNilOrEmpty ? Colors.separator : Colors.error
         titleLabel.isHidden = titleText.isNilOrEmpty
         errorLabel.isHidden = errorText.isNilOrEmpty
         helperLabel.isHighlighted = helperText.isNilOrEmpty
@@ -55,6 +68,7 @@ final public class TextField: UITextField {
         super.layoutSubviews()
         invalidateIntrinsicContentSize()
         let titleSize = titleLabelSize
+        let underlineSize = underlineViewSize
         let errorSize = erorLabelSize
         let helperSize = helperLabelSize
 
@@ -62,8 +76,12 @@ final public class TextField: UITextField {
                                  y: 0,
                                  width: titleSize.width,
                                  height: titleSize.height)
+        underlineView.frame = .init(x: 0,
+                                    y: titleLabel.frame.maxY + textHeight,
+                                    width: underlineSize.width,
+                                    height: underlineSize.height)
         errorLabel.frame = .init(x: 0,
-                                 y: titleLabel.frame.maxY + textHeight,
+                                 y: underlineView.frame.maxY,
                                  width: errorSize.width,
                                  height: errorSize.height)
         helperLabel.frame = .init(x: 0,
@@ -73,10 +91,7 @@ final public class TextField: UITextField {
     }
 
     public override func textRect(forBounds bounds: CGRect) -> CGRect {
-        let titleLabelSize = titleLabelSize
-        let errorLabelSize = erorLabelSize
-        let helperLabelSize = helperLabelSize
-        let desiredHeight = bounds.height - titleLabelSize.height - errorLabelSize.height - helperLabelSize.height
+        let desiredHeight = bounds.height - titleLabelSize.height - erorLabelSize.height - helperLabelSize.height - underlineViewSize.height
         return CGRect(x: 0, y: titleLabelSize.height, width: bounds.width, height: desiredHeight)
     }
 
@@ -90,18 +105,22 @@ final public class TextField: UITextField {
 
     // MARK: - Private
     private var titleLabelSize: CGSize {
-        titleLabel.isHidden ? .zero : titleLabel.sizeThatFits(.init(width: bounds.size.width, height: .greatestFiniteMagnitude))
+        titleLabel.isHidden ? .zero : titleLabel.sizeThatFits(.init(width: frame.width, height: .greatestFiniteMagnitude))
+    }
+
+    private var underlineViewSize: CGSize {
+        .init(width: frame.width, height: 2)
     }
 
     private var erorLabelSize: CGSize {
-        errorLabel.isHidden ? .zero : errorLabel.sizeThatFits(.init(width: bounds.size.width, height: .greatestFiniteMagnitude))
+        errorLabel.isHidden ? .zero : errorLabel.sizeThatFits(.init(width: frame.width, height: .greatestFiniteMagnitude))
     }
 
     private var helperLabelSize: CGSize {
-        helperLabel.isHidden ? .zero : helperLabel.sizeThatFits(.init(width: bounds.size.width, height: .greatestFiniteMagnitude))
+        helperLabel.isHidden ? .zero : helperLabel.sizeThatFits(.init(width: frame.width, height: .greatestFiniteMagnitude))
     }
 
     private var textHeight: CGFloat {
-        FontStyles.body.style.font.lineHeight
+        TextField.textStyle.style.font.lineHeight
     }
 }

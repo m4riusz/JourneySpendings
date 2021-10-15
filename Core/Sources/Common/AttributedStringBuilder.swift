@@ -22,7 +22,7 @@ public class AttributedStringBuilder {
         self.attributes = attributes
     }
 
-    private var rawAttributes: [NSAttributedString.Key: Any] {
+    public var rawAttributes: [NSAttributedString.Key: Any] {
         var currentAttributes: [NSAttributedString.Key: Any] = [:]
         attributes.forEach { applyAttribute(currentAttributes: &currentAttributes, attribute: $0) }
         return currentAttributes
