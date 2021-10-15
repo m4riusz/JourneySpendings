@@ -67,27 +67,23 @@ final public class TextField: UITextField {
     public override func layoutSubviews() {
         super.layoutSubviews()
         invalidateIntrinsicContentSize()
-        let titleSize = titleLabelSize
-        let underlineSize = underlineViewSize
-        let errorSize = erorLabelSize
-        let helperSize = helperLabelSize
 
         titleLabel.frame = .init(x: 0,
                                  y: 0,
-                                 width: titleSize.width,
-                                 height: titleSize.height)
+                                 width: frame.width,
+                                 height: titleLabelSize.height)
         underlineView.frame = .init(x: 0,
                                     y: titleLabel.frame.maxY + textHeight,
-                                    width: underlineSize.width,
-                                    height: underlineSize.height)
+                                    width: frame.width,
+                                    height: underlineViewSize.height)
         errorLabel.frame = .init(x: 0,
                                  y: underlineView.frame.maxY,
-                                 width: errorSize.width,
-                                 height: errorSize.height)
+                                 width: frame.width,
+                                 height: erorLabelSize.height)
         helperLabel.frame = .init(x: 0,
                                   y: errorLabel.frame.maxY,
-                                  width: helperSize.width,
-                                  height: helperSize.height)
+                                  width: frame.width,
+                                  height: helperLabelSize.height)
     }
 
     public override func textRect(forBounds bounds: CGRect) -> CGRect {
