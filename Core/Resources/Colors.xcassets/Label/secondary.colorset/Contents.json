@@ -2,8 +2,13 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "ios",
-        "reference" : "secondaryLabelColor"
+        "color-space" : "extended-srgb",
+        "components" : {
+          "alpha" : "0.600",
+          "blue" : "0.263",
+          "green" : "0.235",
+          "red" : "0.235"
+        }
       },
       "idiom" : "universal"
     },
@@ -15,8 +20,13 @@
         }
       ],
       "color" : {
-        "platform" : "ios",
-        "reference" : "secondaryLabelColor"
+        "color-space" : "extended-srgb",
+        "components" : {
+          "alpha" : "0.600",
+          "blue" : "0.961",
+          "green" : "0.922",
+          "red" : "0.922"
+        }
       },
       "idiom" : "universal"
     }
