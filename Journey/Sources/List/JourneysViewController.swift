@@ -53,6 +53,7 @@ final class JourneysViewController: UIViewController {
     private func setupView() {
         title = Assets.Strings.Journey.List.title
         view.addSubview(tableView)
+        tableView.backgroundColor = Assets.Colors.Core.Background.primary
         tableView.register(JourneyItemCell.self)
         tableView.register(EmptyViewCell.self)
         tableView.separatorStyle = .none

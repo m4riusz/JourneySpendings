@@ -16,7 +16,7 @@ final class AboutViewController: UIViewController {
     private lazy var textfield4 = TextField()
 
     override func viewDidLoad() {
-
+        view.backgroundColor = Assets.Colors.Core.Background.primary
         view.addSubview(textfield1)
         view.addSubview(textfield2)
         view.addSubview(textfield3)
@@ -50,14 +50,14 @@ final class AboutViewController: UIViewController {
         textfield3.text = "textfield3"
         textfield4.text = "textfield4"
 
-        textfield2.titleText = "Title text"
+        textfield2.titleText = "Title text Title text Title text Title text Title text Title text"
 
         textfield3.titleText = "Title text"
         textfield3.errorText = "error text"
 
-        textfield4.titleText = "Title text"
-        textfield4.errorText = "error text"
-        textfield4.helperText = "helper text"
+        textfield4.titleText = "Title text Title text Title text Title text Title text Title text"
+        textfield4.errorText = "Title text Title text Title text Title text Title text Title text"
+        textfield4.helperText = "Title text Title text Title text Title text Title text Title text"
 
     }
 }
