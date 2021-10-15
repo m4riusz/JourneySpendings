@@ -23,13 +23,13 @@ final class FontTests: XCTestCase {
 
     func testStylesLightMode() {
         views = FontStyles.allCases.map { label(text: text.styled($0)) }
-        assertSnapshot(matching: container, as: .image(precision: 0.95))
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testStylesDarkMode() {
         mode = .dark
         views = FontStyles.allCases.map { label(text: text.styled($0)) }
-        assertSnapshot(matching: container, as: .image(precision: 0.95))
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     private func label(text: NSAttributedString) -> UILabel {

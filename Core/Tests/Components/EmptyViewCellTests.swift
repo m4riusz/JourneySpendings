@@ -28,19 +28,19 @@ final class EmptyViewCellTests: XCTestCase {
     private lazy var container = UIView.cellContainer(sut: sut, mode: mode)
 
     func testShorTextsLightMode() {
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testShorTextsDarkMode() {
         mode = .dark
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testLongTextsLightMode() {
         titleText = LoremIpsum.long
         descriptionText = LoremIpsum.veryLong
         buttonText = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testLongTextsDarkMode() {
@@ -48,6 +48,6 @@ final class EmptyViewCellTests: XCTestCase {
         titleText = LoremIpsum.long
         descriptionText = LoremIpsum.veryLong
         buttonText = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 }

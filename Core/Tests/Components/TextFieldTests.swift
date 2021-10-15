@@ -30,114 +30,114 @@ final class TextFieldTests: XCTestCase {
 
     // MARK: - Plain
     func testPlainLightMode() {
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testPlainDarkMode() {
         mode = .dark
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Text
     func testTextLightMode() {
         text = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testTextDarkMode() {
         mode = .dark
         text = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Title
     func testTitleLightMode() {
         title = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testTitleDarkMode() {
         mode = .dark
         title = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Placeholder
     func testPlaceholderLightMode() {
         placeholder = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testPlaceholderDarkMode() {
         mode = .dark
         placeholder = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Error
     func testErrorLightMode() {
         error = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testErrorDarkMode() {
         mode = .dark
         error = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Helper
     func testHelperLightMode() {
         helper = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testHelperDarkMode() {
         mode = .dark
         helper = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Title & Placeholder
     func testTitleAndPlaceholderLightMode() {
         title = LoremIpsum.long
         placeholder = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testTitleAndPlaceholderDarkMode() {
         mode = .dark
         title = LoremIpsum.long
         placeholder = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Title & Error
     func testTitleAndErrorLightMode() {
         title = LoremIpsum.long
         error = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testTitleAndErrorDarkMode() {
         mode = .dark
         title = LoremIpsum.long
         error = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Title & Helper
     func testTitleAndHelperLightMode() {
         title = LoremIpsum.long
         helper = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testTitleAndHelperDarkMode() {
         mode = .dark
         title = LoremIpsum.long
         helper = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Title & Text & Helper
@@ -145,7 +145,7 @@ final class TextFieldTests: XCTestCase {
         title = LoremIpsum.long
         text = LoremIpsum.long
         helper = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testTitleAndTextAndHelperDarkMode() {
@@ -153,7 +153,7 @@ final class TextFieldTests: XCTestCase {
         title = LoremIpsum.long
         text = LoremIpsum.long
         helper = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     // MARK: - Full
@@ -163,7 +163,7 @@ final class TextFieldTests: XCTestCase {
         text = LoremIpsum.long
         helper = LoremIpsum.long
         error = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
     func testFullDarkMode() {
@@ -173,6 +173,6 @@ final class TextFieldTests: XCTestCase {
         text = LoremIpsum.long
         helper = LoremIpsum.long
         error = LoremIpsum.long
-        assertSnapshot(matching: container, as: .image)
+        assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 }
