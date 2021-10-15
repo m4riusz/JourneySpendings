@@ -22,3 +22,13 @@ public extension String {
             .build(text: self)
     }
 }
+
+public extension Optional where Wrapped == String {
+    var isNilOrEmpty: Bool {
+        self == nil || self!.isEmpty
+    }
+
+    var isNilOrBlank: Bool {
+        isNilOrEmpty || self!.replacingOccurrences(of: " ", with: "").isEmpty
+    }
+}

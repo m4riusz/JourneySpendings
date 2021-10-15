@@ -33,6 +33,7 @@ final public class Button: UIButton {
 
     public required init?(coder: NSCoder) {
         super.init(frame: .zero)
+        contentEdgeInsets = Constants.edgeInsets
     }
 
     convenience init(text: String) {

@@ -58,6 +58,17 @@ struct FontStyle {
     let color: UIColor
 }
 
+extension FontStyle {
+    var rawAttributes: [NSAttributedString.Key: Any] {
+        AttributedStringBuilder(attributes: [
+            .font(font),
+            .lineHeight(lineHeight),
+            .color(color),
+            .lineBreakMode(.byTruncatingTail)])
+            .rawAttributes
+    }
+}
+
 enum FontName: CaseIterable {
     case bold
     case semibold
