@@ -72,10 +72,16 @@
 		},
 		"TestKit": {
 			"type": "framework.static",
-			"templates": [
-				"BaseFramework"
+			"platform": "iOS",
+			"sources": [
+				{
+					"path": "TestKit/Info.plist"
+				},
+				{
+					"path": "TestKit/Sources"
+				}
 			],
-			"dependencies:REPLACE": [
+			"dependencies": [
 				{
 					"package": "SnapshotTesting"
 				}
