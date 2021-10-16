@@ -7,6 +7,7 @@
 
 import SnapshotTesting
 import XCTest
+import TestKit
 
 @testable import Core
 
@@ -26,7 +27,8 @@ final class TextFieldTests: XCTestCase {
         textField.helperText = helper
         return textField
     }()
-    private lazy var container = UIView.container(sut: sut, mode: mode, size: CGSize(width: 375, height: 0))
+    private lazy var container = UIView.container(sut: sut, mode: mode, size: CGSize(width: 375, height: 0),
+                                                  backgroundColor: Assets.Colors.Core.Background.primary)
 
     // MARK: - Plain
     func testPlainLightMode() {

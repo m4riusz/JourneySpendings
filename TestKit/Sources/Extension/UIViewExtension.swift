@@ -7,12 +7,12 @@
 
 import UIKit
 
-extension UIView {
+public extension UIView {
     static func container(sut: UIView,
                           mode: UIUserInterfaceStyle = .light,
                           size: CGSize = .zero,
                           insets: UIEdgeInsets = .init(all: 8),
-                          backgroundColor: UIColor = Assets.Colors.Core.Background.primary) -> UIView {
+                          backgroundColor: UIColor) -> UIView {
         let view = UIView()
         view.backgroundColor = backgroundColor
         view.addSubview(sut)
@@ -35,7 +35,7 @@ extension UIView {
 
     static func cellContainer(sut: UITableViewCell,
                               mode: UIUserInterfaceStyle = .light,
-                              backgroundColor: UIColor = Assets.Colors.Core.Background.primary) -> UIView {
+                              backgroundColor: UIColor) -> UIView {
         container(sut: sut.contentView,
                   mode: mode,
                   size: CGSize(width: 376, height: 0),

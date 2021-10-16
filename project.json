@@ -70,6 +70,23 @@
 				"tests_parent": "Journey"
 			}
 		},
+		"TestKit": {
+			"type": "framework.static",
+			"platform": "iOS",
+			"sources": [
+				{
+					"path": "TestKit/Info.plist"
+				},
+				{
+					"path": "TestKit/Sources"
+				}
+			],
+			"dependencies": [
+				{
+					"package": "SnapshotTesting"
+				}
+			]
+		},
 		"MobileApp": {
 			"type": "application",
 			"templates": [
@@ -103,7 +120,12 @@
 			],
 			"templateAttributes": {
 				"tests_parent": "MobileApp"
-			}
+			},
+			"dependencies": [
+				{
+					"target": "TestKit"
+				}
+			]
 		},
 		"MobileAppUITests": {
 			"type": "bundle.ui-testing",

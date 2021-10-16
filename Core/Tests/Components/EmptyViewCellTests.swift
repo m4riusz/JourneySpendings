@@ -7,6 +7,7 @@
 
 import SnapshotTesting
 import XCTest
+import TestKit
 
 @testable import Core
 
@@ -25,7 +26,8 @@ final class EmptyViewCellTests: XCTestCase {
         cell.load(viewModel: viewModel)
         return cell
     }()
-    private lazy var container = UIView.cellContainer(sut: sut, mode: mode)
+    private lazy var container = UIView.cellContainer(sut: sut, mode: mode,
+                                                      backgroundColor: Assets.Colors.Core.Background.primary)
 
     func testShorTextsLightMode() {
         assertSnapshot(matching: container, as: .standardPrecissionImage)
