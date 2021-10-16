@@ -82,6 +82,9 @@
 				},
 				{
 					"package": "SnapshotTesting"
+				},
+				{
+					"target": "TestKit"
 				}
 			]
 		}

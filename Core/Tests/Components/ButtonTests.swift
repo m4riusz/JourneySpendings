@@ -7,13 +7,15 @@
 
 import SnapshotTesting
 import XCTest
+import TestKit
 
 @testable import Core
 
 final class ButtonTests: XCTestCase {
     private var mode = UIUserInterfaceStyle.light
     private lazy var sut = Button(text: "BUTTON")
-    private lazy var container = UIView.container(sut: sut, mode: mode)
+    private lazy var container = UIView.container(sut: sut, mode: mode,
+                                                  backgroundColor: Assets.Colors.Core.Background.primary)
 
     func testPrimaryNormalLightMode() {
         sut.style = .primary
@@ -126,11 +128,4 @@ final class ButtonTests: XCTestCase {
         assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 
-}
-
-// TODO: - Create TestKit target and move this code to it
-extension Snapshotting where Value == UIView, Format == UIImage {
-  public static var standardPrecissionImage: Snapshotting {
-      .image(precision: 0.95)
-  }
 }
