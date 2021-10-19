@@ -9,7 +9,9 @@ import UIKit
 import Swinject
 import Core
 
-public protocol JourneysCoordinatorProtocol { /*Nop*/ }
+public protocol JourneysCoordinatorProtocol {
+    func toCreateForm()
+}
 
 final public class JourneysCoordinator: Coordinator {
     public let navigationController: UINavigationController
@@ -24,6 +26,12 @@ final public class JourneysCoordinator: Coordinator {
         let controller = container.resolve(JourneysViewController.self)!
         controller.viewModel.coordinator = self
         navigationController.viewControllers = [controller]
+    }
+
+    public func toCreateForm() {
+        let journeyCreateCoordinator = JourneyCreateCoordinator(container: container,
+                                                                navigationController: navigationController)
+        journeyCreateCoordinator.start()
     }
 }
 

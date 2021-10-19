@@ -16,9 +16,11 @@ final class JourneysViewModel: ViewModelType {
     private typealias Literals = Assets.Strings.Journey.List
     struct Input {
         var load: Driver<Void>
+        var createJournerTrigger: Driver<Void>
     }
     struct Output {
         var items: Driver<[Section<JourneysListItem>]>
+        var createJourney: Driver<Void>
     }
     private let repository: JourneysRepositoryProtocol
     var coordinator: JourneysCoordinatorProtocol!
@@ -44,8 +46,10 @@ final class JourneysViewModel: ViewModelType {
             }
             .map { [Section(items: $0)] }
             .asDriver()
+        let createJourney = input.createJournerTrigger
+            .do(onNext: coordinator.toCreateForm)
 
-        return Output(items: items)
+        return Output(items: items, createJourney: createJourney)
     }
 }
 

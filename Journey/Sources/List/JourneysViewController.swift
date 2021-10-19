@@ -15,6 +15,10 @@ import SnapKit
 final class JourneysViewController: UIViewController {
     private lazy var tableView = UITableView()
     private lazy var disposeBag = DisposeBag()
+    private lazy var createJourneyButton = UIBarButtonItem(image: Assets.Images.Journey.plus,
+                                                           style: .plain,
+                                                           target: nil,
+                                                           action: nil)
     var viewModel: JourneysViewModel!
 
     override func viewDidLoad() {
@@ -27,7 +31,10 @@ final class JourneysViewController: UIViewController {
             .mapToVoid()
             .asDriver()
 
-        let output = viewModel.transform(input: .init(load: loadTrigger))
+        let createJourney = createJourneyButton.rx.tap.mapToVoid().asDriver()
+
+        let output = viewModel.transform(input: .init(load: loadTrigger,
+                                                      createJournerTrigger: createJourney))
         output.items.drive(tableView.rx.items(dataSource: RxTableViewSectionedAnimatedDataSource(
             configureCell: { _, tableView, indexPath, item in
                 switch item {
@@ -40,12 +47,10 @@ final class JourneysViewController: UIViewController {
                     cell.load(viewModel: viewModel)
                     return cell
                 }
-            }, titleForHeaderInSection: { dataSource, section in
-                dataSource.sectionModels[section].title
             })))
             .disposed(by: disposeBag)
 
-        output.items
+        output.createJourney
             .drive()
             .disposed(by: disposeBag)
     }
@@ -53,6 +58,7 @@ final class JourneysViewController: UIViewController {
     private func setupView() {
         title = Assets.Strings.Journey.List.title
         view.addSubview(tableView)
+        navigationItem.rightBarButtonItem = createJourneyButton
         tableView.backgroundColor = Assets.Colors.Core.Background.primary
         tableView.register(JourneyItemCell.self)
         tableView.register(EmptyViewCell.self)
