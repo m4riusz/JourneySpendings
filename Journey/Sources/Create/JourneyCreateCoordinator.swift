@@ -25,13 +25,14 @@ final class JourneyCreateCoordinator: Coordinator {
     func start() {
         let controller = container.resolve(JourneyCreateViewController.self)!
         controller.viewModel.coordinator = self
-        navigationController.pushViewController(controller, animated: true)
+        controller.modalPresentationStyle = .automatic
+        navigationController.present(controller, animated: true)
     }
 }
 
 // MARK: - JourneyCreateCoordinatorProtocol
 extension JourneyCreateCoordinator: JourneyCreateCoordinatorProtocol {
     func didFinish() {
-        navigationController.popViewController(animated: true)
+        navigationController.presentedViewController?.dismiss(animated: true)
     }
 }

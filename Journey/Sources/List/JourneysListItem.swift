@@ -17,10 +17,8 @@ enum JourneysListItem {
 extension JourneysListItem: IdentifiableType {
     var identity: AnyHashable {
         switch self {
-        case .journey(let viewModel):
-            return viewModel.identity
-        case .empty(let viewModel):
-            return viewModel.identity
+        case .journey(let viewModel): return viewModel.identity
+        case .empty(let viewModel): return viewModel.identity
         }
     }
 }

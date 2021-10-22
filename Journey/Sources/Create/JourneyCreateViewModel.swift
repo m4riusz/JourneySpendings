@@ -7,6 +7,8 @@
 
 import Foundation
 import Core
+import RxSwift
+import RxCocoa
 
 final class JourneyCreateViewModel: ViewModelType {
 
@@ -15,7 +17,7 @@ final class JourneyCreateViewModel: ViewModelType {
     }
 
     struct Output {
-
+        var items: Driver<[Section<JourneyCreateListItem>]>
     }
 
     private let repository: JourneysRepositoryProtocol
@@ -26,6 +28,16 @@ final class JourneyCreateViewModel: ViewModelType {
     }
 
     func transform(input: Input) -> Output {
-        return Output()
+        let items = BehaviorRelay<[Section<JourneyCreateListItem>]>(value: [
+            .init(items: [
+                .name(viewModel: TextFieldCellViewModel(uuid: "1",
+                                                        title: "Name",
+                                                        placeholder: "Text",
+                                                        helper: "Helper",
+                                                        error: "Error"))
+            ])
+        ])
+
+        return Output(items: items.asDriver())
     }
 }
