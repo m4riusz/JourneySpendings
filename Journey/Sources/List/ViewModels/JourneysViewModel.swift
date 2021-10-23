@@ -47,7 +47,9 @@ final class JourneysViewModel: ViewModelType {
             .map { [Section(items: $0)] }
             .asDriver()
         let createJourney = input.createJournerTrigger
-            .do(onNext: coordinator.toCreateForm)
+            .do(onNext: { [weak self] _ in
+                self?.coordinator.toCreateForm()
+            })
 
         return Output(items: items, createJourney: createJourney)
     }

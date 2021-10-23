@@ -32,9 +32,14 @@ final class JourneyCreateViewModel: ViewModelType {
     }
 
     func transform(input: Input) -> Output {
-        let name = input.name.asObservable()
+        let name = input.name.distinctUntilChanged().asObservable()
         let lengthValidator = name.map { $0.count >= 4 }
-        let uniqueValidator = name.map { $0 != "123456" }
+        let uniqueValidator = name.flatMapLatest { [weak self] name -> Observable<Bool> in
+            guard let strongSelf = self else { return .empty() }
+            return strongSelf.repository
+                .journeyExists(name: name)
+                .map { !$0 }
+        }
 
         let nameError = Observable.combineLatest(lengthValidator, uniqueValidator)
             .map { hasValidLength, isUnique -> String in

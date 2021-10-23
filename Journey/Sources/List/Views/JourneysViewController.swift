@@ -15,7 +15,7 @@ import SnapKit
 final class JourneysViewController: UIViewController {
     private lazy var tableView = UITableView()
     private lazy var disposeBag = DisposeBag()
-    private lazy var createJourneyButton = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
+    private lazy var createJourneyButton = UIBarButtonItem(.add)
     var viewModel: JourneysViewModel!
 
     override func viewDidLoad() {

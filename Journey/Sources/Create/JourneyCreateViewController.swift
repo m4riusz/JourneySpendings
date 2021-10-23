@@ -12,8 +12,8 @@ import RxDataSources
 
 final class JourneyCreateViewController: UIViewController {
     private typealias Literals = Assets.Strings.Journey.Create
-    private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
-    private lazy var saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: nil, action: nil)
+    private lazy var cancelButton = UIBarButtonItem(.cancel)
+    private lazy var saveButton = UIBarButtonItem(.save)
     private lazy var disposeBag = DisposeBag()
     private lazy var scrollView = UIScrollView()
     private lazy var contentView = UIView()

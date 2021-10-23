@@ -13,6 +13,11 @@ import RxSwift
 
 final class JourneysRepositoryMock: JourneysRepositoryProtocol {
     var getCurrentJourneysResult: Observable<[Journey]>!
+    var journeyExistsResult: Observable<Bool>!
+
+    func journeyExists(name: String) -> Observable<Bool> {
+        journeyExistsResult
+    }
 
     func getCurrentJourneys() -> Observable<[Journey]> {
         getCurrentJourneysResult
