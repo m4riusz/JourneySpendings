@@ -2,3 +2,9 @@
 "List/Empty/title" = "No journeys";
 "List/Empty/descrption" = "To create new jurney tap \"ADD\" button";
 "List/Empty/action" = "ADD";
+"Create/title" = "New journey";
+"Create/Name/title" = "Journey name";
+"Create/Name/placeholder" = "Mountains, lakes, country e.g";
+"Create/Name/helper" = "Journey name should be at least 4 characters long. Should be unique across whole app";
+"Create/Name/Error/toShort" = "Journey name is too short";
+"Create/Name/Error/alreadyExists" = "Journey with this name already exists";

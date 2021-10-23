@@ -11,13 +11,17 @@ import RxSwift
 import RxCocoa
 
 final class JourneyCreateViewModel: ViewModelType {
-
+    private typealias Literals = Assets.Strings.Journey.Create
     struct Input {
-
+        let save: Driver<Void>
+        let cancel: Driver<Void>
+        let name: Driver<String>
     }
 
     struct Output {
-        var items: Driver<[Section<JourneyCreateListItem>]>
+        let canSave: Driver<Bool>
+        let nameError: Driver<String>
+        let dismiss: Driver<Void>
     }
 
     private let repository: JourneysRepositoryProtocol
@@ -28,16 +32,29 @@ final class JourneyCreateViewModel: ViewModelType {
     }
 
     func transform(input: Input) -> Output {
-        let items = BehaviorRelay<[Section<JourneyCreateListItem>]>(value: [
-            .init(items: [
-                .name(viewModel: TextFieldCellViewModel(uuid: "1",
-                                                        title: "Name",
-                                                        placeholder: "Text",
-                                                        helper: "Helper",
-                                                        error: "Error"))
-            ])
-        ])
+        let name = input.name.asObservable()
+        let lengthValidator = name.map { $0.count >= 4 }
+        let uniqueValidator = name.map { $0 != "123456" }
 
-        return Output(items: items.asDriver())
-    }
+        let nameError = Observable.combineLatest(lengthValidator, uniqueValidator)
+            .map { hasValidLength, isUnique -> String in
+                if !hasValidLength {
+                    return Literals.Name.Error.toShort
+                } else if !isUnique {
+                    return Literals.Name.Error.alreadyExists
+                }
+                return ""
+            }
+            .asDriver()
+
+        let canSave = nameError.map { $0.isEmpty }
+
+        let dismiss = Driver.of(input.save, input.cancel)
+            .merge()
+            .do(onNext: { [weak self] _ in self?.coordinator.didFinish() })
+
+        return Output(canSave: canSave,
+                      nameError: nameError,
+                      dismiss: dismiss)
+        }
 }

@@ -26,7 +26,7 @@ final class JourneyCreateCoordinator: Coordinator {
         let controller = container.resolve(JourneyCreateViewController.self)!
         controller.viewModel.coordinator = self
         controller.modalPresentationStyle = .automatic
-        navigationController.present(controller, animated: true)
+        navigationController.present(UINavigationController(rootViewController: controller), animated: true)
     }
 }
 

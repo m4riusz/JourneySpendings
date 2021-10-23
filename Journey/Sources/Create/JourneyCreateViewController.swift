@@ -11,8 +11,13 @@ import Core
 import RxDataSources
 
 final class JourneyCreateViewController: UIViewController {
+    private typealias Literals = Assets.Strings.Journey.Create
+    private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
+    private lazy var saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: nil, action: nil)
     private lazy var disposeBag = DisposeBag()
-    private lazy var tableView = UITableView()
+    private lazy var scrollView = UIScrollView()
+    private lazy var contentView = UIView()
+    private lazy var nameTextField = TextField()
     var viewModel: JourneyCreateViewModel!
 
     override func viewDidLoad() {
@@ -21,29 +26,50 @@ final class JourneyCreateViewController: UIViewController {
     }
 
     private func bindViewModel() {
-        let output = viewModel.transform(input: .init())
+        let name = nameTextField.rx.text.orEmpty.asDriver()
+        let cancel = cancelButton.rx.tap.asDriver()
+        let save = saveButton.rx.tap.asDriver()
+        let output = viewModel.transform(input: .init(save: save, cancel: cancel, name: name))
 
-        output.items.drive(tableView.rx.items(dataSource: RxTableViewSectionedAnimatedDataSource(
-            configureCell: { _, tableView, indexPath, item in
-                switch item {
-                case .name(let viewModel):
-                    let cell = tableView.dequeueCell(TextFieldCell.self, indexPath: indexPath)
-                    cell.load(viewModel: viewModel)
-                    return cell
-                }
-            }
-        ))).disposed(by: disposeBag)
+        output.nameError
+            .drive(nameTextField.rx.error)
+            .disposed(by: disposeBag)
+
+        output.dismiss
+            .drive()
+            .disposed(by: disposeBag)
+
+        output.canSave
+            .drive(saveButton.rx.isEnabled)
+            .disposed(by: disposeBag)
     }
 
     private func setupView() {
+        title = Literals.title
+        navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = saveButton
         view.backgroundColor = Assets.Colors.Core.Background.primary
-        view.addSubview(tableView)
-        tableView.register(TextFieldCell.self)
-        tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(nameTextField)
+        nameTextField.titleText = Literals.Name.title
+        nameTextField.placeholder = Literals.Name.placeholder
+        nameTextField.helperText = Literals.Name.helper
+
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+
+        nameTextField.snp.makeConstraints { make in
+            make.top.left.equalToSuperview().offset(Spacings.normal)
+            make.left.equalToSuperview().offset(Spacings.normal)
+            make.right.equalToSuperview().offset(-Spacings.normal)
+            make.bottom.equalToSuperview().offset(-Spacings.normal)
         }
     }
 }
