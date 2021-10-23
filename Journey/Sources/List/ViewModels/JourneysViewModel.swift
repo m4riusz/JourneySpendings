@@ -14,12 +14,6 @@ import RxDataSources
 final class JourneysViewModel: ViewModelType {
     private typealias CoreImages = Assets.Images.Core
     private typealias Literals = Assets.Strings.Journey.List
-    struct Input {
-        var load: Driver<Void>
-    }
-    struct Output {
-        var items: Driver<[Section<JourneysListItem>]>
-    }
     private let repository: JourneysRepositoryProtocol
     var coordinator: JourneysCoordinatorProtocol!
 
@@ -29,8 +23,9 @@ final class JourneysViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
         let items = input.load.asObservable()
-            .flatMapLatest { _ in
-                return self.repository.getCurrentJourneys()
+            .flatMapLatest { [weak self] _ -> Observable<[Journey]> in
+                guard let strongSelf = self else { return .empty() }
+                return strongSelf.repository.getCurrentJourneys()
                     .catchAndReturn([])
             }
             .map { items -> [JourneysListItem] in
@@ -44,8 +39,23 @@ final class JourneysViewModel: ViewModelType {
             }
             .map { [Section(items: $0)] }
             .asDriver()
+        let createJourney = input.createJournerTrigger
+            .do(onNext: { [weak self] _ in
+                self?.coordinator.toCreateForm()
+            })
 
-        return Output(items: items)
+        return Output(items: items, createJourney: createJourney)
+    }
+}
+
+extension JourneysViewModel {
+    struct Input {
+        var load: Driver<Void>
+        var createJournerTrigger: Driver<Void>
+    }
+    struct Output {
+        var items: Driver<[Section<JourneysListItem>]>
+        var createJourney: Driver<Void>
     }
 }
 

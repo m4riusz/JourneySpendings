@@ -26,5 +26,20 @@ final public class JourneysAssembly: ModuleAssembly {
             controller.viewModel = r.resolve(JourneysViewModel.self)!
             return controller
         }
+
+        container.register(JourneyValidatorProviderProtocol.self) { _ in
+            JourneyValidatorProvider()
+        }
+
+        container.register(JourneyCreateViewModel.self) { r in
+            JourneyCreateViewModel(repository: r.resolve(JourneysRepositoryProtocol.self)!,
+                                   validatorProvider: r.resolve(JourneyValidatorProviderProtocol.self)!)
+        }
+
+        container.register(JourneyCreateViewController.self) { r in
+            let controller = JourneyCreateViewController()
+            controller.viewModel = r.resolve(JourneyCreateViewModel.self)!
+            return controller
+        }
     }
 }

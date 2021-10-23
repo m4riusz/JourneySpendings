@@ -10,6 +10,9 @@ import RxSwift
 import Foundation
 
 final class JourneysRepository: JourneysRepositoryProtocol {
+    func journeyExists(name: String) -> Observable<Bool> {
+        .just(name == "123456")
+    }
 
     // TODO: - add real implementation
     func getCurrentJourneys() -> Observable<[Journey]> {

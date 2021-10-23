@@ -15,14 +15,21 @@ final class JourneysViewModelTests: XCTestCase {
     private typealias CoreImages = Assets.Images.Core
     private typealias Literals = Assets.Strings.Journey.List.Empty
     private let repository = JourneysRepositoryMock()
-    private lazy var sut = JourneysViewModel(repository: repository)
+    private let coordinator = JourneysCoordinatorSpy()
+    private lazy var sut: JourneysViewModel = {
+        let viewModel = JourneysViewModel(repository: repository)
+        viewModel.coordinator = coordinator
+        return viewModel
+    }()
     private lazy var scheduler = TestScheduler(initialClock: .zero)
     private var bag = DisposeBag()
 
     func testLoadNoItems() {
         repository.getCurrentJourneysResult = .just([])
         let loadEvent = PublishSubject<Void>()
-        let output = sut.transform(input: JourneysViewModel.Input(load: loadEvent.asDriver()))
+        let createJourneyTrigger = PublishSubject<Void>()
+        let output = sut.transform(input: .init(load: loadEvent.asDriver(),
+                                                createJournerTrigger: createJourneyTrigger.asDriver()))
         let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
 
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
@@ -51,7 +58,9 @@ final class JourneysViewModelTests: XCTestCase {
                                                            totalCost: 100,
                                                            currency: "zł")])
         let loadEvent = PublishSubject<Void>()
-        let output = sut.transform(input: .init(load: loadEvent.asDriver()))
+        let createJourneyTrigger = PublishSubject<Void>()
+        let output = sut.transform(input: .init(load: loadEvent.asDriver(),
+                                                createJournerTrigger: createJourneyTrigger.asDriver()))
         let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
 
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
@@ -76,7 +85,9 @@ final class JourneysViewModelTests: XCTestCase {
     func testLoadError() {
         repository.getCurrentJourneysResult = .error(NSError.internal)
         let loadEvent = PublishSubject<Void>()
-        let output = sut.transform(input: JourneysViewModel.Input(load: loadEvent.asDriver()))
+        let createJourneyTrigger = PublishSubject<Void>()
+        let output = sut.transform(input: .init(load: loadEvent.asDriver(),
+                                                createJournerTrigger: createJourneyTrigger.asDriver()))
         let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
 
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
@@ -96,5 +107,29 @@ final class JourneysViewModelTests: XCTestCase {
         }
         scheduler.start()
         XCTAssertEqual(expectedItems, itemsObserver.events)
+    }
+
+    func testNavigation() {
+        repository.getCurrentJourneysResult = .error(NSError.internal)
+        let loadEvent = PublishSubject<Void>()
+        let createJourneyTrigger = PublishSubject<Void>()
+        let output = sut.transform(input: .init(load: loadEvent.asDriver(),
+                                                createJournerTrigger: createJourneyTrigger.asDriver()))
+
+        scheduler.scheduleAt(.zero) {
+            output.items
+                .drive()
+                .disposed(by: self.bag)
+            output.createJourney
+                .drive()
+                .disposed(by: self.bag)
+        }
+
+        scheduler.scheduleAt(100) {
+            loadEvent.on(.next(()))
+            createJourneyTrigger.on(.next(()))
+        }
+        scheduler.start()
+        XCTAssertEqual(coordinator.toCreateFormCallCout, 1)
     }
 }

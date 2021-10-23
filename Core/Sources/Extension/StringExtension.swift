@@ -32,3 +32,10 @@ public extension Optional where Wrapped == String {
         isNilOrEmpty || self!.replacingOccurrences(of: " ", with: "").isEmpty
     }
 }
+
+public extension String {
+    struct Common {
+        public static let space = " "
+        public static let comma = ","
+    }
+}

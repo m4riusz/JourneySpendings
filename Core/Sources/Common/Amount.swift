@@ -11,8 +11,7 @@ public struct Amount {
     private struct Constants {
         static let minFractionDigits = 2
         static let maxFractionDigits = 2
-        static let groupingSeparator = " "
-        static let decimalSeparator = ","
+        static let groupingSize = 3
     }
     private let value: Double
     private let currency: String
@@ -27,10 +26,10 @@ public struct Amount {
         numberFormatter.numberStyle = .decimal
         numberFormatter.minimumFractionDigits = Constants.minFractionDigits
         numberFormatter.maximumFractionDigits = Constants.maxFractionDigits
-        numberFormatter.decimalSeparator = Constants.decimalSeparator
-        numberFormatter.groupingSeparator = Constants.groupingSeparator
-        numberFormatter.paddingCharacter = " "
-        numberFormatter.groupingSize = 3
+        numberFormatter.decimalSeparator = String.Common.comma
+        numberFormatter.groupingSeparator = String.Common.space
+        numberFormatter.paddingCharacter = String.Common.space
+        numberFormatter.groupingSize = Constants.groupingSize
         var formatted = numberFormatter.string(from: NSDecimalNumber(value: value))!
         if !currency.isEmpty {
             formatted.append(contentsOf: " \(currency)")

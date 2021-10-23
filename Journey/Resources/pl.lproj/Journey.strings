@@ -2,3 +2,10 @@
 "List/Empty/title" = "Brak podróży";
 "List/Empty/descrption" = "Aby dodać nową podróż naciśnij przycisk \"DODAJ\"";
 "List/Empty/action" = "DODAJ";
+"Create/title" = "Nowa podróż";
+"Create/Name/title" = "Nazwa prodóży";
+"Create/Name/placeholder" = "Góry, jezioro, kraj etc";
+"Create/Name/helper" = "Nazwa podróży powinna się składać z conajmniej 4 znaków. Powinna ona być unikalna dla całej aplikacji";
+"Create/Name/Error/tooShort" = "Nazwa podróży jest za krótka";
+"Create/Name/Error/tooLong" = "Nazwa podróży jest za długa";
+"Create/Name/Error/alreadyExists" = "Podróż o podanej nazwie już istnieje";
