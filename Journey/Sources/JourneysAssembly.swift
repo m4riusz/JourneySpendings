@@ -27,8 +27,13 @@ final public class JourneysAssembly: ModuleAssembly {
             return controller
         }
 
+        container.register(JourneyValidatorProviderProtocol.self) { _ in
+            JourneyValidatorProvider()
+        }
+
         container.register(JourneyCreateViewModel.self) { r in
-            JourneyCreateViewModel(repository: r.resolve(JourneysRepositoryProtocol.self)!)
+            JourneyCreateViewModel(repository: r.resolve(JourneysRepositoryProtocol.self)!,
+                                   validatorProvider: r.resolve(JourneyValidatorProviderProtocol.self)!)
         }
 
         container.register(JourneyCreateViewController.self) { r in

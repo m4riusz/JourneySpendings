@@ -66,7 +66,7 @@ final class JourneyCreateViewController: UIViewController {
         }
 
         nameTextField.snp.makeConstraints { make in
-            make.top.left.equalToSuperview().offset(Spacings.normal)
+            make.top.equalToSuperview().offset(Spacings.normal)
             make.left.equalToSuperview().offset(Spacings.normal)
             make.right.equalToSuperview().offset(-Spacings.normal)
             make.bottom.equalToSuperview().offset(-Spacings.normal)
