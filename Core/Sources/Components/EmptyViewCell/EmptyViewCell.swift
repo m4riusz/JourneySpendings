@@ -19,7 +19,7 @@ final public class EmptyViewCell: BaseTableViewCell {
     private lazy var descriptionLabel = UILabel()
     private lazy var button = Button()
 
-    public override func comminInit() {
+    public override func commonInit() {
         emptyImageView.contentMode = .scaleAspectFit
         titleLabel.numberOfLines = Constants.maxTitleLines
         descriptionLabel.numberOfLines = Constants.maxDescriptionLines

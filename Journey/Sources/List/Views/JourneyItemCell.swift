@@ -13,7 +13,7 @@ final class JourneyItemCell: BaseTableViewCell {
     private lazy var startDateLabel = UILabel()
     private lazy var totalCostLabel = UILabel()
 
-    override func comminInit() {
+    override func commonInit() {
         accessoryType = .disclosureIndicator
 
         contentView.addSubview(titleLabel)

@@ -11,15 +11,15 @@ open class BaseTableViewCell: UITableViewCell {
 
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: Self.reusableIdentifier)
-        comminInit()
+        commonInit()
     }
 
     public required init?(coder: NSCoder) {
         super.init(style: .default, reuseIdentifier: Self.reusableIdentifier)
-        comminInit()
+        commonInit()
     }
 
-    open func comminInit() {
+    open func commonInit() {
         /*Nop*/
     }
 }
