@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DeletableTagViewCellViewModel {
+public struct DeletableTagViewCellViewModel {
     let uuid: String
     let text: String
     let disabled: Bool

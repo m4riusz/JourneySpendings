@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum TagViewItem {
+public enum TagViewItem {
     case deletable(viewModel: DeletableTagViewCellViewModel)
 }
