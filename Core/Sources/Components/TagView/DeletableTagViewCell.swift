@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DeletableTagViewCell: BaseCollectionViewCell {
+final class DeletableTagViewCell: BaseCollectionViewCell, Reusable {
     private typealias Colors = Assets.Colors.Core.Action
     private struct Constants {
         static let borderWidth: CGFloat = 1.5

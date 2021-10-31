@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final public class EmptyViewCell: BaseTableViewCell {
+final public class EmptyViewCell: BaseTableViewCell, Reusable {
     private struct Constants {
         static let maxTitleLines = 1
         static let maxDescriptionLines = 3

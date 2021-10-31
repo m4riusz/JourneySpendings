@@ -8,7 +8,7 @@
 import UIKit
 import Core
 
-final class JourneyItemCell: BaseTableViewCell {
+final class JourneyItemCell: BaseTableViewCell, Reusable {
     private lazy var titleLabel = UILabel()
     private lazy var startDateLabel = UILabel()
     private lazy var totalCostLabel = UILabel()

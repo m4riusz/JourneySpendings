@@ -7,7 +7,9 @@
 
 import UIKit
 
-final public class TagView: UIView, UICollectionViewDataSource {
+final public class TagView: UIView {
+    private typealias Colors = Assets.Colors.Core
+    private typealias Images = Assets.Images.Core
     private struct Constants {
         static let titleLabelNumberOfLines = 1
         static let emptyLabelNumberOfLines = 1
@@ -15,8 +17,6 @@ final public class TagView: UIView, UICollectionViewDataSource {
         static let helperLabelNumberOfLines = 0
         static let emptyViewHeight = 40
     }
-    private typealias Colors = Assets.Colors.Core
-    private typealias Images = Assets.Images.Core
     private lazy var titleLabel = UILabel()
     private lazy var addButton = UIButton()
     private lazy var emptyLabel = UILabel()
@@ -77,7 +77,7 @@ final public class TagView: UIView, UICollectionViewDataSource {
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Coder not supported")
     }
 
     private func commonInit() {
@@ -92,6 +92,9 @@ final public class TagView: UIView, UICollectionViewDataSource {
         emptyLabel.numberOfLines = Constants.emptyLabelNumberOfLines
         errorLabel.numberOfLines = Constants.errorLabelNumberOfLines
         collectionView.backgroundColor = .clear
+        collectionView.register(DeletableTagViewCell.self)
+        collectionView.dataSource = self
+        collectionView.isScrollEnabled = false
         addSubview(stackView)
         let titleAndButtonStackView = UIStackView(arrangedSubviews: [titleLabel, addButton])
         titleAndButtonStackView.axis = .horizontal
@@ -111,23 +114,26 @@ final public class TagView: UIView, UICollectionViewDataSource {
         collectionView.snp.makeConstraints { make in
             make.height.greaterThanOrEqualTo(1)
         }
-        collectionView.register(DeletableTagViewCell.self, forCellWithReuseIdentifier: "DefaultTagViewCell") // TODO: create extension for registation cells
-        collectionView.dataSource = self
-        collectionView.isScrollEnabled = false
     }
 
     private func updateAddButtonVisibility() {
         addButton.isHidden = titleText.isNilOrBlank || !addButtonVisible
     }
+}
 
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+// MARK: - UICollectionViewDataSource
+extension TagView: UICollectionViewDataSource {
+
+    public func collectionView(_ collectionView: UICollectionView,
+                               numberOfItemsInSection section: Int) -> Int {
         items.count
     }
 
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView,
+                               cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch items[indexPath.row] {
         case .deletable(let viewModel):
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultTagViewCell", for: indexPath) as! DeletableTagViewCell
+            let cell = collectionView.dequeueCell(DeletableTagViewCell.self, indexPath: indexPath)
             cell.load(viewModel: viewModel)
             return cell
         }

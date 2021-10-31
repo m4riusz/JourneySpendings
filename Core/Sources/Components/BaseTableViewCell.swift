@@ -10,13 +10,12 @@ import UIKit
 open class BaseTableViewCell: UITableViewCell {
 
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Self.reusableIdentifier)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
 
     public required init?(coder: NSCoder) {
-        super.init(style: .default, reuseIdentifier: Self.reusableIdentifier)
-        commonInit()
+        fatalError("Coder not supported")
     }
 
     open func commonInit() {
