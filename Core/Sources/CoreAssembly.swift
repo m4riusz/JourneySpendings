@@ -15,5 +15,9 @@ final public class CoreAssembly: ModuleAssembly {
         container.register(DateProviderProtocol.self) { _ in
             DateProvider()
         }
+
+        container.register(CompositionalLayoutFactoryProtocol.self) { _ in
+            CompositionalLayoutFactory()
+        }.inObjectScope(.container)
     }
 }
