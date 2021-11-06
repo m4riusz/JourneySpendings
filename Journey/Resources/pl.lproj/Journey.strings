@@ -9,3 +9,5 @@
 "Create/Name/Error/tooShort" = "Nazwa podróży jest za krótka";
 "Create/Name/Error/tooLong" = "Nazwa podróży jest za długa";
 "Create/Name/Error/alreadyExists" = "Podróż o podanej nazwie już istnieje";
+"Create/People/title" = "Osoby biorące udział w podróży";
+"Create/People/helper" = "Maksymalnie 5 osób";
