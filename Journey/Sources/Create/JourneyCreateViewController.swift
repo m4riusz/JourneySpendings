@@ -61,7 +61,10 @@ final class JourneyCreateViewController: UIViewController {
             .disposed(by: disposeBag)
 
         output.addParticipant
-            .drive()
+            .drive(onNext: { [weak self] in
+                self?.participantTextField.errorText = ""
+                self?.participantTextField.text = ""
+            })
             .disposed(by: disposeBag)
 
         output.addParticipantError
@@ -69,7 +72,10 @@ final class JourneyCreateViewController: UIViewController {
             .disposed(by: disposeBag)
 
         output.addParticipantEnabled
-            .drive(participantAddButton.rx.isEnabled)
+            .drive(onNext: { [weak self] enabled in
+                self?.participantAddButton.isEnabled = enabled
+                self?.participantTextField.isEnabled = enabled
+            })
             .disposed(by: disposeBag)
     }
 
@@ -91,9 +97,9 @@ final class JourneyCreateViewController: UIViewController {
         tagView.helperText = Literals.People.helper
         tagView.items = []
         tagView.addButtonVisible = false
-        participantTextField.placeholder = "Uczestnik"
-        participantTextField.helperText = "Więcej niż 2 znaki"
-        participantAddButton.text = "Dodaj"
+        participantTextField.placeholder = Literals.People.Name.placeholder
+        participantTextField.helperText = Literals.People.Name.helper
+        participantAddButton.text = Literals.People.Name.add
         participantAddButton.style = .tertiary
 
         scrollView.snp.makeConstraints { make in

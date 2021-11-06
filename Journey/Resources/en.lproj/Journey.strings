@@ -11,3 +11,10 @@
 "Create/Name/Error/alreadyExists" = "Journey with this name already exists";
 "Create/People/title" = "People that will participate in journey";
 "Create/People/helper" = "Max 5 people";
+"Create/People/Name/me" = "Me";
+"Create/People/Name/add" = "Add";
+"Create/People/Name/placeholder" = "Participant";
+"Create/People/Name/helper" = "Participant name should be 2 to 20 characters long. Name should be unique across journey";
+"Create/People/Name/Error/tooShort" = "Participant name is too short";
+"Create/People/Name/Error/tooLong" = "Participant name is too long";
+"Create/People/Name/Error/alreadyExists" = "Participant with this name already exists";

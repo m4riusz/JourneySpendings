@@ -19,3 +19,5 @@ public extension TagViewItem {
         }
     }
 }
+
+extension TagViewItem: Equatable { /*Nop*/ }

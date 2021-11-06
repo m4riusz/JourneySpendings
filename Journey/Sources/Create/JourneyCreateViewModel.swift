@@ -11,7 +11,11 @@ import RxSwift
 import RxCocoa
 
 final class JourneyCreateViewModel: ViewModelType {
+    private struct Constants {
+        static let maxParticipantsCount = 5
+    }
     private typealias Literals = Assets.Strings.Journey.Create
+    private typealias Errors = Assets.Strings.Core.Error
     private let repository: JourneysRepositoryProtocol
     private let validatorProvider: JourneyValidatorProviderProtocol
     var coordinator: JourneyCreateCoordinatorProtocol!
@@ -23,7 +27,7 @@ final class JourneyCreateViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
         let participants = BehaviorRelay<[TagViewItem]>(value: [
-            .deletable(viewModel: .init(uuid: UUID().uuidString, text: "Me", disabled: true))
+            .deletable(viewModel: .init(text: Literals.People.Name.me, disabled: true))
         ])
 
         let name = input.name.distinctUntilChanged().asObservable()
@@ -31,50 +35,48 @@ final class JourneyCreateViewModel: ViewModelType {
             guard let strongSelf = self else { return .success }
             return strongSelf.validatorProvider.journeyNameValidator.validate(text: name)
         }
-        let uniqueValidator = name.flatMapLatest { [weak self] name -> Observable<Bool> in
+        let uniqueValidator = name.flatMapLatest { [weak self] name -> Observable<ValidationResult> in
             guard let strongSelf = self else { return .empty() }
             return strongSelf.repository
                 .journeyExists(name: name)
-                .map { !$0 }
+                .map { !$0 ? .success : .failure(message: Literals.Name.Error.alreadyExists) }
         }
 
         let nameError = Observable.combineLatest(lengthValidator, uniqueValidator)
-            .map { lengthValidator, isUnique -> String in
-                if let error = lengthValidator.error {
-                    return error
-                } else if !isUnique {
-                    return Literals.Name.Error.alreadyExists
-                }
-                return ""
-            }
+            .map { [$0, $1].first(where: { !$0.isSuccess })?.error ?? "" }
             .asDriver()
 
         let canSave = nameError.map { $0.isEmpty }
 
-        let participantName = input.participantName.distinctUntilChanged().asObservable()
-        let participantLengthValidator = participantName.map { [weak self] name -> ValidationResult in
-            guard let strongSelf = self else { return .success }
-            return strongSelf.validatorProvider.participantNameValidator.validate(text: name)
-        }
-
-        let participantUniqueValidator = Observable.combineLatest(participantName, participants) { name, items -> ValidationResult in
-                let isUnique = items.first(where: { $0.text == name }) == nil
-                return isUnique ? .success : .failure(message: "Not unique")
+        let participantName = input.participantName.distinctUntilChanged().asObservable().share()
+        let addParticipant = input.addParticipant.asObservable().share()
+        let distinctParticipants = participants.distinctUntilChanged().share(replay: 1)
+        let addParticipantValidation = addParticipant
+            .withLatestFrom(Observable.combineLatest(participantName, distinctParticipants))
+            .map { [weak self] data -> ValidationResult in
+                guard let strongSelf = self else { return .failure(message: Errors.internalMessage) }
+                return strongSelf.validatorProvider
+                    .participantNameValidator(participants: data.1.compactMap { $0.text })
+                    .validate(text: data.0)
             }
+            .share()
+        let participantNameError = addParticipantValidation
+            .map { $0.error ?? "" }
+            .distinctUntilChanged()
+            .asDriver()
 
-        let validationResult = Observable.combineLatest(participantLengthValidator, participantUniqueValidator) {
-        [$0, $1].first(where: { validator in !validator.isSuccess })?.error ?? ""
-        }
+        let addParticipantResult = addParticipant
+            .withLatestFrom(Observable.combineLatest(participantName, addParticipantValidation))
+            .filter { $0.1.isSuccess }
+            .map { $0.0 }
+            .do(onNext: { participants.append(.deletable(viewModel: .init(text: $0))) })
+            .mapToVoid()
+            .asDriver()
 
-        let addParticipant = input.addParticipant
-            .asObservable()
-            .withLatestFrom(participantName) { _, name -> Void  in
-                participants.accept(participants.value + [.deletable(viewModel: .init(uuid: UUID().uuidString,
-                                                                                      text: name,
-                                                                                      disabled: false))])
-            }
-
-        let addParticipantEnabled = validationResult.map { $0.isEmpty }.asDriver()
+        let addParticipantEnabled = distinctParticipants
+            .map { $0.count < Constants.maxParticipantsCount }
+            .distinctUntilChanged()
+            .asDriver()
 
         let dismiss = Driver.of(input.save, input.cancel)
             .merge()
@@ -83,11 +85,11 @@ final class JourneyCreateViewModel: ViewModelType {
         return Output(canSave: canSave,
                       nameError: nameError,
                       dismiss: dismiss,
-                      participants: participants.asDriver(),
-                      addParticipant: addParticipant.asDriver(),
-                      addParticipantError: validationResult.asDriver(),
+                      participants: distinctParticipants.asDriver(),
+                      addParticipant: addParticipantResult,
+                      addParticipantError: participantNameError,
                       addParticipantEnabled: addParticipantEnabled)
-        }
+    }
 }
 
 extension JourneyCreateViewModel {

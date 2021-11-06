@@ -12,9 +12,12 @@ public struct DeletableTagViewCellViewModel {
     let text: String
     let disabled: Bool
 
-    public init(uuid: String, text: String, disabled: Bool) {
+    public init(uuid: String = UUID().uuidString, text: String, disabled: Bool = false) {
         self.uuid = uuid
         self.text = text
         self.disabled = disabled
     }
 }
+
+// MARK: - Equatable
+extension DeletableTagViewCellViewModel: Equatable { /*Nop*/ }

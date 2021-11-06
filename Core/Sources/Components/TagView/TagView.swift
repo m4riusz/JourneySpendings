@@ -66,6 +66,7 @@ final public class TagView: UIView {
             emptyLabel.isHidden = !items.isEmpty
             collectionView.isHidden = items.isEmpty
             collectionView.reloadData()
+            layoutSubviews()
         }
     }
 

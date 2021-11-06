@@ -9,7 +9,7 @@ import Core
 
 protocol JourneyValidatorProviderProtocol {
     var journeyNameValidator: ValidatorProtocol { get }
-    var participantNameValidator: ValidatorProtocol { get }
+    func participantNameValidator(participants: [String]) -> ValidatorProtocol
 }
 
 struct JourneyValidatorProvider: JourneyValidatorProviderProtocol {
@@ -34,12 +34,14 @@ struct JourneyValidatorProvider: JourneyValidatorProviderProtocol {
         ])
     }
 
-    var participantNameValidator: ValidatorProtocol {
+    func participantNameValidator(participants: [String]) -> ValidatorProtocol {
         CompoundValidator(validators: [
             MinimumLengthValidator(minimumLength: Constants.Participant.minLengthName,
-                                   errorMessage: "To short"),
+                                   errorMessage: Literals.People.Name.Error.tooShort),
             MaximumLengthValidator(maximumLength: Constants.Participant.maxLengthName,
-                                   errorMessage: "To long")
+                                   errorMessage: Literals.People.Name.Error.tooLong),
+            UniqueStringValidator(strings: participants,
+                                  errorMessage: Literals.People.Name.Error.alreadyExists)
         ])
     }
 }

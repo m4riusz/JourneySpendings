@@ -9,5 +9,12 @@
 "Create/Name/Error/tooShort" = "Nazwa podróży jest za krótka";
 "Create/Name/Error/tooLong" = "Nazwa podróży jest za długa";
 "Create/Name/Error/alreadyExists" = "Podróż o podanej nazwie już istnieje";
-"Create/People/title" = "Osoby biorące udział w podróży";
-"Create/People/helper" = "Maksymalnie 5 osób";
+"Create/People/title" = "People that will participate in journey";
+"Create/People/helper" = "Maksymalnie 5 uczestników";
+"Create/People/Name/me" = "Ja";
+"Create/People/Name/add" = "Dodaj";
+"Create/People/Name/placeholder" = "Uczestnik";
+"Create/People/Name/helper" = "Nazwa uczestnika wycieczki powinna zawierać od 2 do 20 znaków. Powinna być unikalna w danej podróży";
+"Create/People/Name/Error/tooShort" = "Nazwa uczestnika jest zbyt krótka";
+"Create/People/Name/Error/tooLong" = "Nazwa uczestnika jest zbyt długa";
+"Create/People/Name/Error/alreadyExists" = "Uczestnik o takiej nazwie już istnieje";
