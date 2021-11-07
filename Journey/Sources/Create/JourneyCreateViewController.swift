@@ -102,7 +102,6 @@ final class JourneyCreateViewController: UIViewController {
         tagView.titleText = Literals.People.title
         tagView.helperText = Literals.People.helper
         tagView.items = []
-        tagView.addButtonVisible = false
         participantTextField.placeholder = Literals.People.Name.placeholder
         participantTextField.helperText = Literals.People.Name.helper
         participantAddButton.text = Literals.People.Name.add

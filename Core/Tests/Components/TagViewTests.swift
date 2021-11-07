@@ -14,8 +14,6 @@ import TestKit
 final class TagViewTests: XCTestCase {
     private var mode = UIUserInterfaceStyle.light
     private var titleText = ""
-    private var addButtonVisible = true
-    private var addButtonEnabled = true
     private var emptyText = ""
     private var errorText = ""
     private var helperText = ""
@@ -23,8 +21,6 @@ final class TagViewTests: XCTestCase {
     private lazy var sut: TagView = {
         let view = TagView(layout: CompositionalLayoutFactory().tagView(itemSpacing: Spacings.normal))
         view.titleText = titleText
-        view.addButtonVisible = addButtonVisible
-        view.addButtonEnabled = addButtonEnabled
         view.emptyText = emptyText
         view.errorText = errorText
         view.helperText = helperText
@@ -42,12 +38,6 @@ final class TagViewTests: XCTestCase {
     // MARK: - Title
     func testTitle() {
         titleText = LoremIpsum.long
-        assertSnapshot(matching: container, as: .standardPrecissionImage)
-    }
-
-    func testTitleNoButton() {
-        titleText = LoremIpsum.long
-        addButtonVisible = false
         assertSnapshot(matching: container, as: .standardPrecissionImage)
     }
 

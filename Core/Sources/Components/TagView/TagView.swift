@@ -20,7 +20,6 @@ final public class TagView: UIView {
         static let emptyViewHeight = 40
     }
     private lazy var titleLabel = UILabel()
-    private lazy var addButton = UIButton()
     private lazy var emptyLabel = UILabel()
     private lazy var helperLabel = UILabel()
     private lazy var errorLabel = UILabel()
@@ -28,19 +27,10 @@ final public class TagView: UIView {
     private let collectionView: UICollectionView
     lazy var deleteItemSubject = PublishSubject<String>()
 
-    public var addButtonVisible = true {
-        didSet { updateAddButtonVisibility() }
-    }
-
-    public var addButtonEnabled = true {
-        didSet { addButton.isEnabled = addButtonEnabled }
-    }
-
     public var titleText: String? {
         didSet {
             titleLabel.attributedText = titleText?.styled(.subhead, attributes: [.color(Colors.Label.secondary)])
             titleLabel.isHidden = titleText.isNilOrBlank
-            updateAddButtonVisibility()
         }
     }
 
@@ -88,10 +78,6 @@ final public class TagView: UIView {
         stackView.axis = .vertical
         stackView.distribution = .fill
         titleLabel.numberOfLines = Constants.titleLabelNumberOfLines
-        addButton.setImage(Images.plus, for: .normal)
-        addButton.tintColor = Colors.Action.primary
-        addButton.setContentHuggingPriority(.required, for: .horizontal)
-        addButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         helperLabel.numberOfLines = Constants.helperLabelNumberOfLines
         emptyLabel.numberOfLines = Constants.emptyLabelNumberOfLines
         errorLabel.numberOfLines = Constants.errorLabelNumberOfLines
@@ -100,14 +86,12 @@ final public class TagView: UIView {
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
         addSubview(stackView)
-        let titleAndButtonStackView = UIStackView(arrangedSubviews: [titleLabel, addButton])
-        titleAndButtonStackView.axis = .horizontal
-        stackView.addArrangedSubview(titleAndButtonStackView)
+        stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(emptyLabel)
         stackView.addArrangedSubview(collectionView)
         stackView.addArrangedSubview(errorLabel)
         stackView.addArrangedSubview(helperLabel)
-        stackView.setCustomSpacing(Spacings.small, after: titleAndButtonStackView)
+        stackView.setCustomSpacing(Spacings.small, after: titleLabel)
         stackView.setCustomSpacing(Spacings.small, after: collectionView)
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -118,10 +102,6 @@ final public class TagView: UIView {
         collectionView.snp.makeConstraints { make in
             make.height.greaterThanOrEqualTo(1)
         }
-    }
-
-    private func updateAddButtonVisibility() {
-        addButton.isHidden = titleText.isNilOrBlank || !addButtonVisible
     }
 }
 
