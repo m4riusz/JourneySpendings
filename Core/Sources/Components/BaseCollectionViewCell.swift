@@ -6,8 +6,15 @@
 //
 
 import UIKit
+import RxSwift
 
 open class BaseCollectionViewCell: UICollectionViewCell {
+    var disposeBag = DisposeBag()
+
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
 
     public override init(frame: CGRect) {
         super.init(frame: frame)

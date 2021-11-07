@@ -35,12 +35,14 @@ final class JourneyCreateViewController: UIViewController {
         let save = saveButton.rx.tap.asDriver()
         let participantName = participantTextField.rx.text.orEmpty.asDriver()
         let addParticipant = participantAddButton.rx.tap.asDriver()
+        let deletePrticipant = tagView.rx.deleteTagEvent.asDriver()
 
         let output = viewModel.transform(input: .init(save: save,
                                                       cancel: cancel,
                                                       name: name,
                                                       participantName: participantName,
-                                                      addParticipant: addParticipant))
+                                                      addParticipant: addParticipant,
+                                                      deleteParticipant: deletePrticipant))
 
         output.nameError
             .drive(nameTextField.rx.error)
@@ -76,6 +78,10 @@ final class JourneyCreateViewController: UIViewController {
                 self?.participantAddButton.isEnabled = enabled
                 self?.participantTextField.isEnabled = enabled
             })
+            .disposed(by: disposeBag)
+
+        output.deleteParticipant
+            .drive()
             .disposed(by: disposeBag)
     }
 

@@ -50,6 +50,7 @@ final class JourneyCreateViewModel: ViewModelType {
 
         let participantName = input.participantName.distinctUntilChanged().asObservable().share()
         let addParticipant = input.addParticipant.asObservable().share()
+        let deleteParticipant = input.deleteParticipant.asObservable().share()
         let distinctParticipants = participants.distinctUntilChanged().share(replay: 1)
         let addParticipantValidation = addParticipant
             .withLatestFrom(Observable.combineLatest(participantName, distinctParticipants))
@@ -78,6 +79,11 @@ final class JourneyCreateViewModel: ViewModelType {
             .distinctUntilChanged()
             .asDriver()
 
+        let deleteParticipantResult = deleteParticipant
+            .do(onNext: { uuid in participants.accept(participants.value.filter { $0.uuid != uuid }) })
+            .mapToVoid()
+            .asDriver()
+
         let dismiss = Driver.of(input.save, input.cancel)
             .merge()
             .do(onNext: { [weak self] _ in self?.coordinator.didFinish() })
@@ -88,7 +94,8 @@ final class JourneyCreateViewModel: ViewModelType {
                       participants: distinctParticipants.asDriver(),
                       addParticipant: addParticipantResult,
                       addParticipantError: participantNameError,
-                      addParticipantEnabled: addParticipantEnabled)
+                      addParticipantEnabled: addParticipantEnabled,
+                      deleteParticipant: deleteParticipantResult)
     }
 }
 
@@ -99,6 +106,7 @@ extension JourneyCreateViewModel {
         let name: Driver<String>
         let participantName: Driver<String>
         let addParticipant: Driver<Void>
+        let deleteParticipant: Driver<String>
     }
 
     struct Output {
@@ -109,5 +117,6 @@ extension JourneyCreateViewModel {
         let addParticipant: Driver<Void>
         let addParticipantError: Driver<String>
         let addParticipantEnabled: Driver<Bool>
+        let deleteParticipant: Driver<Void>
     }
 }

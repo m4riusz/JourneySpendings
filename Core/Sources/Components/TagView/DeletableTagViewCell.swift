@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class DeletableTagViewCell: BaseCollectionViewCell, Reusable {
     private typealias Colors = Assets.Colors.Core.Action
@@ -14,6 +16,10 @@ final class DeletableTagViewCell: BaseCollectionViewCell, Reusable {
     }
     private lazy var textLabel = UILabel()
     private lazy var deleteButton = UIButton()
+
+    var didTapDelete: ControlEvent<Void> {
+        deleteButton.rx.tap
+    }
 
     override func commonInit() {
         contentView.addSubview(textLabel)
@@ -37,6 +43,7 @@ final class DeletableTagViewCell: BaseCollectionViewCell, Reusable {
     }
 }
 
+// MARK: - DeletableTagViewCell
 extension DeletableTagViewCell: Loadable {
     func load(viewModel: DeletableTagViewCellViewModel) {
         viewModel.disabled ? setDisabledView(text: viewModel.text) : setEnabledView(text: viewModel.text)

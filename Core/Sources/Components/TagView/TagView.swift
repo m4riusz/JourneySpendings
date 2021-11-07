@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 final public class TagView: UIView {
     private typealias Colors = Assets.Colors.Core
@@ -24,6 +26,7 @@ final public class TagView: UIView {
     private lazy var errorLabel = UILabel()
     private lazy var stackView = UIStackView()
     private let collectionView: UICollectionView
+    lazy var deleteItemSubject = PublishSubject<String>()
 
     public var addButtonVisible = true {
         didSet { updateAddButtonVisibility() }
@@ -136,6 +139,10 @@ extension TagView: UICollectionViewDataSource {
         case .deletable(let viewModel):
             let cell = collectionView.dequeueCell(DeletableTagViewCell.self, indexPath: indexPath)
             cell.load(viewModel: viewModel)
+            cell.didTapDelete
+                .map { _ in viewModel.uuid }
+                .bind(to: deleteItemSubject)
+                .disposed(by: cell.disposeBag)
             return cell
         }
     }

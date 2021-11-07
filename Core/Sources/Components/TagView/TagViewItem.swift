@@ -12,10 +12,14 @@ public enum TagViewItem {
 }
 
 public extension TagViewItem {
+    var uuid: String {
+        switch self {
+        case .deletable(let viewModel): return viewModel.uuid
+        }
+    }
     var text: String? {
         switch self {
-        case .deletable(let viewModel):
-            return viewModel.text
+        case .deletable(let viewModel): return viewModel.text
         }
     }
 }
