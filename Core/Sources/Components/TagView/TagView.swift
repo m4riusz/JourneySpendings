@@ -77,6 +77,7 @@ final public class TagView: UIView {
     private func commonInit() {
         stackView.axis = .vertical
         stackView.distribution = .fill
+        stackView.spacing = Spacings.small
         titleLabel.numberOfLines = Constants.titleLabelNumberOfLines
         helperLabel.numberOfLines = Constants.helperLabelNumberOfLines
         emptyLabel.numberOfLines = Constants.emptyLabelNumberOfLines
@@ -91,13 +92,11 @@ final public class TagView: UIView {
         stackView.addArrangedSubview(collectionView)
         stackView.addArrangedSubview(errorLabel)
         stackView.addArrangedSubview(helperLabel)
-        stackView.setCustomSpacing(Spacings.small, after: titleLabel)
-        stackView.setCustomSpacing(Spacings.small, after: collectionView)
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         emptyLabel.snp.makeConstraints { make in
-            make.height.equalTo(Constants.emptyViewHeight)
+            make.height.equalTo(Constants.emptyViewHeight).priority(.high)
         }
         collectionView.snp.makeConstraints { make in
             make.height.greaterThanOrEqualTo(1)
