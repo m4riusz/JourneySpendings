@@ -8,12 +8,12 @@
 import UIKit
 import Core
 
-final class JourneyItemCell: BaseTableViewCell {
+final class JourneyItemCell: BaseTableViewCell, Reusable {
     private lazy var titleLabel = UILabel()
     private lazy var startDateLabel = UILabel()
     private lazy var totalCostLabel = UILabel()
 
-    override func comminInit() {
+    override func commonInit() {
         accessoryType = .disclosureIndicator
 
         contentView.addSubview(titleLabel)

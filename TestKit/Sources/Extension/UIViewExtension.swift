@@ -42,4 +42,16 @@ public extension UIView {
                   insets: .zero,
                   backgroundColor: backgroundColor)
     }
+
+    static func cellContainer(sut: UICollectionViewCell,
+                              size: CGSize = CGSize(width: 376, height: 0),
+                              mode: UIUserInterfaceStyle = .light,
+                              insets: UIEdgeInsets = .zero,
+                              backgroundColor: UIColor) -> UIView {
+        container(sut: sut.contentView,
+                  mode: mode,
+                  size: size,
+                  insets: insets,
+                  backgroundColor: backgroundColor)
+    }
 }

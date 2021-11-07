@@ -62,6 +62,7 @@ final public class TextField: UITextField {
         titleLabel.isHidden = titleText.isNilOrEmpty
         errorLabel.isHidden = errorText.isNilOrEmpty
         helperLabel.isHighlighted = helperText.isNilOrEmpty
+        layoutSubviews()
     }
 
     public override func layoutSubviews() {

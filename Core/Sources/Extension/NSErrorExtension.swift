@@ -8,7 +8,7 @@
 import Foundation
 
 public extension NSError {
-    static let `internal` = NSError(message: "internal")
+    static let `internal` = NSError(message: Assets.Strings.Core.Error.internalMessage)
 
     convenience init(domain: String = "pl.msut.error", code: Int = 0, message: String) {
         self.init(domain: domain, code: code, userInfo: [ NSLocalizedDescriptionKey: message ])

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final public class EmptyViewCell: BaseTableViewCell {
+final public class EmptyViewCell: BaseTableViewCell, Reusable {
     private struct Constants {
         static let maxTitleLines = 1
         static let maxDescriptionLines = 3
@@ -19,7 +19,7 @@ final public class EmptyViewCell: BaseTableViewCell {
     private lazy var descriptionLabel = UILabel()
     private lazy var button = Button()
 
-    public override func comminInit() {
+    public override func commonInit() {
         emptyImageView.contentMode = .scaleAspectFit
         titleLabel.numberOfLines = Constants.maxTitleLines
         descriptionLabel.numberOfLines = Constants.maxDescriptionLines
