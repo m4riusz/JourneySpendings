@@ -84,7 +84,16 @@ final class JourneyCreateViewModel: ViewModelType {
             .mapToVoid()
             .asDriver()
 
-        let dismiss = Driver.of(input.save, input.cancel)
+        let save = input.save.asObservable()
+            .withLatestFrom(Observable.combineLatest(name, participants))
+            .flatMapLatest { [weak self] data -> Observable<Void> in
+                guard let strongSelf = self else { return .empty() }
+                return strongSelf.repository.create(name: data.0)
+            }
+            .mapToVoid()
+            .asDriver()
+
+        let dismiss = Driver.of(save, input.cancel)
             .merge()
             .do(onNext: { [weak self] _ in self?.coordinator.didFinish() })
 
