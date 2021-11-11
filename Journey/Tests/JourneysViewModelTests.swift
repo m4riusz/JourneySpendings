@@ -35,8 +35,7 @@ final class JourneysViewModelTests: XCTestCase {
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
             .next(100, [.init(items: [.empty(viewModel: .init(image: CoreImages.bagSuitcaseOutline,
                                                               title: Literals.title,
-                                                              description: Literals.descrption,
-                                                              buttonText: Literals.action))])])
+                                                              description: Literals.descrption))])])
         ]
         scheduler.scheduleAt(.zero) {
             output.items
@@ -94,8 +93,7 @@ final class JourneysViewModelTests: XCTestCase {
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
             .next(100, [.init(items: [.empty(viewModel: .init(image: CoreImages.bagSuitcaseOutline,
                                                               title: Literals.title,
-                                                              description: Literals.descrption,
-                                                              buttonText: Literals.action))])])
+                                                              description: Literals.descrption))])])
         ]
         scheduler.scheduleAt(.zero) {
             output.items
