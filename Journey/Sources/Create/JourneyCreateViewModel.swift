@@ -13,6 +13,7 @@ import RxCocoa
 final class JourneyCreateViewModel: ViewModelType {
     private struct Constants {
         static let maxParticipantsCount = 5
+        static let currency = "PLN"
     }
     private typealias Literals = Assets.Strings.Journey.Create
     private typealias Errors = Assets.Strings.Core.Error
@@ -88,7 +89,10 @@ final class JourneyCreateViewModel: ViewModelType {
             .withLatestFrom(Observable.combineLatest(name, participants))
             .flatMapLatest { [weak self] data -> Observable<Void> in
                 guard let strongSelf = self else { return .empty() }
-                return strongSelf.repository.create(name: data.0)
+                let participants = data.1.compactMap { $0.text }
+                return strongSelf.repository
+                    .create(name: data.0, currency: Constants.currency, participants: participants)
+                    .catchAndReturn(())
             }
             .mapToVoid()
             .asDriver()

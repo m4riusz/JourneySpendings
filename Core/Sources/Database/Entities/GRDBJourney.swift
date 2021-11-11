@@ -16,6 +16,14 @@ struct GRDBJourney {
     var currency: String
 }
 
+extension GRDBJourney {
+    static let participants = hasMany(GRDBParticipant.self)
+
+    var participants: QueryInterfaceRequest<GRDBParticipant> {
+        request(for: GRDBJourney.participants)
+    }
+}
+
 // MARK: - Codable
 extension GRDBJourney: Codable { /*Nop*/ }
 
@@ -40,27 +48,5 @@ extension GRDBJourney: MutablePersistableRecord {
             uuid = UUID().uuidString
         }
         try performInsert(db)
-    }
-}
-
-// MARK: - FetchableRecord
-extension GRDBJourney: DomainConvertibleType {
-    var asDomain: Journey {
-        .init(uuid: uuid!,
-              name: name,
-              startDate: startDate,
-              totalCost: totalCost,
-              currency: currency)
-    }
-}
-
-// MARK: - GRDBRepresentable
-extension Journey: GRDBRepresentable {
-    var asGRDB: GRDBJourney {
-        .init(uuid: uuid,
-              name: name,
-              startDate: startDate,
-              totalCost: totalCost,
-              currency: currency)
     }
 }

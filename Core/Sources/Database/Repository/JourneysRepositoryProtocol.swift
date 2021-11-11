@@ -8,7 +8,7 @@
 import RxSwift
 
 public protocol JourneysRepositoryProtocol {
-    func create(name: String) -> Observable<Void>
+    func create(name: String, currency: String, participants: [String]) -> Observable<Void>
     func journeyExists(name: String) -> Observable<Bool>
     func getCurrentJourneys() -> Observable<[Journey]>
 }

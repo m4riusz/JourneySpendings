@@ -20,14 +20,14 @@ final class JourneysRepository: JourneysRepositoryProtocol {
         self.dateProvider = dateProvider
     }
 
-    func create(name: String) -> Observable<Void> {
-        dbQueue.rx.write { db in
-            var entity = Journey(uuid: "",
-                                 name: name,
-                                 startDate: self.dateProvider.now,
-                                 totalCost: 0,
-                                 currency: "PLN").asGRDB
-            try entity.insert(db)
+    func create(name: String, currency: String, participants: [String]) -> Observable<Void> {
+        dbQueue.rx.write { [unowned self] db in
+            let now = self.dateProvider.now
+            var journey = GRDBJourney(name: name, startDate: now, totalCost: 0, currency: currency)
+            try journey.insert(db)
+
+            var participants = participants.map { GRDBParticipant(journeyId: journey.uuid!, name: $0) }
+            try participants.mutateEach(by: { try $0.insert(db) })
         }
         .asObservable()
     }
@@ -41,12 +41,24 @@ final class JourneysRepository: JourneysRepositoryProtocol {
     }
 
     func getCurrentJourneys() -> Observable<[Journey]> {
-        ValueObservation.tracking { try GRDBJourney.fetchAll($0) }
+        ValueObservation
+            .tracking { try GRDBJourneyInfo.fetchAll($0, GRDBJourney.including(all: GRDBJourney.participants)) }
             .rx
             .observe(in: dbQueue)
-            .map { items in
-                items.map { $0.asDomain }
-            }
-            .debug("ITEMS")
+            .map { items in items.map { $0.asJourney } }
+    }
+}
+
+private struct GRDBJourneyInfo: FetchableRecord, Decodable {
+    let grdbJourney: GRDBJourney
+    let grdbParticipants: [GRDBParticipant]
+
+    var asJourney: Journey {
+        .init(uuid: grdbJourney.uuid!,
+              name: grdbJourney.name,
+              startDate: grdbJourney.startDate,
+              totalCost: grdbJourney.totalCost,
+              currency: grdbJourney.currency,
+              participants: grdbParticipants.map { .init(uuid: $0.uuid!, name: $0.name) })
     }
 }
