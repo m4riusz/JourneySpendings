@@ -19,6 +19,14 @@
 		"SnapshotTesting": {
 			"url": "https://github.com/pointfreeco/swift-snapshot-testing.git",
 			"from": "1.9.0"
+		},
+		"GRDB": {
+			"url": "https://github.com/groue/GRDB.swift.git",
+			"from": "5.13.0"
+		},
+		"RxGRDB": {
+			"url": "https://github.com/RxSwiftCommunity/RxGRDB",
+			"from": "2.1.0"
 		}
 	}
 }

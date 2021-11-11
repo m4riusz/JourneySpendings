@@ -1,7 +1,6 @@
 "List/title" = "Moje podróże";
 "List/Empty/title" = "Brak podróży";
-"List/Empty/descrption" = "Aby dodać nową podróż naciśnij przycisk \"DODAJ\"";
-"List/Empty/action" = "DODAJ";
+"List/Empty/descrption" = "Aby dodać nową podróż naciśnij przycisk \"+\"";
 "Create/title" = "Nowa podróż";
 "Create/Name/title" = "Nazwa prodóży";
 "Create/Name/placeholder" = "Góry, jezioro, kraj etc";

@@ -1,7 +1,6 @@
 "List/title" = "My journeys";
 "List/Empty/title" = "No journeys";
-"List/Empty/descrption" = "To create new jurney tap \"ADD\" button";
-"List/Empty/action" = "ADD";
+"List/Empty/descrption" = "To create new jurney tap \"+\" button";
 "Create/title" = "New journey";
 "Create/Name/title" = "Journey name";
 "Create/Name/placeholder" = "Mountains, lakes, country e.g";

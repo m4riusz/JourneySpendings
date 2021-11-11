@@ -17,10 +17,6 @@ final public class JourneysAssembly: ModuleAssembly {
             JourneysViewModel(repository: r.resolve(JourneysRepositoryProtocol.self)!)
         }
 
-        container.register(JourneysRepositoryProtocol.self) { _ in
-            JourneysRepository()
-        }
-
         container.register(JourneysViewController.self) { r in
             let controller = JourneysViewController()
             controller.viewModel = r.resolve(JourneysViewModel.self)!

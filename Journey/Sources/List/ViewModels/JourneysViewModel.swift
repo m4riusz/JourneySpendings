@@ -32,8 +32,7 @@ final class JourneysViewModel: ViewModelType {
                 guard !items.isEmpty else {
                     return [.empty(viewModel: .init(image: CoreImages.bagSuitcaseOutline,
                                                     title: Literals.Empty.title,
-                                                    description: Literals.Empty.descrption,
-                                                    buttonText: Literals.Empty.action))]
+                                                    description: Literals.Empty.descrption))]
                 }
                 return items.map { .journey(viewModel: $0.asViewModel) }
             }

@@ -35,8 +35,7 @@ final class JourneysViewModelTests: XCTestCase {
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
             .next(100, [.init(items: [.empty(viewModel: .init(image: CoreImages.bagSuitcaseOutline,
                                                               title: Literals.title,
-                                                              description: Literals.descrption,
-                                                              buttonText: Literals.action))])])
+                                                              description: Literals.descrption))])])
         ]
         scheduler.scheduleAt(.zero) {
             output.items
@@ -56,7 +55,8 @@ final class JourneysViewModelTests: XCTestCase {
                                                            name: "Name",
                                                            startDate: Date.from(year: 2000, month: 1, day: 1),
                                                            totalCost: 100,
-                                                           currency: "zł")])
+                                                           currency: "zł",
+                                                           participants: [])])
         let loadEvent = PublishSubject<Void>()
         let createJourneyTrigger = PublishSubject<Void>()
         let output = sut.transform(input: .init(load: loadEvent.asDriver(),
@@ -93,8 +93,7 @@ final class JourneysViewModelTests: XCTestCase {
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
             .next(100, [.init(items: [.empty(viewModel: .init(image: CoreImages.bagSuitcaseOutline,
                                                               title: Literals.title,
-                                                              description: Literals.descrption,
-                                                              buttonText: Literals.action))])])
+                                                              description: Literals.descrption))])])
         ]
         scheduler.scheduleAt(.zero) {
             output.items

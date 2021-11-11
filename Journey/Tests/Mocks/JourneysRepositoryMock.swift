@@ -14,6 +14,7 @@ import RxSwift
 final class JourneysRepositoryMock: JourneysRepositoryProtocol {
     var getCurrentJourneysResult: Observable<[Journey]>!
     var journeyExistsResult: Observable<Bool>!
+    var createResult: Observable<Void>!
 
     func journeyExists(name: String) -> Observable<Bool> {
         journeyExistsResult
@@ -21,5 +22,10 @@ final class JourneysRepositoryMock: JourneysRepositoryProtocol {
 
     func getCurrentJourneys() -> Observable<[Journey]> {
         getCurrentJourneysResult
+    }
+
+    func create(name: String, currency: String, participants: [String]) -> Observable<Void> {
+        createResult
+
     }
 }

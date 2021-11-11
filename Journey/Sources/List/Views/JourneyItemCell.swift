@@ -15,7 +15,7 @@ final class JourneyItemCell: BaseTableViewCell, Reusable {
 
     override func commonInit() {
         accessoryType = .disclosureIndicator
-
+        selectionStyle = .none
         contentView.addSubview(titleLabel)
         contentView.addSubview(startDateLabel)
         contentView.addSubview(totalCostLabel)
