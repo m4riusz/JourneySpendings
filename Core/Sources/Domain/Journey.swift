@@ -14,4 +14,18 @@ public struct Journey {
     public let totalCost: Double
     public let currency: String
     public let participants: [Participant]
+
+    public init(uuid: String,
+                name: String,
+                startDate: Date,
+                totalCost: Double,
+                currency: String,
+                participants: [Participant]) {
+        self.uuid = uuid
+        self.name = name
+        self.startDate = startDate
+        self.totalCost = totalCost
+        self.currency = currency
+        self.participants = participants
+    }
 }

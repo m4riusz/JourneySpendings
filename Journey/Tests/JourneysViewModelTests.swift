@@ -56,7 +56,8 @@ final class JourneysViewModelTests: XCTestCase {
                                                            name: "Name",
                                                            startDate: Date.from(year: 2000, month: 1, day: 1),
                                                            totalCost: 100,
-                                                           currency: "zł")])
+                                                           currency: "zł",
+                                                           participants: [])])
         let loadEvent = PublishSubject<Void>()
         let createJourneyTrigger = PublishSubject<Void>()
         let output = sut.transform(input: .init(load: loadEvent.asDriver(),
