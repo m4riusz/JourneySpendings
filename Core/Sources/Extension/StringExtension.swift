@@ -12,6 +12,10 @@ public extension String {
         NSLocalizedString(key, tableName: table, bundle: bundle, comment: "")
     }
 
+    static func localizedWithArgs(_ table: String, _ key: String, _ bundle: Bundle, _ args: [StringRepresentable]) -> String {
+        String(format: NSLocalizedString(key, tableName: table, bundle: bundle, comment: ""), arguments: args.map { $0.string })
+    }
+
     func styled(_ font: FontStyles, attributes: [AttributedStringBuilder.StringAttribute] = []) -> NSAttributedString {
         AttributedStringBuilder(attributes: [
             .font(font.style.font),

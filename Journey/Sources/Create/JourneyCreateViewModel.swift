@@ -13,6 +13,11 @@ import RxCocoa
 final class JourneyCreateViewModel: ViewModelType {
     private struct Constants {
         static let maxParticipantsCount = 5
+        static let minJourneyNameLength = JourneyValidatorProvider.Constants.Journey.minLengthName
+        static let maxJourneyNameLength = JourneyValidatorProvider.Constants.Journey.maxLengthName
+        static let minParticipantNameLength = JourneyValidatorProvider.Constants.Participant.minLengthName
+        static let maxParticipantNameLength = JourneyValidatorProvider.Constants.Participant.maxLengthName
+
         static let currency = "PLN"
     }
     private typealias Literals = Assets.Strings.Journey.Create
@@ -108,7 +113,12 @@ final class JourneyCreateViewModel: ViewModelType {
                       addParticipant: addParticipantResult,
                       addParticipantError: participantNameError,
                       addParticipantEnabled: addParticipantEnabled,
-                      deleteParticipant: deleteParticipantResult)
+                      deleteParticipant: deleteParticipantResult,
+                      journeyNameHelper: .just(Literals.Name.helper(minLength: Constants.minJourneyNameLength,
+                                                              maxLength: Constants.maxJourneyNameLength)),
+                      tagViewHelper: .just(Literals.People.helper(maxCount: Constants.maxParticipantsCount)),
+                      participantHelper: .just(Literals.People.Name.helper(minLength: Constants.minParticipantNameLength,
+                                                                           maxLength: Constants.maxParticipantNameLength)))
     }
 }
 
@@ -131,5 +141,8 @@ extension JourneyCreateViewModel {
         let addParticipantError: Driver<String>
         let addParticipantEnabled: Driver<Bool>
         let deleteParticipant: Driver<Void>
+        let journeyNameHelper: Driver<String>
+        let tagViewHelper: Driver<String>
+        let participantHelper: Driver<String>
     }
 }

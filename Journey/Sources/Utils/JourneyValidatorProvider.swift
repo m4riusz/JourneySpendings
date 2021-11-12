@@ -14,10 +14,10 @@ protocol JourneyValidatorProviderProtocol {
 
 struct JourneyValidatorProvider: JourneyValidatorProviderProtocol {
     private typealias Literals = Assets.Strings.Journey.Create
-    private struct Constants {
+    struct Constants {
         struct Journey {
-        static let minLengthName: UInt = 4
-        static let maxLengthName: UInt = 40
+            static let minLengthName: UInt = 4
+            static let maxLengthName: UInt = 40
         }
         struct Participant {
             static let minLengthName: UInt = 2
