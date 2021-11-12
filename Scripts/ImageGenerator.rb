@@ -8,7 +8,7 @@ include FileUtils
 moduleName = ARGV[0]
 imageAssetsPath = ARGV[1]
 outputSwiftFile = ARGV[2]
-importCore = true if ARGV[3].nil?
+importCore = moduleName != "Core"
 
 keys = FileUtils::readKeysFromImageAssetsCatalog(imageAssetsPath)
 

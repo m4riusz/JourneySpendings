@@ -8,7 +8,7 @@ include FileUtils
 moduleName = ARGV[0]
 inputStringsFile = ARGV[1]
 outputSwiftFile = ARGV[2]
-importCore = true if ARGV[3].nil?
+importCore = moduleName != "Core"
 
 keys = FileUtils::readKeysFromStringsFile(inputStringsFile)
 root = StructNode.new(moduleName)
