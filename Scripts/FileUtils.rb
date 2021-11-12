@@ -51,9 +51,30 @@ module FileUtils
             fullPath += "#{node.name}/"
          end
         file << "#{prefix}public struct #{node.name} {\n"
-        node.keys.each { |key| file << "#{prefix}\tpublic static let #{key} = String.localized(\"#{moduleName}\", \"#{fullPath}#{key}\", bundle)\n" }
+        node.keys.each { |key| file << generateStringKey(prefix, key, moduleName, "#{fullPath}#{key}") }
         node.childs.each { |child| generateStringStructs(file, moduleName, child, depth + 1, fullPath) }
         file << "#{prefix}}\n"
+    end
+
+    def generateStringKey(prefix, key, moduleName, fullPath)
+        if isPlainStringKey(key)
+            return "#{prefix}\tpublic static let #{key} = String.localized(\"#{moduleName}\", \"#{fullPath}\", bundle)\n"    
+        end
+        if isComplexStringKey(key)
+             splited = key.split("_")
+             rawParams = splited.drop(1)
+             params = rawParams.map { |param| "#{param}: StringRepresentable" }.join(", ")
+            return "#{prefix}\tpublic static func #{splited.first}(#{params}) -> String { String.localizedWithArgs(\"#{moduleName}\", \"#{fullPath}\", bundle, [#{rawParams.join(", ")}]) }\n"
+        end
+        return "Invalid key! #{key}"
+    end
+    
+    def isPlainStringKey(value)
+        value.match("^[a-zA-Z0-9]+$") != nil
+    end
+    
+    def isComplexStringKey(value)
+        value.match("^[a-zA-Z0-9]+(_[a-zA-Z0-9]+)+$") != nil
     end
 
     def generateImageExtension(outputFile, moduleName, node, importCore = true)

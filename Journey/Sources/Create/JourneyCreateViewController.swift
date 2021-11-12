@@ -80,6 +80,18 @@ final class JourneyCreateViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
+        output.journeyNameHelper
+            .drive(nameTextField.rx.helperText)
+            .disposed(by: disposeBag)
+
+        output.tagViewHelper
+            .drive(tagView.rx.helperText)
+            .disposed(by: disposeBag)
+
+        output.participantHelper
+            .drive(participantTextField.rx.helperText)
+            .disposed(by: disposeBag)
+
         output.deleteParticipant
             .drive()
             .disposed(by: disposeBag)
@@ -98,12 +110,9 @@ final class JourneyCreateViewController: UIViewController {
         contentView.addSubview(participantAddButton)
         nameTextField.titleText = Literals.Name.title
         nameTextField.placeholder = Literals.Name.placeholder
-        nameTextField.helperText = Literals.Name.helper
         tagView.titleText = Literals.People.title
-        tagView.helperText = Literals.People.helper
         tagView.items = []
         participantTextField.placeholder = Literals.People.Name.placeholder
-        participantTextField.helperText = Literals.People.Name.helper
         participantAddButton.text = Literals.People.Name.add
         participantAddButton.style = .tertiary
 
