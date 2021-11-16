@@ -38,5 +38,15 @@ final public class JourneysAssembly: ModuleAssembly {
             controller.layoutFactory = r.resolve(CompositionalLayoutFactoryProtocol.self)!
             return controller
         }
+
+        container.register(JourneyDetailsViewModel.self) { _, journeyId in
+            JourneyDetailsViewModel(journeyId: journeyId)
+        }
+
+        container.register(JourneyDetailsViewController.self) { (r: Resolver, journeyId: String) in
+            let controller = JourneyDetailsViewController()
+            controller.viewModel = r.resolve(JourneyDetailsViewModel.self, argument: journeyId)!
+            return controller
+        }
     }
 }

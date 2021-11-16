@@ -29,9 +29,15 @@ final class JourneysViewController: UIViewController {
             .asDriver()
 
         let createJourney = createJourneyButton.rx.tap.mapToVoid().asDriver()
-
+        let details = tableView.rx.modelSelected(JourneysListItem.self)
+            .compactMap { item -> JourneysItemCellViewModel? in
+                guard case let .journey(cellViewModel) = item else { return nil }
+                return cellViewModel
+            }
+            .asDriver()
         let output = viewModel.transform(input: .init(load: loadTrigger,
-                                                      createJournerTrigger: createJourney))
+                                                      createJournerTrigger: createJourney,
+                                                      detailsTriger: details))
         output.items.drive(tableView.rx.items(dataSource: RxTableViewSectionedAnimatedDataSource(
             configureCell: { _, tableView, indexPath, item in
                 switch item {
@@ -45,6 +51,9 @@ final class JourneysViewController: UIViewController {
                     return cell
                 }
             })))
+            .disposed(by: disposeBag)
+        output.details
+            .drive()
             .disposed(by: disposeBag)
 
         output.createJourney
