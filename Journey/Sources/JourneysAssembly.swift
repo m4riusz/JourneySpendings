@@ -39,13 +39,15 @@ final public class JourneysAssembly: ModuleAssembly {
             return controller
         }
 
-        container.register(JourneyDetailsViewModel.self) { _, journeyId in
-            JourneyDetailsViewModel(journeyId: journeyId)
+        container.register(JourneyDetailsViewModel.self) { r, journeyId in
+            JourneyDetailsViewModel(journeyId: journeyId,
+                                    repository: r.resolve(JourneysRepositoryProtocol.self)!)
         }
 
         container.register(JourneyDetailsViewController.self) { (r: Resolver, journeyId: String) in
             let controller = JourneyDetailsViewController()
             controller.viewModel = r.resolve(JourneyDetailsViewModel.self, argument: journeyId)!
+            controller.layoutFactory = r.resolve(CompositionalLayoutFactoryProtocol.self)!
             return controller
         }
     }
