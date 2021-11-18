@@ -47,6 +47,19 @@ final class JourneysRepository: JourneysRepositoryProtocol {
             .observe(in: dbQueue)
             .map { items in items.map { $0.asJourney } }
     }
+    
+    func getJourney(id: String) -> Observable<Journey> {
+        ValueObservation
+            .tracking { db in
+                try GRDBJourneyInfo.fetchOne(db, GRDBJourney.filter(GRDBJourney.Columns.uuid == id).including(all: GRDBJourney.participants))
+            }
+            .rx
+            .observe(in: dbQueue)
+            .flatMapLatest { item -> Observable<Journey> in
+                guard let journey = item?.asJourney else { return .error(NSError(message: Assets.Strings.Core.Error.internalMessage)) }
+                return .just(journey)
+            }
+    }
 }
 
 private struct GRDBJourneyInfo: FetchableRecord, Decodable {
