@@ -43,7 +43,13 @@ final class JourneysViewModel: ViewModelType {
                 self?.coordinator.toCreateForm()
             })
 
-        return Output(items: items, createJourney: createJourney)
+        let details = input.detailsTriger
+        .do(onNext: { [weak self] item in
+            self?.coordinator.toDetails(journeyId: item.uuid)
+        })
+        .map { _ in Void() }
+
+        return Output(items: items, createJourney: createJourney, details: details)
     }
 }
 
@@ -51,10 +57,12 @@ extension JourneysViewModel {
     struct Input {
         var load: Driver<Void>
         var createJournerTrigger: Driver<Void>
+        var detailsTriger: Driver<JourneysItemCellViewModel>
     }
     struct Output {
         var items: Driver<[Section<JourneysListItem>]>
         var createJourney: Driver<Void>
+        var details: Driver<Void>
     }
 }
 

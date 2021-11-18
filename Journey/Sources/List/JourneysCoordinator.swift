@@ -11,6 +11,7 @@ import Core
 
 public protocol JourneysCoordinatorProtocol {
     func toCreateForm()
+    func toDetails(journeyId: String)
 }
 
 final public class JourneysCoordinator: Coordinator {
@@ -27,13 +28,20 @@ final public class JourneysCoordinator: Coordinator {
         controller.viewModel.coordinator = self
         navigationController.viewControllers = [controller]
     }
+}
 
+// MARK: - JourneysCoordinatorProtocol
+extension JourneysCoordinator: JourneysCoordinatorProtocol {
     public func toCreateForm() {
         let journeyCreateCoordinator = JourneyCreateCoordinator(container: container,
                                                                 navigationController: navigationController)
         journeyCreateCoordinator.start()
     }
-}
 
-// MARK: - JourneysCoordinatorProtocol
-extension JourneysCoordinator: JourneysCoordinatorProtocol { /*Nop*/ }
+    public func toDetails(journeyId: String) {
+        let journeyDetailsCoordinator = JourneyDetailsCoordinator(container: container,
+                                                                  navigationController: navigationController,
+                                                                  journeyId: journeyId)
+        journeyDetailsCoordinator.start()
+    }
+}
