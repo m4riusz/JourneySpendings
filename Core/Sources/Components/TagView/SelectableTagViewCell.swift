@@ -21,8 +21,8 @@ final class SelectableTagViewCell: BaseCollectionViewCell, Reusable {
         contentView.layer.borderWidth = Constants.borderWidth
         textLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Spacings.small)
-            make.left.equalToSuperview().offset(Spacings.normal)
-            make.bottom.equalToSuperview().offset(-Spacings.small)
+            make.left.equalToSuperview().offset(Spacings.small)
+            make.right.equalToSuperview().offset(-Spacings.small)
             make.bottom.equalToSuperview().offset(-Spacings.small)
         }
     }

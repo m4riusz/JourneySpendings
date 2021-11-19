@@ -18,8 +18,6 @@ final class MainCoordinator: Coordinator {
 
     private lazy var journeysCoordinator: JourneysCoordinator = {
         let navigationController = UINavigationController()
-        navigationController.isNavigationBarHidden = false
-        navigationController.navigationBar.isTranslucent = false
         navigationController.tabBarItem = UITabBarItem(title: Assets.Strings.MobileApp.journeyTab,
                                                        image: Assets.Images.MobileApp.cardTravel,
                                                        tag: 0)
@@ -28,8 +26,6 @@ final class MainCoordinator: Coordinator {
 
     private lazy var aboutCoordinator: AboutCoordinator = {
         let navigationController = UINavigationController()
-        navigationController.isNavigationBarHidden = false
-        navigationController.navigationBar.isTranslucent = false
         navigationController.tabBarItem = .init(title: Assets.Strings.MobileApp.aboutTab,
                                                 image: Assets.Images.MobileApp.infoOutline,
                                                 tag: 1)

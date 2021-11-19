@@ -11,7 +11,8 @@ import UIKit
 import Core
 
 final class JourneyDetailsViewController: UIViewController {
-    private lazy var tagView = TagView(layout: layoutFactory.tagView(itemSpacing: Spacings.normal))
+    private lazy var contentView = UIView()
+    private lazy var tagView = TagView(layout: layoutFactory.scrolableTagView(itemSpacing: Spacings.normal))
     private lazy var disposeBag = DisposeBag()
     var viewModel: JourneyDetailsViewModel!
     var layoutFactory: CompositionalLayoutFactoryProtocol!
@@ -39,13 +40,14 @@ final class JourneyDetailsViewController: UIViewController {
     }
     
     private func setupView() {
-        view.addSubview(tagView)
+        view.addSubview(contentView)
         view.backgroundColor = Assets.Colors.Core.Background.primary
+        contentView.addSubview(tagView)
+        contentView.snp.makeConstraints { $0.edges.equalTo(view.safeAreaLayoutGuide.snp.edges) }
         tagView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
         }
     }
 }

@@ -116,9 +116,7 @@ final class JourneyCreateViewController: UIViewController {
         participantAddButton.text = Literals.People.Name.add
         participantAddButton.style = .tertiary
 
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        scrollView.snp.makeConstraints { $0.edges.equalTo(view.safeAreaLayoutGuide.snp.edges) }
 
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
