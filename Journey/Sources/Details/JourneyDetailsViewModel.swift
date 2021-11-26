@@ -11,9 +11,10 @@ import RxSwift
 import Core
 
 final class JourneyDetailsViewModel: ViewModelType {
+    private typealias Literals = Assets.Strings.Journey.Details
     private let journeyId: String
     private let repository: JourneysRepositoryProtocol
-    
+
     init(journeyId: String, repository: JourneysRepositoryProtocol) {
         self.journeyId = journeyId
         self.repository = repository
@@ -31,24 +32,36 @@ final class JourneyDetailsViewModel: ViewModelType {
                     })
             }
             .share(replay: 1)
-        
+
         let journeyName = journey.map { $0.name }.asDriver()
-        
-        let participants = journey.flatMapLatest { journey -> Observable<[TagViewItem]> in
-            let items = journey.participants.enumerated()
-            return .just(items.map { .selectable(viewModel: .init(text: $0.element.name, selected: $0.offset == 0)) })
-        }
+        let selection = input.currentFilter.startWith("").asObservable()
+        let allItem: Observable<TagViewItem> = .just(.selectable(viewModel: .init(text: Literals.Participant.all)))
+        let participants = Observable.combineLatest(selection, allItem, journey)
+            .flatMapLatest { data -> Observable<[TagViewItem]> in
+                let selected = data.0
+                let allItem: TagViewItem = .selectable(viewModel: .init(uuid: data.1.uuid,
+                                                                        text: data.1.text,
+                                                                        selected: (data.1.uuid == selected) || selected.isEmpty))
+                var items: [TagViewItem] = data.2.participants
+                    .enumerated()
+                    .map { .selectable(viewModel: .init(uuid: $0.element.uuid,
+                                                        text: $0.element.name,
+                                                        selected: $0.element.uuid == selected)) }
+                items.insert(allItem, at: 0)
+                return .just(items)
+                }
         .asDriver()
-        return Output(journeyName: journeyName, participants: participants)
+        return Output(journeyName: journeyName, participantFilters: participants)
     }
 }
 
 extension JourneyDetailsViewModel {
     struct Input {
         var load: Driver<Void>
+        var currentFilter: Driver<String>
     }
     struct Output {
         var journeyName: Driver<String>
-        var participants: Driver<[TagViewItem]>
+        var participantFilters: Driver<[TagViewItem]>
     }
 }

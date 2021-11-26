@@ -15,10 +15,15 @@ final class SelectableTagViewCell: BaseCollectionViewCell, Reusable {
         static let borderWidth: CGFloat = 1.5
     }
     private lazy var textLabel = UILabel()
+    private lazy var tapGesture = UITapGestureRecognizer()
+    var didTap: ControlEvent<UITapGestureRecognizer> {
+        tapGesture.rx.event
+    }
 
     override func commonInit() {
         contentView.addSubview(textLabel)
         contentView.layer.borderWidth = Constants.borderWidth
+        contentView.addGestureRecognizer(tapGesture)
         textLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Spacings.small)
             make.left.equalToSuperview().offset(Spacings.small)

@@ -16,7 +16,7 @@ final class JourneyDetailsViewController: UIViewController {
     private lazy var disposeBag = DisposeBag()
     var viewModel: JourneyDetailsViewModel!
     var layoutFactory: CompositionalLayoutFactoryProtocol!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -27,18 +27,20 @@ final class JourneyDetailsViewController: UIViewController {
         let loadTrigger = rx.methodInvoked(#selector(viewWillAppear))
             .mapToVoid()
             .asDriver()
-        
-        let output = viewModel.transform(input: .init(load: loadTrigger))
-        
+
+        let itemSelected = tagView.rx.selectTagEvent.asDriver()
+
+        let output = viewModel.transform(input: .init(load: loadTrigger, currentFilter: itemSelected))
+
         output.journeyName
             .drive(rx.title)
             .disposed(by: disposeBag)
-        
-        output.participants
+
+        output.participantFilters
             .drive(tagView.rx.items)
             .disposed(by: disposeBag)
     }
-    
+
     private func setupView() {
         view.addSubview(contentView)
         view.backgroundColor = Assets.Colors.Core.Background.primary

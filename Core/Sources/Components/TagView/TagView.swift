@@ -26,6 +26,7 @@ final public class TagView: UIView {
     private lazy var stackView = UIStackView()
     private let collectionView: UICollectionView
     lazy var deleteItemSubject = PublishSubject<String>()
+    lazy var selectItemSubject = PublishSubject<String>()
 
     public var titleText: String? {
         didSet {
@@ -127,6 +128,10 @@ extension TagView: UICollectionViewDataSource {
         case .selectable(let viewModel):
             let cell = collectionView.dequeueCell(SelectableTagViewCell.self, indexPath: indexPath)
             cell.load(viewModel: viewModel)
+            cell.didTap
+                .map { _ in viewModel.uuid }
+                .bind(to: selectItemSubject)
+                .disposed(by: cell.disposeBag)
             return cell
         }
     }

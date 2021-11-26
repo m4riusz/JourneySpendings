@@ -47,7 +47,7 @@ final class JourneysRepository: JourneysRepositoryProtocol {
             .observe(in: dbQueue)
             .map { items in items.map { $0.asJourney } }
     }
-    
+
     func getJourney(id: String) -> Observable<Journey> {
         ValueObservation
             .tracking { db in

@@ -19,7 +19,7 @@ public extension TagViewItem {
         case .selectable(let viewModel): return viewModel.uuid
         }
     }
-    var text: String? {
+    var text: String {
         switch self {
         case .deletable(let viewModel): return viewModel.text
         case .selectable(let viewModel): return viewModel.text

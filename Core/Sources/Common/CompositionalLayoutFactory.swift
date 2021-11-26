@@ -25,7 +25,7 @@ public final class CompositionalLayoutFactory: CompositionalLayoutFactoryProtoco
         section.interGroupSpacing = itemSpacing
         return UICollectionViewCompositionalLayout(section: section)
     }
-    
+
     public func scrolableTagView(itemSpacing: CGFloat) -> UICollectionViewLayout {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .estimated(100),
                                                             heightDimension: .estimated(50)))

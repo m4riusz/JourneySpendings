@@ -17,3 +17,4 @@
 "Create/People/Name/Error/tooShort" = "Nazwa uczestnika jest zbyt krótka";
 "Create/People/Name/Error/tooLong" = "Nazwa uczestnika jest zbyt długa";
 "Create/People/Name/Error/alreadyExists" = "Uczestnik o takiej nazwie już istnieje";
+"Details/Participant/all" = "Wszyscy";
