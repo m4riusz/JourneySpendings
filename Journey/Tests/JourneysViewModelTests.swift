@@ -28,8 +28,10 @@ final class JourneysViewModelTests: XCTestCase {
         repository.getCurrentJourneysResult = .just([])
         let loadEvent = PublishSubject<Void>()
         let createJourneyTrigger = PublishSubject<Void>()
+        let details = PublishSubject<String>()
         let output = sut.transform(input: .init(load: loadEvent.asDriver(),
-                                                createJournerTrigger: createJourneyTrigger.asDriver()))
+                                                createJournerTrigger: createJourneyTrigger.asDriver(),
+                                                detailsTriger: details.asDriver()))
         let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
 
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
@@ -59,8 +61,10 @@ final class JourneysViewModelTests: XCTestCase {
                                                            participants: [])])
         let loadEvent = PublishSubject<Void>()
         let createJourneyTrigger = PublishSubject<Void>()
+        let details = PublishSubject<String>()
         let output = sut.transform(input: .init(load: loadEvent.asDriver(),
-                                                createJournerTrigger: createJourneyTrigger.asDriver()))
+                                                createJournerTrigger: createJourneyTrigger.asDriver(),
+                                                detailsTriger: details.asDriver()))
         let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
 
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
@@ -86,8 +90,10 @@ final class JourneysViewModelTests: XCTestCase {
         repository.getCurrentJourneysResult = .error(NSError.internal)
         let loadEvent = PublishSubject<Void>()
         let createJourneyTrigger = PublishSubject<Void>()
+        let details = PublishSubject<String>()
         let output = sut.transform(input: .init(load: loadEvent.asDriver(),
-                                                createJournerTrigger: createJourneyTrigger.asDriver()))
+                                                createJournerTrigger: createJourneyTrigger.asDriver(),
+                                                detailsTriger: details.asDriver()))
         let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
 
         let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
@@ -112,8 +118,10 @@ final class JourneysViewModelTests: XCTestCase {
         repository.getCurrentJourneysResult = .error(NSError.internal)
         let loadEvent = PublishSubject<Void>()
         let createJourneyTrigger = PublishSubject<Void>()
+        let details = PublishSubject<String>()
         let output = sut.transform(input: .init(load: loadEvent.asDriver(),
-                                                createJournerTrigger: createJourneyTrigger.asDriver()))
+                                                createJournerTrigger: createJourneyTrigger.asDriver(),
+                                                detailsTriger: details.asDriver()))
 
         scheduler.scheduleAt(.zero) {
             output.items

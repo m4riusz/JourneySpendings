@@ -49,6 +49,7 @@ final public class EmptyViewCell: BaseTableViewCell, Reusable {
     }
 }
 
+// MARK: - Loadable
 extension EmptyViewCell: Loadable {
     public func load(viewModel: EmptyViewCellViewModel) {
         emptyImageView.image = viewModel.image

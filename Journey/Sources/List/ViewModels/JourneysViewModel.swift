@@ -44,8 +44,8 @@ final class JourneysViewModel: ViewModelType {
             })
 
         let details = input.detailsTriger
-        .do(onNext: { [weak self] item in
-            self?.coordinator.toDetails(journeyId: item.uuid)
+        .do(onNext: { [weak self] journeyId in
+            self?.coordinator.toDetails(journeyId: journeyId)
         })
         .map { _ in Void() }
 
@@ -57,7 +57,7 @@ extension JourneysViewModel {
     struct Input {
         var load: Driver<Void>
         var createJournerTrigger: Driver<Void>
-        var detailsTriger: Driver<JourneysItemCellViewModel>
+        var detailsTriger: Driver<String>
     }
     struct Output {
         var items: Driver<[Section<JourneysListItem>]>

@@ -30,9 +30,9 @@ final class JourneysViewController: UIViewController {
 
         let createJourney = createJourneyButton.rx.tap.mapToVoid().asDriver()
         let details = tableView.rx.modelSelected(JourneysListItem.self)
-            .compactMap { item -> JourneysItemCellViewModel? in
+            .compactMap { item -> String? in
                 guard case let .journey(cellViewModel) = item else { return nil }
-                return cellViewModel
+                return cellViewModel.uuid
             }
             .asDriver()
         let output = viewModel.transform(input: .init(load: loadTrigger,

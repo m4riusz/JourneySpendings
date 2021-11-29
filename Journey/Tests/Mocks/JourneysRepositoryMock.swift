@@ -15,7 +15,8 @@ final class JourneysRepositoryMock: JourneysRepositoryProtocol {
     var getCurrentJourneysResult: Observable<[Journey]>!
     var journeyExistsResult: Observable<Bool>!
     var createResult: Observable<Void>!
-
+    var getJourneyResult: Observable<Journey>!
+    
     func journeyExists(name: String) -> Observable<Bool> {
         journeyExistsResult
     }
@@ -26,6 +27,9 @@ final class JourneysRepositoryMock: JourneysRepositoryProtocol {
 
     func create(name: String, currency: String, participants: [String]) -> Observable<Void> {
         createResult
-
+    }
+    
+    func getJourney(id: String) -> Observable<Journey> {
+        getJourneyResult
     }
 }
