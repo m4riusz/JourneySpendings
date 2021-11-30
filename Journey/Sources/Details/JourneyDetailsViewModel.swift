@@ -22,7 +22,8 @@ final class JourneyDetailsViewModel: ViewModelType {
     var coordinator: JourneyDetailsCoordinatorProtocol!
 
     func transform(input: Input) -> Output {
-        let journey = input.load.asObservable()
+        let load = input.load.asObservable().share(replay: 1)
+        let journey = load
             .flatMapLatest { [weak self] _ -> Observable<Journey> in
                 guard let strongSelf = self else { return .empty() }
                 return strongSelf.repository
@@ -51,7 +52,13 @@ final class JourneyDetailsViewModel: ViewModelType {
                 return .just(items)
                 }
         .asDriver()
-        return Output(journeyName: journeyName, participantFilters: participants)
+        
+        let items = load
+            .flatMapLatest { _ -> Observable<[SectionViewModel<JourneyDetailsListItem>]> in
+                return .just([.init(title: "Title", button: "button", items: [.expenses])])
+            }
+            .asDriver(onErrorJustReturn: [])
+        return Output(journeyName: journeyName, participantFilters: participants, items: items)
     }
 }
 
@@ -63,5 +70,6 @@ extension JourneyDetailsViewModel {
     struct Output {
         var journeyName: Driver<String>
         var participantFilters: Driver<[TagViewItem]>
+        var items: Driver<[SectionViewModel<JourneyDetailsListItem>]>
     }
 }

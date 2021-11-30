@@ -13,11 +13,12 @@ import RxDataSources
 import SnapKit
 
 final class JourneysViewController: UIViewController {
-    private lazy var tableView = UITableView()
+    private lazy var collectionView = UICollectionView(layout: layoutFactory.tableView())
     private lazy var disposeBag = DisposeBag()
     private lazy var createJourneyButton = UIBarButtonItem(.add)
     var viewModel: JourneysViewModel!
-
+    var layoutFactory: CompositionalLayoutFactoryProtocol!
+    
     override func viewDidLoad() {
         setupView()
         bindViewModel()
@@ -29,7 +30,7 @@ final class JourneysViewController: UIViewController {
             .asDriver()
 
         let createJourney = createJourneyButton.rx.tap.mapToVoid().asDriver()
-        let details = tableView.rx.modelSelected(JourneysListItem.self)
+        let details = collectionView.rx.modelSelected(JourneysListItem.self)
             .compactMap { item -> String? in
                 guard case let .journey(cellViewModel) = item else { return nil }
                 return cellViewModel.uuid
@@ -38,15 +39,15 @@ final class JourneysViewController: UIViewController {
         let output = viewModel.transform(input: .init(load: loadTrigger,
                                                       createJournerTrigger: createJourney,
                                                       detailsTriger: details))
-        output.items.drive(tableView.rx.items(dataSource: RxTableViewSectionedAnimatedDataSource(
-            configureCell: { _, tableView, indexPath, item in
+        output.items.drive(collectionView.rx.items(dataSource: RxCollectionViewSectionedAnimatedDataSource(
+            configureCell: { _, collectionView, indexPath, item in
                 switch item {
                 case .journey(let viewModel):
-                    let cell = tableView.dequeueCell(JourneyItemCell.self, indexPath: indexPath)
+                    let cell = collectionView.dequeueCell(JourneyItemCell.self, indexPath: indexPath)
                     cell.load(viewModel: viewModel)
                     return cell
                 case .empty(let viewModel):
-                    let cell = tableView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
+                    let cell = collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
                     cell.load(viewModel: viewModel)
                     return cell
                 }
@@ -63,13 +64,12 @@ final class JourneysViewController: UIViewController {
 
     private func setupView() {
         title = Assets.Strings.Journey.List.title
-        view.addSubview(tableView)
+        view.addSubview(collectionView)
         navigationItem.rightBarButtonItem = createJourneyButton
-        tableView.backgroundColor = Assets.Colors.Core.Background.primary
-        tableView.register(JourneyItemCell.self)
-        tableView.register(EmptyViewCell.self)
-        tableView.separatorStyle = .none
-        tableView.snp.makeConstraints { make in
+        collectionView.backgroundColor = Assets.Colors.Core.Background.primary
+        collectionView.register(JourneyItemCell.self)
+        collectionView.register(EmptyViewCell.self)
+        collectionView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()

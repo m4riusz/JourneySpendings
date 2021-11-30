@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final public class EmptyViewCell: BaseTableViewCell, Reusable {
+final public class EmptyViewCell: BaseCollectionViewCell, Reusable {
     private struct Constants {
         static let maxTitleLines = 1
         static let maxDescriptionLines = 3
@@ -22,7 +22,6 @@ final public class EmptyViewCell: BaseTableViewCell, Reusable {
         emptyImageView.contentMode = .scaleAspectFit
         titleLabel.numberOfLines = Constants.maxTitleLines
         descriptionLabel.numberOfLines = Constants.maxDescriptionLines
-        selectionStyle = .none
         contentView.addSubview(emptyImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)

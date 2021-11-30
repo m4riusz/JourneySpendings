@@ -36,7 +36,7 @@ final class JourneysViewModel: ViewModelType {
                 }
                 return items.map { .journey(viewModel: $0.asViewModel) }
             }
-            .map { [Section(items: $0)] }
+            .map { [SectionViewModel(items: $0)] }
             .asDriver()
         let createJourney = input.createJournerTrigger
             .do(onNext: { [weak self] _ in
@@ -60,7 +60,7 @@ extension JourneysViewModel {
         var detailsTriger: Driver<String>
     }
     struct Output {
-        var items: Driver<[Section<JourneysListItem>]>
+        var items: Driver<[SectionViewModel<JourneysListItem>]>
         var createJourney: Driver<Void>
         var details: Driver<Void>
     }

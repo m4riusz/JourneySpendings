@@ -8,14 +8,12 @@
 import UIKit
 import Core
 
-final class JourneyItemCell: BaseTableViewCell, Reusable {
+final class JourneyItemCell: BaseCollectionViewCell, Reusable {
     private lazy var titleLabel = UILabel()
     private lazy var startDateLabel = UILabel()
     private lazy var totalCostLabel = UILabel()
 
     override func commonInit() {
-        accessoryType = .disclosureIndicator
-        selectionStyle = .none
         contentView.addSubview(titleLabel)
         contentView.addSubview(startDateLabel)
         contentView.addSubview(totalCostLabel)

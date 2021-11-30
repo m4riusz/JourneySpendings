@@ -9,11 +9,12 @@ import RxSwift
 import RxCocoa
 import UIKit
 import Core
+import RxDataSources
 
 final class JourneyDetailsViewController: UIViewController {
     private lazy var contentView = UIView()
     private lazy var tagView = TagView(layout: layoutFactory.scrolableTagView(itemSpacing: Spacings.normal))
-    private lazy var tableView = UITableView()
+    private lazy var collectionView = UICollectionView(layout: layoutFactory.tableView())
     private lazy var disposeBag = DisposeBag()
     var viewModel: JourneyDetailsViewModel!
     var layoutFactory: CompositionalLayoutFactoryProtocol!
@@ -32,6 +33,19 @@ final class JourneyDetailsViewController: UIViewController {
         let itemSelected = tagView.rx.selectTagEvent.asDriver()
 
         let output = viewModel.transform(input: .init(load: loadTrigger, currentFilter: itemSelected))
+        
+        output.items.drive(collectionView.rx.items(dataSource: RxCollectionViewSectionedAnimatedDataSource(
+            configureCell: { _, collectionView, indexPath, item in
+                switch item {
+                case .expenses:
+                    return collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
+                }
+            }, configureSupplementaryView: { dataSource, collectionView, _, IndexPath in
+                let cell = collectionView.dequeueHeader(Section.self, indexPath: IndexPath)
+                cell.load(viewModel: dataSource.sectionModels[IndexPath.row])
+                return cell
+            })))
+            .disposed(by: disposeBag)
 
         output.journeyName
             .drive(rx.title)
@@ -45,16 +59,17 @@ final class JourneyDetailsViewController: UIViewController {
     private func setupView() {
         view.addSubview(contentView)
         view.backgroundColor = Assets.Colors.Core.Background.primary
-        tableView.registerHeaderFooter(TableViewSection.self)
+        collectionView.registerHeader(Section.self)
+        collectionView.register(EmptyViewCell.self)
         contentView.addSubview(tagView)
-        contentView.addSubview(tableView)
+        contentView.addSubview(collectionView)
         contentView.snp.makeConstraints { $0.edges.equalTo(view.safeAreaLayoutGuide.snp.edges) }
         tagView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
         }
-        tableView.snp.makeConstraints { make in
+        collectionView.snp.makeConstraints { make in
             make.top.equalTo(tagView.snp.bottom).offset(Spacings.small)
             make.left.equalToSuperview()
             make.right.equalToSuperview()

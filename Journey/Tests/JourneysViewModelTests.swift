@@ -32,9 +32,9 @@ final class JourneysViewModelTests: XCTestCase {
         let output = sut.transform(input: .init(load: loadEvent.asDriver(),
                                                 createJournerTrigger: createJourneyTrigger.asDriver(),
                                                 detailsTriger: details.asDriver()))
-        let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
+        let itemsObserver = scheduler.createObserver([SectionViewModel<JourneysListItem>].self)
 
-        let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
+        let expectedItems: [Recorded<Event<[SectionViewModel<JourneysListItem>]>>] = [
             .next(100, [.init(items: [.empty(viewModel: .init(image: CoreImages.bagSuitcaseOutline,
                                                               title: Literals.title,
                                                               description: Literals.descrption))])])
@@ -65,9 +65,9 @@ final class JourneysViewModelTests: XCTestCase {
         let output = sut.transform(input: .init(load: loadEvent.asDriver(),
                                                 createJournerTrigger: createJourneyTrigger.asDriver(),
                                                 detailsTriger: details.asDriver()))
-        let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
+        let itemsObserver = scheduler.createObserver([SectionViewModel<JourneysListItem>].self)
 
-        let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
+        let expectedItems: [Recorded<Event<[SectionViewModel<JourneysListItem>]>>] = [
             .next(100, [.init(items: [.journey(viewModel: .init(uuid: "1",
                                                                 name: "Name",
                                                                 startDate: "01-01-2000",
@@ -94,9 +94,9 @@ final class JourneysViewModelTests: XCTestCase {
         let output = sut.transform(input: .init(load: loadEvent.asDriver(),
                                                 createJournerTrigger: createJourneyTrigger.asDriver(),
                                                 detailsTriger: details.asDriver()))
-        let itemsObserver = scheduler.createObserver([Section<JourneysListItem>].self)
+        let itemsObserver = scheduler.createObserver([SectionViewModel<JourneysListItem>].self)
 
-        let expectedItems: [Recorded<Event<[Section<JourneysListItem>]>>] = [
+        let expectedItems: [Recorded<Event<[SectionViewModel<JourneysListItem>]>>] = [
             .next(100, [.init(items: [.empty(viewModel: .init(image: CoreImages.bagSuitcaseOutline,
                                                               title: Literals.title,
                                                               description: Literals.descrption))])])

@@ -20,6 +20,7 @@ final public class JourneysAssembly: ModuleAssembly {
         container.register(JourneysViewController.self) { r in
             let controller = JourneysViewController()
             controller.viewModel = r.resolve(JourneysViewModel.self)!
+            controller.layoutFactory = r.resolve(CompositionalLayoutFactoryProtocol.self)!
             return controller
         }
 
