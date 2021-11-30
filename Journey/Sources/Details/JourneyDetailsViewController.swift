@@ -38,11 +38,13 @@ final class JourneyDetailsViewController: UIViewController {
             configureCell: { _, collectionView, indexPath, item in
                 switch item {
                 case .expenses:
-                    return collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
+                    let cell = collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
+                    cell.load(viewModel: .init(image: .add, title: "ok", description: "pk"))
+                    return cell
                 }
-            }, configureSupplementaryView: { dataSource, collectionView, _, IndexPath in
-                let cell = collectionView.dequeueHeader(Section.self, indexPath: IndexPath)
-                cell.load(viewModel: dataSource.sectionModels[IndexPath.row])
+            }, configureSupplementaryView: { dataSource, collectionView, _, indexPath in
+                let cell = collectionView.dequeueHeader(Section.self, indexPath: indexPath)
+                cell.load(viewModel: dataSource.sectionModels[indexPath.section])
                 return cell
             })))
             .disposed(by: disposeBag)

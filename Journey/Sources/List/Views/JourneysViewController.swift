@@ -51,6 +51,10 @@ final class JourneysViewController: UIViewController {
                     cell.load(viewModel: viewModel)
                     return cell
                 }
+            }, configureSupplementaryView: { dataSource, collectionView, _, indexPath in
+                let header = collectionView.dequeueHeader(Section.self, indexPath: indexPath)
+                header.load(viewModel: dataSource[indexPath.section])
+                return header
             })))
             .disposed(by: disposeBag)
         output.details
@@ -69,6 +73,7 @@ final class JourneysViewController: UIViewController {
         collectionView.backgroundColor = Assets.Colors.Core.Background.primary
         collectionView.register(JourneyItemCell.self)
         collectionView.register(EmptyViewCell.self)
+        collectionView.registerHeader(Section.self)
         collectionView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
