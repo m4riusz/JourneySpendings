@@ -5,8 +5,6 @@
 //  Created by Mariusz Sut on 25/09/2021.
 //
 
-import Core
-import UIKit
 import RxDataSources
 
 struct JourneysItemCellViewModel {

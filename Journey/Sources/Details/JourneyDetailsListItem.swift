@@ -9,14 +9,14 @@ import Core
 import RxDataSources
 
 enum JourneyDetailsListItem {
-    case expenses
+    case expense(viewModel: JourneyExpenseCellViewModel)
 }
 
 // MARK: - IdentifiableType
 extension JourneyDetailsListItem: IdentifiableType {
     var identity: AnyHashable {
         switch self {
-        case .expenses: return ""
+        case .expense(let viewModel): return viewModel.uuid
         }
     }
 }

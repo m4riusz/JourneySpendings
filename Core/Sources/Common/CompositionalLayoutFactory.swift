@@ -46,10 +46,12 @@ public final class CompositionalLayoutFactory: CompositionalLayoutFactoryProtoco
                                                                        heightDimension: .estimated(50)),
                                                      subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.boundarySupplementaryItems = [.init(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                      heightDimension: .estimated(50)),
-                                                    elementKind: UICollectionView.elementKindSectionHeader,
-                                                    alignment: .top)]
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
+                                                                                   heightDimension: .estimated(50)),
+                                                                 elementKind: UICollectionView.elementKindSectionHeader,
+                                                                 alignment: .top)
+        header.pinToVisibleBounds = true
+        section.boundarySupplementaryItems = [header]
         return UICollectionViewCompositionalLayout(section: section)
     }
 }

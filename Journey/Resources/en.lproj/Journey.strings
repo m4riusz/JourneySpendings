@@ -18,3 +18,5 @@
 "Create/People/Name/Error/tooLong" = "Participant name is too long";
 "Create/People/Name/Error/alreadyExists" = "Participant with this name already exists";
 "Details/Participant/all" = "All";
+"Details/Expense/add" = "add";
+"Details/Expense/title" = "Expenses";

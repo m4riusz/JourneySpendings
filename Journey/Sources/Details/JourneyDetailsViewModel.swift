@@ -55,7 +55,12 @@ final class JourneyDetailsViewModel: ViewModelType {
         
         let items = load
             .flatMapLatest { _ -> Observable<[SectionViewModel<JourneyDetailsListItem>]> in
-                return .just([.init(title: "Title", button: "button", items: [.expenses])])
+                return .just([.init(title: "19.01.2021", items: [
+                    .expense(viewModel: .init(uuid: "1", title: "Bardzo długa nazwa mieszcząca się w 2 linikach", persons: "ja", cost: "1 230,00 PLN")),
+                    .expense(viewModel: .init(uuid: "2", title: "Browary od stasia", persons: "Tomek", cost: "250,00 PLN")),
+                    .expense(viewModel: .init(uuid: "3", title: "Zakupy carrefour", persons: "Maciek i Robert", cost: "0,00 PLN")),
+                    .expense(viewModel: .init(uuid: "4", title: "Wypożyczenie kajaków na 5 dni", persons: "Kajak", cost: "130,00 PLN"))
+                ])])
             }
             .asDriver(onErrorJustReturn: [])
         return Output(journeyName: journeyName, participantFilters: participants, items: items)

@@ -29,6 +29,7 @@ final public class Section: UICollectionReusableView, Reusable {
     }
     
     private func commonInit() {
+        backgroundColor = Assets.Colors.Core.Background.primary
         stackView.axis = .horizontal
         stackView.spacing = Spacings.normal
         actionButton.style = .tertiary
@@ -38,10 +39,10 @@ final public class Section: UICollectionReusableView, Reusable {
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(actionButton)
         stackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(Spacings.small)
+            make.top.equalToSuperview()
             make.left.equalToSuperview().offset(Spacings.normal)
             make.right.equalToSuperview().offset(-Spacings.normal)
-            make.bottom.equalToSuperview().offset(-Spacings.small)
+            make.bottom.equalToSuperview()
         }
     }
 }

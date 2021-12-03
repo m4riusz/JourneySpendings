@@ -12,9 +12,11 @@ import Core
 import RxDataSources
 
 final class JourneyDetailsViewController: UIViewController {
+    private typealias Literals = Assets.Strings.Journey.Details
     private lazy var contentView = UIView()
     private lazy var tagView = TagView(layout: layoutFactory.scrolableTagView(itemSpacing: Spacings.normal))
     private lazy var collectionView = UICollectionView(layout: layoutFactory.tableView())
+    private lazy var expenseHeader = JourneyExpenseHeaderView()
     private lazy var disposeBag = DisposeBag()
     var viewModel: JourneyDetailsViewModel!
     var layoutFactory: CompositionalLayoutFactoryProtocol!
@@ -37,9 +39,9 @@ final class JourneyDetailsViewController: UIViewController {
         output.items.drive(collectionView.rx.items(dataSource: RxCollectionViewSectionedAnimatedDataSource(
             configureCell: { _, collectionView, indexPath, item in
                 switch item {
-                case .expenses:
-                    let cell = collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
-                    cell.load(viewModel: .init(image: .add, title: "ok", description: "pk"))
+                case .expense(let viewModel):
+                    let cell = collectionView.dequeueCell(JourneyExpenseCell.self, indexPath: indexPath)
+                    cell.load(viewModel: viewModel)
                     return cell
                 }
             }, configureSupplementaryView: { dataSource, collectionView, _, indexPath in
@@ -63,16 +65,26 @@ final class JourneyDetailsViewController: UIViewController {
         view.backgroundColor = Assets.Colors.Core.Background.primary
         collectionView.registerHeader(Section.self)
         collectionView.register(EmptyViewCell.self)
+        collectionView.register(JourneyExpenseCell.self)
+        expenseHeader.title = Literals.Expense.title
+        expenseHeader.action = Literals.Expense.add
         contentView.addSubview(tagView)
+        contentView.addSubview(expenseHeader)
         contentView.addSubview(collectionView)
         contentView.snp.makeConstraints { $0.edges.equalTo(view.safeAreaLayoutGuide.snp.edges) }
+        
         tagView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
         }
-        collectionView.snp.makeConstraints { make in
+        expenseHeader.snp.makeConstraints { make in
             make.top.equalTo(tagView.snp.bottom).offset(Spacings.small)
+            make.left.equalToSuperview().offset(Spacings.normal)
+            make.right.equalToSuperview().offset(-Spacings.normal)
+        }
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(expenseHeader.snp.bottom).offset(Spacings.small)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
