@@ -8,9 +8,9 @@
 import Foundation
 
 public struct SelectableTagViewCellViewModel {
-    let uuid: String
-    let text: String
-    let selected: Bool
+    public let uuid: String
+    public let text: String
+    public let selected: Bool
 
     public init(uuid: String = UUID().uuidString, text: String, selected: Bool = false) {
         self.uuid = uuid

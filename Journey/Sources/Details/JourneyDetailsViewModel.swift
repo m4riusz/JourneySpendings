@@ -51,19 +51,39 @@ final class JourneyDetailsViewModel: ViewModelType {
                 items.insert(allItem, at: 0)
                 return .just(items)
                 }
-        .asDriver()
+            .share(replay: 1)
         
-        let items = load
-            .flatMapLatest { _ -> Observable<[SectionViewModel<JourneyDetailsListItem>]> in
-                return .just([.init(title: "19.01.2021", items: [
+        
+        let items = Observable.combineLatest(journey, participants, allItem)
+            .flatMapLatest { data -> Observable<[SectionViewModel<JourneyDetailsListItem>]> in
+                let journey = data.0
+                let participants = data.1
+                let allItemId = data.2.uuid
+                let isAllItemSelected = participants.selectableItems.first(where: { $0.uuid == allItemId } )?.selected ?? false
+                
+                let allItems: Observable<[SectionViewModel<JourneyDetailsListItem>]> = .just([.init(title: "19.01.2021", items: [
                     .expense(viewModel: .init(uuid: "1", title: "Bardzo długa nazwa mieszcząca się w 2 linikach", persons: "ja", cost: "1 230,00 PLN")),
                     .expense(viewModel: .init(uuid: "2", title: "Browary od stasia", persons: "Tomek", cost: "250,00 PLN")),
                     .expense(viewModel: .init(uuid: "3", title: "Zakupy carrefour", persons: "Maciek i Robert", cost: "0,00 PLN")),
                     .expense(viewModel: .init(uuid: "4", title: "Wypożyczenie kajaków na 5 dni", persons: "Kajak", cost: "130,00 PLN"))
                 ])])
+                let otherItems: Observable<[SectionViewModel<JourneyDetailsListItem>]> = .just([.init(title: "19.01.2021", items: [
+                    .expense(viewModel: .init(uuid: "2", title: "Browary od stasia", persons: "Tomek", cost: "250,00 PLN")),
+                    .expense(viewModel: .init(uuid: "3", title: "Zakupy carrefour", persons: "Maciek i Robert", cost: "0,00 PLN")),
+                ])])
+                return isAllItemSelected ? allItems : otherItems
             }
             .asDriver(onErrorJustReturn: [])
-        return Output(journeyName: journeyName, participantFilters: participants, items: items)
+        return Output(journeyName: journeyName, participantFilters: participants.asDriver(), items: items)
+    }
+}
+
+extension Array where Element == TagViewItem {
+    var selectableItems: [SelectableTagViewCellViewModel] {
+        compactMap { item -> SelectableTagViewCellViewModel? in
+            guard case let .selectable(model) = item else { return nil }
+            return model
+        }
     }
 }
 
