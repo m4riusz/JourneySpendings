@@ -55,23 +55,31 @@ final class JourneyDetailsViewModel: ViewModelType {
         
         
         let items = Observable.combineLatest(journey, participants, allItem)
-            .flatMapLatest { data -> Observable<[SectionViewModel<JourneyDetailsListItem>]> in
-                let journey = data.0
-                let participants = data.1
+            .flatMapLatest { [weak self] data -> Observable<[Expense]> in
+                guard let strongSelf = self else { return .just([]) }
+                let allParticipants = data.0.participants.compactMap { $0.uuid }
+                let participants = data.1.selectableItems.filter { $0.selected }.compactMap { $0.uuid }
                 let allItemId = data.2.uuid
-                let isAllItemSelected = participants.selectableItems.first(where: { $0.uuid == allItemId } )?.selected ?? false
+                let isAllItemSelected = data.1.selectableItems.first(where: { $0.uuid == allItemId } )?.selected ?? false
                 
-                let allItems: Observable<[SectionViewModel<JourneyDetailsListItem>]> = .just([.init(title: "19.01.2021", items: [
-                    .expense(viewModel: .init(uuid: "1", title: "Bardzo długa nazwa mieszcząca się w 2 linikach", persons: "ja", cost: "1 230,00 PLN")),
-                    .expense(viewModel: .init(uuid: "2", title: "Browary od stasia", persons: "Tomek", cost: "250,00 PLN")),
-                    .expense(viewModel: .init(uuid: "3", title: "Zakupy carrefour", persons: "Maciek i Robert", cost: "0,00 PLN")),
-                    .expense(viewModel: .init(uuid: "4", title: "Wypożyczenie kajaków na 5 dni", persons: "Kajak", cost: "130,00 PLN"))
-                ])])
-                let otherItems: Observable<[SectionViewModel<JourneyDetailsListItem>]> = .just([.init(title: "19.01.2021", items: [
-                    .expense(viewModel: .init(uuid: "2", title: "Browary od stasia", persons: "Tomek", cost: "250,00 PLN")),
-                    .expense(viewModel: .init(uuid: "3", title: "Zakupy carrefour", persons: "Maciek i Robert", cost: "0,00 PLN")),
-                ])])
-                return isAllItemSelected ? allItems : otherItems
+                return strongSelf.repository
+                    .getExpenses(participants: isAllItemSelected ? allParticipants : participants)
+                    .catchAndReturn([])
+            }
+            .map { data -> [SectionViewModel<JourneyDetailsListItem>] in
+                data
+                    .sorted(by: { $0.date > $1.date })
+                    .reduce(into: [String: [Expense]]()) { partialResult, expense in
+                        if partialResult[expense.date.ddMMyyyyDoted] != nil {
+                            partialResult[expense.date.ddMMyyyyDoted]?.append(expense)
+                        } else {
+                            partialResult[expense.date.ddMMyyyyDoted] = [expense]
+                        }
+                    }
+                    .map { tuple -> SectionViewModel<JourneyDetailsListItem> in
+                        let items = tuple.value.map { JourneyExpenseCellViewModel(uuid: $0.uuid, title: $0.name, persons: "pers", cost: "PLS") }
+                        return SectionViewModel<JourneyDetailsListItem>(title: tuple.key, items: items.map { .expense(viewModel: $0) })
+                    }
             }
             .asDriver(onErrorJustReturn: [])
         return Output(journeyName: journeyName, participantFilters: participants.asDriver(), items: items)

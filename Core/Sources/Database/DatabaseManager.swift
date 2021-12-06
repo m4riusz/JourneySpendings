@@ -17,7 +17,11 @@ final class DatabaseManager: DatabaseManagerProtocol {
     var databaseQueue: DatabaseQueue?
 
     func setup() throws {
-        databaseQueue = DatabaseQueue()
+        var configuration = Configuration()
+        configuration.prepareDatabase { db in
+            db.trace { print($0) }
+        }
+        databaseQueue = DatabaseQueue(configuration: configuration)
         guard let dbQueue = databaseQueue else { fatalError("Unable to create database queue") }
         try migrator.migrate(dbQueue)
     }
@@ -44,20 +48,17 @@ final class DatabaseManager: DatabaseManagerProtocol {
                 t.uniqueKey(["uuid", "name"], onConflict: .rollback)
                 t.check(sql: "length(name) >= 2 AND length(name) <= 30")
             })
-            try database.create(table: "grdbJourneyExpense", body: { t in
+            try database.create(table: "grdbExpense", body: { t in
                 t.column("uuid", .text).primaryKey()
-                t.column("journeyId", .text)
-                    .notNull(onConflict: .rollback)
-                    .references("grdbJourney", onDelete: .cascade, onUpdate: .cascade)
                 t.column("name", .text).notNull(onConflict: .rollback)
                 t.column("date", .date).notNull(onConflict: .rollback)
                 t.column("cost", .double).notNull(onConflict: .rollback)
                 t.column("currency", .text).notNull(onConflict: .rollback)
             })
-            try database.create(table: "journeyExpense", body: { t in
-                t.column("participant", .text).notNull().indexed().references("grdbParticipant")
-                t.column("expense", .text).notNull().indexed().references("grdbJourneyExpense")
-                t.primaryKey(["participant", "expense"], onConflict: .rollback)
+            try database.create(table: "grdbParticipantExpense", body: { t in
+                t.column("participantId", .text).notNull().references("grdbParticipant")
+                t.column("expenseId", .text).notNull().references("grdbExpense")
+                t.primaryKey(["participantId", "expenseId"], onConflict: .rollback)
             })
         }
 

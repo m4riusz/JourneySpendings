@@ -60,6 +60,28 @@ final class JourneysRepository: JourneysRepositoryProtocol {
                 return .just(journey)
             }
     }
+    
+    func getExpenses(participants: [String]) -> Observable<[Expense]> {
+        ValueObservation
+            .tracking { db in
+//                let expenses = try GRDBParticipantExpense.fetchAll(db, keys: participants.map { data in
+//                    [GRDBParticipantExpense.Columns.participantId.name: data]
+//                })
+                try GRDBExpenseInfo.fetchAll(db, sql: """
+                    SELECT * FROM 'grdbParticipantsExpense' WHERE 'participantId' IN ()
+                """)
+            }
+            .rx
+            .observe(in: dbQueue)
+            .flatMapLatest { item -> Observable<[Expense]> in
+                return .just([])
+            }
+    }
+}
+
+private struct GRDBExpenseInfo: FetchableRecord, Decodable {
+    let grdbParticipants: [GRDBParticipant]
+    let grdbExpenses: [GRDBExpense]
 }
 
 private struct GRDBJourneyInfo: FetchableRecord, Decodable {
@@ -72,6 +94,6 @@ private struct GRDBJourneyInfo: FetchableRecord, Decodable {
               startDate: grdbJourney.startDate,
               totalCost: grdbJourney.totalCost,
               currency: grdbJourney.currency,
-              participants: grdbParticipants.map { .init(uuid: $0.uuid!, name: $0.name) })
+              participants: grdbParticipants.map { .init(uuid: $0.uuid!, name: $0.name, expenses: []) })
     }
 }

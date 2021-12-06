@@ -10,6 +10,7 @@ import Foundation
 public extension Date {
     private struct Costants {
         static let ddMMyyyyFormat = "dd-MM-yyyy"
+        static let ddMMyyyyFormatDoted = "dd.MM.yyyy"
     }
 
     static func from(year: Int, month: Int, day: Int) -> Date {
@@ -20,6 +21,12 @@ public extension Date {
     var ddMMyyyy: String {
         let formatter = DateFormatter()
         formatter.dateFormat = Costants.ddMMyyyyFormat
+        return formatter.string(from: self)
+    }
+    
+    var ddMMyyyyDoted: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = Costants.ddMMyyyyFormatDoted
         return formatter.string(from: self)
     }
 }

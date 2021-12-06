@@ -1,5 +1,5 @@
 //
-//  GRDBJourneyExpense.swift
+//  GRDBExpense.swift
 //  Core
 //
 //  Created by Sut, Mariusz, (mBank/DBI) on 03/12/2021.
@@ -8,31 +8,26 @@
 import Foundation
 import GRDB
 
-struct GRDBJourneyExpense {
+struct GRDBExpense {
     var uuid: String?
-    var journeyId: String?
     var name: String
     var date: Date
     var cost: Double
     var currency: String
 }
 
-extension GRDBJourneyExpense {
-    static let participants = hasMany(GRDBParticipant.self)
-
-    var participants: QueryInterfaceRequest<GRDBParticipant> {
-        request(for: GRDBJourneyExpense.participants)
-    }
+extension GRDBExpense {
+    static let participantExpense = hasMany(GRDBParticipantExpense.self)
+    static let participant = hasMany(GRDBParticipant.self, through: participantExpense, using: GRDBParticipantExpense.participant)
 }
 
 // MARK: - Codable
-extension GRDBJourneyExpense: Codable { /*Nop*/ }
+extension GRDBExpense: Codable { /*Nop*/ }
 
 // MARK: - TableRecord
-extension GRDBJourneyExpense: TableRecord {
+extension GRDBExpense: TableRecord {
     enum Columns {
         static let uuid = Column(CodingKeys.uuid)
-        static let journeyId = Column(CodingKeys.journeyId)
         static let name = Column(CodingKeys.name)
         static let date = Column(CodingKeys.date)
         static let cost = Column(CodingKeys.cost)
@@ -41,10 +36,10 @@ extension GRDBJourneyExpense: TableRecord {
 }
 
 // MARK: - FetchableRecord
-extension GRDBJourneyExpense: FetchableRecord { /*Nop*/ }
+extension GRDBExpense: FetchableRecord { /*Nop*/ }
 
 // MARK: - MutablePersistableRecord
-extension GRDBJourneyExpense: MutablePersistableRecord {
+extension GRDBExpense: MutablePersistableRecord {
     mutating func insert(_ db: Database) throws {
         if uuid.isNilOrEmpty {
             uuid = UUID().uuidString

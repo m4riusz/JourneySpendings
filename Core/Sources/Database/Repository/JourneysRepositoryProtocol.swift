@@ -12,4 +12,5 @@ public protocol JourneysRepositoryProtocol {
     func journeyExists(name: String) -> Observable<Bool>
     func getCurrentJourneys() -> Observable<[Journey]>
     func getJourney(id: String) -> Observable<Journey>
+    func getExpenses(participants: [String]) -> Observable<[Expense]>
 }
