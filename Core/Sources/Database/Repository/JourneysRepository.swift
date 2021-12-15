@@ -64,24 +64,24 @@ final class JourneysRepository: JourneysRepositoryProtocol {
     func getExpenses(participants: [String]) -> Observable<[Expense]> {
         ValueObservation
             .tracking { db in
-//                let expenses = try GRDBParticipantExpense.fetchAll(db, keys: participants.map { data in
-//                    [GRDBParticipantExpense.Columns.participantId.name: data]
-//                })
-                try GRDBExpenseInfo.fetchAll(db, sql: """
-                    SELECT * FROM 'grdbParticipantsExpense' WHERE 'participantId' IN ()
-                """)
+                try GRDBParticipantExpense.filter(participants.contains(Column(GRDBParticipantExpense.Columns.participantId.name)))
+                    .fetchAll(db)
             }
             .rx
             .observe(in: dbQueue)
-            .flatMapLatest { item -> Observable<[Expense]> in
-                return .just([])
+            .distinctUntilChanged()
+            .flatMapLatest { items -> Observable<[Expense]> in
+            .just(items
+                    .groupByExpenses
+                    .compactMap { [weak self] data -> Expense? in
+                        guard let strongSelf = self else { return nil }
+                        let expense = try? strongSelf.dbQueue.read { try GRDBExpense.fetchOne($0, key: data.key) }
+                        let participants = try? strongSelf.dbQueue.read { try GRDBParticipant.fetchAll($0, keys: data.value) }
+                        return expense?.asDomain(participants: participants)
+                    }
+                )
             }
     }
-}
-
-private struct GRDBExpenseInfo: FetchableRecord, Decodable {
-    let grdbParticipants: [GRDBParticipant]
-    let grdbExpenses: [GRDBExpense]
 }
 
 private struct GRDBJourneyInfo: FetchableRecord, Decodable {
@@ -94,6 +94,35 @@ private struct GRDBJourneyInfo: FetchableRecord, Decodable {
               startDate: grdbJourney.startDate,
               totalCost: grdbJourney.totalCost,
               currency: grdbJourney.currency,
-              participants: grdbParticipants.map { .init(uuid: $0.uuid!, name: $0.name, expenses: []) })
+              participants: grdbParticipants.map { .init(uuid: $0.uuid!, name: $0.name) })
+    }
+}
+
+private extension GRDBExpense {
+    func asDomain(participants: [GRDBParticipant]?) -> Expense {
+        .init(uuid: uuid!,
+              name: name,
+              date: date,
+              totalCost: cost,
+              currency: currency,
+              participants: participants?.map { $0.asDomain } ?? [] )
+    }
+}
+
+private extension GRDBParticipant {
+    var asDomain: Participant {
+        .init(uuid: uuid!, name: name)
+    }
+}
+
+private extension Array where Element == GRDBParticipantExpense {
+    var groupByExpenses: [String: [String]] {
+        reduce(into: [String: [String]]()) { partialResult, item in
+            if var value = partialResult[item.expenseId] {
+                value.append(item.participantId)
+            } else {
+                partialResult[item.expenseId] = [item.participantId]
+            }
+        }
     }
 }

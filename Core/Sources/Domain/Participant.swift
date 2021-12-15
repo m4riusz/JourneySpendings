@@ -10,5 +10,4 @@ import Foundation
 public struct Participant {
     public let uuid: String
     public let name: String
-    public let expenses: [Expense]
 }
