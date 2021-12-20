@@ -34,3 +34,6 @@ extension GRDBParticipantExpense: FetchableRecord { /*Nop*/ }
 
 // MARK: - Equatable
 extension GRDBParticipantExpense: Equatable { /*Nop*/ }
+
+// MARK: - MutablePersistableRecord
+extension GRDBParticipantExpense: MutablePersistableRecord { /*Nop*/ }

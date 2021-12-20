@@ -82,6 +82,20 @@ final class JourneysRepository: JourneysRepositoryProtocol {
                 )
             }
     }
+    
+    func addExpense(name: String, totalCost: Double, participants: [String], currency: String) -> Observable<Void> {
+        dbQueue.rx.write { [unowned self] db in
+            var expense = GRDBExpense(uuid: nil, name: name, date: self.dateProvider.now, cost: totalCost, currency: currency)
+            try expense.save(db)
+            participants
+                .map { GRDBParticipantExpense(participantId: $0, expenseId: expense.uuid!) }
+                .forEach {
+                    var value = $0
+                    try! value.save(db)
+                }
+        }
+        .asObservable()
+    }
 }
 
 private struct GRDBJourneyInfo: FetchableRecord, Decodable {

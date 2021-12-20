@@ -33,8 +33,9 @@ final class JourneyDetailsViewController: UIViewController {
             .asDriver()
 
         let itemSelected = tagView.rx.selectTagEvent.asDriver()
+        let addExpense = expenseHeader.actionTap.mapToVoid().asDriver()
 
-        let output = viewModel.transform(input: .init(load: loadTrigger, currentFilter: itemSelected))
+        let output = viewModel.transform(input: .init(load: loadTrigger, currentFilter: itemSelected, addExpense: addExpense))
         
         output.items.drive(collectionView.rx.items(dataSource: RxCollectionViewSectionedAnimatedDataSource(
             configureCell: { _, collectionView, indexPath, item in
@@ -57,6 +58,10 @@ final class JourneyDetailsViewController: UIViewController {
 
         output.participantFilters
             .drive(tagView.rx.items)
+            .disposed(by: disposeBag)
+        
+        output.addResult
+            .drive()
             .disposed(by: disposeBag)
     }
 

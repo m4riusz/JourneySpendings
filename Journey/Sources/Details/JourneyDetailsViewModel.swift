@@ -23,6 +23,7 @@ final class JourneyDetailsViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
         let load = input.load.asObservable().share(replay: 1)
+        let add = input.addExpense
         let journey = load
             .flatMapLatest { [weak self] _ -> Observable<Journey> in
                 guard let strongSelf = self else { return .empty() }
@@ -36,7 +37,7 @@ final class JourneyDetailsViewModel: ViewModelType {
 
         let journeyName = journey.map { $0.name }.asDriver()
         let selection = input.currentFilter.startWith("").asObservable()
-        let allItem: Observable<TagViewItem> = .just(.selectable(viewModel: .init(text: Literals.Participant.all)))
+        let allItem: Observable<TagViewItem> = .just(.selectable(viewModel: .init(text: Literals.Participant.all))).share(replay: 1)
         let participants = Observable.combineLatest(selection, allItem, journey)
             .flatMapLatest { data -> Observable<[TagViewItem]> in
                 let selected = data.0
@@ -53,6 +54,22 @@ final class JourneyDetailsViewModel: ViewModelType {
                 }
             .share(replay: 1)
         
+        let addResult = add.asObservable().withLatestFrom(Observable.combineLatest(allItem, participants, resultSelector: { allItem, participants -> [String] in
+            let allItemSelected = participants.selectableItems.first(where: { $0.selected })?.uuid == allItem.uuid
+            if allItemSelected {
+                return Array(participants.selectableItems.map { $0.uuid }.dropFirst())
+            } else if let selected = participants.selectableItems.first(where: { $0.selected} )?.uuid {
+                return [selected]
+            } else {
+                return []
+            }
+        }))
+            .flatMapLatest { [weak self] participants -> Observable<Void> in
+                guard let strongSelf = self else { return .just(()) }
+                return strongSelf.repository.addExpense(name: "Name", totalCost: 10, participants: participants, currency: "PLN")
+            }
+            .asDriver()
+
         
         let items = Observable.combineLatest(journey, participants, allItem)
             .flatMapLatest { [weak self] data -> Observable<[Expense]> in
@@ -77,12 +94,16 @@ final class JourneyDetailsViewModel: ViewModelType {
                         }
                     }
                     .map { tuple -> SectionViewModel<JourneyDetailsListItem> in
-                        let items = tuple.value.map { JourneyExpenseCellViewModel(uuid: $0.uuid, title: $0.name, persons: "pers", cost: "PLS") }
+                        let items = tuple.value.map { JourneyExpenseCellViewModel(uuid: $0.uuid,
+                                                                                  title: $0.name,
+                                                                                  persons: $0.participants.map { $0.name }.joined(separator: ", "),
+                                                                                  cost: Amount(value: $0.totalCost, currency: $0.currency).formated())
+                        }
                         return SectionViewModel<JourneyDetailsListItem>(title: tuple.key, items: items.map { .expense(viewModel: $0) })
                     }
             }
             .asDriver(onErrorJustReturn: [])
-        return Output(journeyName: journeyName, participantFilters: participants.asDriver(), items: items)
+        return Output(journeyName: journeyName, participantFilters: participants.asDriver(), items: items, addResult: addResult)
     }
 }
 
@@ -99,10 +120,12 @@ extension JourneyDetailsViewModel {
     struct Input {
         var load: Driver<Void>
         var currentFilter: Driver<String>
+        var addExpense: Driver<Void>
     }
     struct Output {
         var journeyName: Driver<String>
         var participantFilters: Driver<[TagViewItem]>
         var items: Driver<[SectionViewModel<JourneyDetailsListItem>]>
+        var addResult: Driver<Void>
     }
 }

@@ -13,4 +13,5 @@ public protocol JourneysRepositoryProtocol {
     func getCurrentJourneys() -> Observable<[Journey]>
     func getJourney(id: String) -> Observable<Journey>
     func getExpenses(participants: [String]) -> Observable<[Expense]>
+    func addExpense(name: String, totalCost: Double, participants: [String], currency: String) -> Observable<Void>
 }

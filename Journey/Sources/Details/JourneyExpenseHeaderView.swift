@@ -7,6 +7,7 @@
 
 import Core
 import UIKit
+import RxCocoa
 
 final class JourneyExpenseHeaderView: UIView {
     private lazy var contentView = UIView()
@@ -19,6 +20,10 @@ final class JourneyExpenseHeaderView: UIView {
     
     var action: String = "" {
         didSet { actionButton.text = action }
+    }
+    
+    var actionTap: ControlEvent<Void> {
+        actionButton.rx.tap
     }
     
     public override init(frame: CGRect) {
