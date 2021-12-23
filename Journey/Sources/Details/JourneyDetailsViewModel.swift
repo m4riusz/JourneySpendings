@@ -13,11 +13,13 @@ import Core
 final class JourneyDetailsViewModel: ViewModelType {
     private typealias Literals = Assets.Strings.Journey.Details
     private let journeyId: String
-    private let repository: JourneysRepositoryProtocol
+    private let journeyRepository: JourneysRepositoryProtocol
+    private let currencyRepository: CurrencyRepositoryProtocol
 
-    init(journeyId: String, repository: JourneysRepositoryProtocol) {
+    init(journeyId: String, journeyRepository: JourneysRepositoryProtocol, currencyRepository: CurrencyRepositoryProtocol) {
         self.journeyId = journeyId
-        self.repository = repository
+        self.journeyRepository = journeyRepository
+        self.currencyRepository = currencyRepository
     }
     var coordinator: JourneyDetailsCoordinatorProtocol!
 
@@ -27,7 +29,7 @@ final class JourneyDetailsViewModel: ViewModelType {
         let journey = load
             .flatMapLatest { [weak self] _ -> Observable<Journey> in
                 guard let strongSelf = self else { return .empty() }
-                return strongSelf.repository
+                return strongSelf.journeyRepository
                     .getJourney(id: strongSelf.journeyId)
                     .do(onError: { [weak self] _ in
                         self?.coordinator.didFinish()
@@ -66,7 +68,15 @@ final class JourneyDetailsViewModel: ViewModelType {
         }))
             .flatMapLatest { [weak self] participants -> Observable<Void> in
                 guard let strongSelf = self else { return .just(()) }
-                return strongSelf.repository.addExpense(name: "Name", totalCost: 10, participants: participants, currency: "PLN")
+                return Observable.combineLatest(strongSelf.currencyRepository.getCurrencies(), journey)
+                    .flatMapLatest { data -> Observable<Void> in
+                        strongSelf.journeyRepository.addExpense(name: "Expense",
+                                                                totalCost: 10,
+                                                                journeyId: data.1.uuid,
+                                                                currencyId: data.0.first!.uuid,
+                                                                participantsId: participants)
+                    }
+                
             }
             .asDriver()
 
@@ -79,8 +89,8 @@ final class JourneyDetailsViewModel: ViewModelType {
                 let allItemId = data.2.uuid
                 let isAllItemSelected = data.1.selectableItems.first(where: { $0.uuid == allItemId } )?.selected ?? false
                 
-                return strongSelf.repository
-                    .getExpenses(participants: isAllItemSelected ? allParticipants : participants)
+                return strongSelf.journeyRepository
+                    .getExpenses(journeyId: data.0.uuid, participants: isAllItemSelected ? allParticipants : participants)
                     .catchAndReturn([])
             }
             .map { data -> [SectionViewModel<JourneyDetailsListItem>] in
@@ -96,8 +106,8 @@ final class JourneyDetailsViewModel: ViewModelType {
                     .map { tuple -> SectionViewModel<JourneyDetailsListItem> in
                         let items = tuple.value.map { JourneyExpenseCellViewModel(uuid: $0.uuid,
                                                                                   title: $0.name,
-                                                                                  persons: $0.participants.map { $0.name }.joined(separator: ", "),
-                                                                                  cost: Amount(value: $0.totalCost, currency: $0.currency).formated())
+                                                                                  persons: "",
+                                                                                  cost: Amount(value: $0.totalCost, currency: "PLN").formated())
                         }
                         return SectionViewModel<JourneyDetailsListItem>(title: tuple.key, items: items.map { .expense(viewModel: $0) })
                     }

@@ -17,8 +17,6 @@ final class JourneyCreateViewModel: ViewModelType {
         static let maxJourneyNameLength = JourneyValidatorProvider.Constants.Journey.maxLengthName
         static let minParticipantNameLength = JourneyValidatorProvider.Constants.Participant.minLengthName
         static let maxParticipantNameLength = JourneyValidatorProvider.Constants.Participant.maxLengthName
-
-        static let currency = "PLN"
     }
     private typealias Literals = Assets.Strings.Journey.Create
     private typealias Errors = Assets.Strings.Core.Error
@@ -96,7 +94,7 @@ final class JourneyCreateViewModel: ViewModelType {
                 guard let strongSelf = self else { return .empty() }
                 let participants = data.1.compactMap { $0.text }
                 return strongSelf.repository
-                    .create(name: data.0, currency: Constants.currency, participants: participants)
+                    .create(name: data.0, participants: participants)
                     .catchAndReturn(())
             }
             .mapToVoid()

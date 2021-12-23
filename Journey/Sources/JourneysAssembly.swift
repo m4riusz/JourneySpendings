@@ -42,7 +42,8 @@ final public class JourneysAssembly: ModuleAssembly {
 
         container.register(JourneyDetailsViewModel.self) { r, journeyId in
             JourneyDetailsViewModel(journeyId: journeyId,
-                                    repository: r.resolve(JourneysRepositoryProtocol.self)!)
+                                    journeyRepository: r.resolve(JourneysRepositoryProtocol.self)!,
+                                    currencyRepository: r.resolve(CurrencyRepositoryProtocol.self)!)
         }
 
         container.register(JourneyDetailsViewController.self) { (r: Resolver, journeyId: String) in

@@ -16,16 +16,6 @@ struct GRDBParticipant {
 
 extension GRDBParticipant {
     static let journey = belongsTo(GRDBJourney.self)
-    static let participantExpense = hasMany(GRDBParticipantExpense.self)
-    static let expenses = hasMany(GRDBExpense.self, through: participantExpense, using: GRDBParticipantExpense.expense)
-    
-    var journey: QueryInterfaceRequest<GRDBJourney> {
-        request(for: GRDBParticipant.journey)
-    }
-    
-    var expenses: QueryInterfaceRequest<GRDBExpense> {
-        request(for: GRDBParticipant.expenses)
-    }
 }
 
 // MARK: - Codable

@@ -10,19 +10,17 @@ import GRDB
 
 struct GRDBExpense {
     var uuid: String?
+    var journeyId: String?
+    var currencyId: String?
     var name: String
     var date: Date
-    var cost: Double
-    var currency: String
+    var totalCost: Double
 }
 
 extension GRDBExpense {
-    static let participantExpense = hasMany(GRDBParticipantExpense.self)
-    static let participant = hasMany(GRDBParticipant.self, through: participantExpense, using: GRDBParticipantExpense.participant)
-    
-    var participants: QueryInterfaceRequest<GRDBParticipant> {
-        request(for: GRDBExpense.participant)
-    }
+    static let journey = belongsTo(GRDBJourney.self)
+    static let currency = hasOne(GRDBCurrency.self, using: ForeignKey(["uuid"]))
+    static let partExpenses = hasMany(GRDBExpensePart.self, using: ForeignKey(["uuid"]))
 }
 
 // MARK: - Codable
@@ -32,10 +30,11 @@ extension GRDBExpense: Codable { /*Nop*/ }
 extension GRDBExpense: TableRecord {
     enum Columns {
         static let uuid = Column(CodingKeys.uuid)
+        static let journeyId = Column(CodingKeys.journeyId)
+        static let currencyId = Column(CodingKeys.journeyId)
         static let name = Column(CodingKeys.name)
         static let date = Column(CodingKeys.date)
-        static let cost = Column(CodingKeys.cost)
-        static let currency = Column(CodingKeys.currency)
+        static let totalCost = Column(CodingKeys.totalCost)
     }
 }
 

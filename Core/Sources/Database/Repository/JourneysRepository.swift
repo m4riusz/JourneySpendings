@@ -20,10 +20,10 @@ final class JourneysRepository: JourneysRepositoryProtocol {
         self.dateProvider = dateProvider
     }
 
-    func create(name: String, currency: String, participants: [String]) -> Observable<Void> {
+    func create(name: String, participants: [String]) -> Observable<Void> {
         dbQueue.rx.write { [unowned self] db in
             let now = self.dateProvider.now
-            var journey = GRDBJourney(name: name, startDate: now, totalCost: 0, currency: currency)
+            var journey = GRDBJourney(name: name, startDate: now)
             try journey.insert(db)
 
             var participants = participants.map { GRDBParticipant(journeyId: journey.uuid!, name: $0) }
@@ -42,7 +42,9 @@ final class JourneysRepository: JourneysRepositoryProtocol {
 
     func getCurrentJourneys() -> Observable<[Journey]> {
         ValueObservation
-            .tracking { try GRDBJourneyInfo.fetchAll($0, GRDBJourney.including(all: GRDBJourney.participants)) }
+            .tracking {
+                try GRDBJourneyInfo.fetchAll($0, GRDBJourney.including(all: GRDBJourney.participants)
+                                                            .including(all: GRDBJourney.expenses)) }
             .rx
             .observe(in: dbQueue)
             .map { items in items.map { $0.asJourney } }
@@ -51,7 +53,9 @@ final class JourneysRepository: JourneysRepositoryProtocol {
     func getJourney(id: String) -> Observable<Journey> {
         ValueObservation
             .tracking { db in
-                try GRDBJourneyInfo.fetchOne(db, GRDBJourney.filter(GRDBJourney.Columns.uuid == id).including(all: GRDBJourney.participants))
+                try GRDBJourneyInfo.fetchOne(db, GRDBJourney.filter(GRDBJourney.Columns.uuid == id)
+                                                            .including(all: GRDBJourney.participants)
+                                                            .including(all: GRDBJourney.expenses))
             }
             .rx
             .observe(in: dbQueue)
@@ -61,34 +65,40 @@ final class JourneysRepository: JourneysRepositoryProtocol {
             }
     }
     
-    func getExpenses(participants: [String]) -> Observable<[Expense]> {
+    func getExpenses(journeyId: String, participants: [String]) -> Observable<[Expense]> {
         ValueObservation
             .tracking { db in
-                try GRDBParticipantExpense.filter(participants.contains(Column(GRDBParticipantExpense.Columns.participantId.name)))
-                    .fetchAll(db)
+                try GRDBExpenseInfo.fetchAll(db, GRDBExpense.filter(GRDBExpense.Columns.journeyId == journeyId)
+                                                .including(all: GRDBExpense.partExpenses.including(required: GRDBExpensePart.participant))
+                                                .including(required: GRDBExpense.currency))
             }
             .rx
             .observe(in: dbQueue)
-            .distinctUntilChanged()
-            .flatMapLatest { items -> Observable<[Expense]> in
-            .just(items
-                    .groupByExpenses
-                    .compactMap { [weak self] data -> Expense? in
-                        guard let strongSelf = self else { return nil }
-                        let expense = try? strongSelf.dbQueue.read { try GRDBExpense.fetchOne($0, key: data.key) }
-                        let participants = try? strongSelf.dbQueue.read { try GRDBParticipant.fetchAll($0, keys: data.value) }
-                        return expense?.asDomain(participants: participants)
+            .flatMapLatest { expenses -> Observable<[Expense]> in
+                let items = expenses
+                    .filter { expense in
+                        let allParticipants = Set(expenses.flatMap { $0.grdbExpenseParts.map { $0.grdbParticipant } }.map { $0.name })
+                        let wantedParticipants = Set(participants)
+                        return !allParticipants.intersection(wantedParticipants).isEmpty
                     }
-                )
+                    .map { expenseInfo -> Expense in
+                    .init(uuid: expenseInfo.grdbExpense.uuid!,
+                          currency: expenseInfo.grdbCurrency.asCurrency,
+                          expenseParts: expenseInfo.grdbExpenseParts.map { $0.asExpensePart},
+                          name: expenseInfo.grdbExpense.name,
+                          date: expenseInfo.grdbExpense.date,
+                          totalCost: expenseInfo.grdbExpense.totalCost)
+                    }
+            return .just(items)
             }
     }
     
-    func addExpense(name: String, totalCost: Double, participants: [String], currency: String) -> Observable<Void> {
+    func addExpense(name: String, totalCost: Double, journeyId: String, currencyId: String, participantsId: [String]) -> Observable<Void> {
         dbQueue.rx.write { [unowned self] db in
-            var expense = GRDBExpense(uuid: nil, name: name, date: self.dateProvider.now, cost: totalCost, currency: currency)
+            var expense = GRDBExpense(uuid: nil, journeyId: journeyId, currencyId: currencyId, name: name, date: self.dateProvider.now, totalCost: totalCost)
             try expense.save(db)
-            participants
-                .map { GRDBParticipantExpense(participantId: $0, expenseId: expense.uuid!) }
+            participantsId
+                .map { GRDBExpensePart(uuid: nil, participantId: $0, expenseId: expense.uuid, currencyId: currencyId, cost: totalCost / Double(participantsId.count)) }
                 .forEach {
                     var value = $0
                     try! value.save(db)
@@ -101,42 +111,41 @@ final class JourneysRepository: JourneysRepositoryProtocol {
 private struct GRDBJourneyInfo: FetchableRecord, Decodable {
     let grdbJourney: GRDBJourney
     let grdbParticipants: [GRDBParticipant]
+    let grdbExpenses: [GRDBExpense]
 
     var asJourney: Journey {
         .init(uuid: grdbJourney.uuid!,
               name: grdbJourney.name,
               startDate: grdbJourney.startDate,
-              totalCost: grdbJourney.totalCost,
-              currency: grdbJourney.currency,
+              totalCost: 0,
+              currency: "PL",
               participants: grdbParticipants.map { .init(uuid: $0.uuid!, name: $0.name) })
     }
 }
 
-private extension GRDBExpense {
-    func asDomain(participants: [GRDBParticipant]?) -> Expense {
-        .init(uuid: uuid!,
-              name: name,
-              date: date,
-              totalCost: cost,
-              currency: currency,
-              participants: participants?.map { $0.asDomain } ?? [] )
+private struct GRDBExpenseInfo: FetchableRecord, Decodable {
+    let grdbExpense: GRDBExpense
+    let grdbCurrency: GRDBCurrency
+    let grdbExpenseParts: [GRDBExpensePartInfo]
+}
+
+private struct GRDBExpensePartInfo: FetchableRecord, Decodable {
+    let grdbExpensePart: GRDBExpensePart
+    let grdbCurrency: GRDBCurrency
+    let grdbParticipant: GRDBParticipant
+}
+
+private extension GRDBExpensePartInfo {
+    var asExpensePart: ExpensePart {
+        .init(uuid: grdbExpensePart.uuid!,
+              expense: Expense(uuid: "", currency: Currency(uuid: "nil", code: "", symbol: ""),
+                               expenseParts: [],
+                               name: "",
+                               date: Date(),
+                               totalCost: 10),
+              participant: Participant(uuid: "1", name: "name"),
+              currency: grdbCurrency.asCurrency,
+              cost: grdbExpensePart.cost)
     }
 }
 
-private extension GRDBParticipant {
-    var asDomain: Participant {
-        .init(uuid: uuid!, name: name)
-    }
-}
-
-private extension Array where Element == GRDBParticipantExpense {
-    var groupByExpenses: [String: [String]] {
-        reduce(into: [String: [String]]()) { partialResult, item in
-            if var value = partialResult[item.expenseId] {
-                value.append(item.participantId)
-            } else {
-                partialResult[item.expenseId] = [item.participantId]
-            }
-        }
-    }
-}
