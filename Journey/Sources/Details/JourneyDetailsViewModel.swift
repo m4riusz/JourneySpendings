@@ -24,6 +24,9 @@ final class JourneyDetailsViewModel: ViewModelType {
     var coordinator: JourneyDetailsCoordinatorProtocol!
 
     func transform(input: Input) -> Output {
+        let currency = currencyRepository.getCurrencies()
+            .map { $0.first! }
+            .share(replay: 1)
         let load = input.load.asObservable().share(replay: 1)
         let add = input.addExpense
         let journey = load
@@ -54,29 +57,20 @@ final class JourneyDetailsViewModel: ViewModelType {
                 items.insert(allItem, at: 0)
                 return .just(items)
                 }
+            .distinctUntilChanged()
             .share(replay: 1)
         
-        let addResult = add.asObservable().withLatestFrom(Observable.combineLatest(allItem, participants, resultSelector: { allItem, participants -> [String] in
-            let allItemSelected = participants.selectableItems.first(where: { $0.selected })?.uuid == allItem.uuid
-            if allItemSelected {
-                return Array(participants.selectableItems.map { $0.uuid }.dropFirst())
-            } else if let selected = participants.selectableItems.first(where: { $0.selected} )?.uuid {
-                return [selected]
-            } else {
-                return []
-            }
-        }))
-            .flatMapLatest { [weak self] participants -> Observable<Void> in
+        let addResult = add.asObservable().withLatestFrom(Observable.combineLatest(participants, currency, journey))
+            .flatMapLatest { [weak self] data -> Observable<Void> in
+                let participants = data.0.selectedItemUuids
+                let currencyId = data.1.uuid
+                let journeyId = data.2.uuid
                 guard let strongSelf = self else { return .just(()) }
-                return Observable.combineLatest(strongSelf.currencyRepository.getCurrencies(), journey)
-                    .flatMapLatest { data -> Observable<Void> in
-                        strongSelf.journeyRepository.addExpense(name: "Expense",
-                                                                totalCost: 10,
-                                                                journeyId: data.1.uuid,
-                                                                currencyId: data.0.first!.uuid,
-                                                                participantsId: participants)
-                    }
-                
+                return strongSelf.journeyRepository.addExpense(name: "Expense",
+                                                               totalCost: 10,
+                                                               journeyId: journeyId,
+                                                               currencyId: currencyId,
+                                                               participantsId: participants)
             }
             .asDriver()
 
@@ -122,6 +116,18 @@ extension Array where Element == TagViewItem {
         compactMap { item -> SelectableTagViewCellViewModel? in
             guard case let .selectable(model) = item else { return nil }
             return model
+        }
+    }
+    
+    var selectedItemUuids: [String] {
+        let selectableItems = selectableItems
+        let allItemSelected = selectableItems.first?.selected == true
+        if allItemSelected {
+            return selectableItems.map { $0.uuid }.dropFirst().compactMap { $0 }
+        } else if let selected = selectableItems.first(where: { $0.selected} )?.uuid {
+            return [selected]
+        } else {
+            return []
         }
     }
 }

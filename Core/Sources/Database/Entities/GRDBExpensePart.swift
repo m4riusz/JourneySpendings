@@ -18,8 +18,8 @@ struct GRDBExpensePart {
 
 extension GRDBExpensePart {
     static let expense = belongsTo(GRDBExpense.self)
-    static let currency = hasOne(GRDBCurrency.self, using: ForeignKey(["uuid"]))
-    static let participant = hasOne(GRDBParticipant.self, using: ForeignKey(["uuid"]))
+    static let currency = hasOne(GRDBCurrency.self, using: ForeignKey([GRDBCurrency.Columns.uuid], to: [Columns.currencyId]))
+    static let participant = hasOne(GRDBParticipant.self, using: ForeignKey([GRDBParticipant.Columns.uuid], to: [Columns.participantId]))
 }
 
 // MARK: - Codable

@@ -19,8 +19,8 @@ struct GRDBExpense {
 
 extension GRDBExpense {
     static let journey = belongsTo(GRDBJourney.self)
-    static let currency = hasOne(GRDBCurrency.self, using: ForeignKey(["uuid"]))
-    static let partExpenses = hasMany(GRDBExpensePart.self, using: ForeignKey(["uuid"]))
+    static let currency = hasOne(GRDBCurrency.self, using: ForeignKey([GRDBCurrency.Columns.uuid], to: [Columns.currencyId]))
+    static let partExpenses = hasMany(GRDBExpensePart.self, using: ForeignKey([GRDBExpensePart.Columns.expenseId], to: [Columns.uuid]))
 }
 
 // MARK: - Codable
@@ -31,7 +31,7 @@ extension GRDBExpense: TableRecord {
     enum Columns {
         static let uuid = Column(CodingKeys.uuid)
         static let journeyId = Column(CodingKeys.journeyId)
-        static let currencyId = Column(CodingKeys.journeyId)
+        static let currencyId = Column(CodingKeys.currencyId)
         static let name = Column(CodingKeys.name)
         static let date = Column(CodingKeys.date)
         static let totalCost = Column(CodingKeys.totalCost)

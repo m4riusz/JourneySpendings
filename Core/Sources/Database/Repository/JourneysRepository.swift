@@ -69,22 +69,20 @@ final class JourneysRepository: JourneysRepositoryProtocol {
         ValueObservation
             .tracking { db in
                 try GRDBExpenseInfo.fetchAll(db, GRDBExpense.filter(GRDBExpense.Columns.journeyId == journeyId)
-                                                .including(all: GRDBExpense.partExpenses.including(required: GRDBExpensePart.participant))
+                                                .including(all: GRDBExpense.partExpenses
+                                                                .filter(participants.contains(GRDBExpensePart.Columns.participantId))
+                                                                .including(required: GRDBExpensePart.participant)
+                                                                .including(required: GRDBExpensePart.currency))
                                                 .including(required: GRDBExpense.currency))
             }
             .rx
             .observe(in: dbQueue)
             .flatMapLatest { expenses -> Observable<[Expense]> in
                 let items = expenses
-                    .filter { expense in
-                        let allParticipants = Set(expenses.flatMap { $0.grdbExpenseParts.map { $0.grdbParticipant } }.map { $0.name })
-                        let wantedParticipants = Set(participants)
-                        return !allParticipants.intersection(wantedParticipants).isEmpty
-                    }
                     .map { expenseInfo -> Expense in
                     .init(uuid: expenseInfo.grdbExpense.uuid!,
                           currency: expenseInfo.grdbCurrency.asCurrency,
-                          expenseParts: expenseInfo.grdbExpenseParts.map { $0.asExpensePart},
+                          expenseParts: expenseInfo.grdbExpenseParts.map { $0.asExpensePart },
                           name: expenseInfo.grdbExpense.name,
                           date: expenseInfo.grdbExpense.date,
                           totalCost: expenseInfo.grdbExpense.totalCost)
