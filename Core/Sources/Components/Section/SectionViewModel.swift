@@ -12,13 +12,13 @@ public struct SectionViewModel<T: IdentifiableType & Equatable> {
     public let title: String
     public let button: String?
     public var items: [T]
-    
+
     public init(title: String, button: String? = nil, items: [T] = []) {
         self.title = title
         self.button = button
         self.items = items
     }
-    
+
     public init(items: [T]) {
         self.init(title: "", items: items)
     }

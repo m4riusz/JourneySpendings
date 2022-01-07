@@ -66,7 +66,7 @@ final class JourneysRepository: JourneysRepositoryProtocol {
                 return .just(journey)
             }
     }
-    
+
     func getExpenses(journeyId: String, participants: [String]) -> Observable<[Expense]> {
         ValueObservation
             .tracking { db in
@@ -94,7 +94,7 @@ final class JourneysRepository: JourneysRepositoryProtocol {
             return .just(items)
             }
     }
-    
+
     func addExpense(name: String, totalCost: Double, journeyId: String, currencyId: String, participantsId: [String]) -> Observable<Void> {
         dbQueue.rx.write { [unowned self] db in
             var expense = GRDBExpense(uuid: nil, journeyId: journeyId, currencyId: currencyId, name: name, date: self.dateProvider.now, totalCost: totalCost)
@@ -119,7 +119,7 @@ private struct GRDBJourneyInfo: FetchableRecord, Decodable {
         .init(uuid: grdbJourney.uuid!,
               name: grdbJourney.name,
               startDate: grdbJourney.startDate,
-              totalCost: grdbExpenses.reduce(0, { $0 + $1.grdbExpense.totalCost} ),
+              totalCost: grdbExpenses.reduce(0, { $0 + $1.grdbExpense.totalCost}),
               expenses: grdbExpenses.map { $0.asExpense },
               participants: grdbParticipants.map { .init(uuid: $0.uuid!, name: $0.name) })
     }
@@ -128,7 +128,7 @@ private struct GRDBJourneyInfo: FetchableRecord, Decodable {
 private struct GRDBExpenseInfo: FetchableRecord, Decodable {
     let grdbExpense: GRDBExpense
     let grdbCurrency: GRDBCurrency
-    
+
     var asExpense: Expense {
         .init(uuid: grdbExpense.uuid!,
               currency: grdbCurrency.asCurrency,
@@ -143,7 +143,7 @@ private struct GRDBExpenseDetailsInfo: FetchableRecord, Decodable {
     let grdbExpense: GRDBExpense
     let grdbCurrency: GRDBCurrency
     let grdbExpenseParts: [GRDBExpensePartDetailsInfo]
-    
+
     var asExpense: Expense {
         .init(uuid: grdbExpense.uuid!,
               currency: grdbCurrency.asCurrency,

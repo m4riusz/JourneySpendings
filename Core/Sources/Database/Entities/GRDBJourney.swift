@@ -21,7 +21,7 @@ extension GRDBJourney {
     var participants: QueryInterfaceRequest<GRDBParticipant> {
         request(for: GRDBJourney.participants)
     }
-    
+
     var expenses: QueryInterfaceRequest<GRDBExpense> {
         request(for: GRDBJourney.expenses)
     }

@@ -24,43 +24,30 @@ final class JourneyDetailsViewModel: ViewModelType {
     var coordinator: JourneyDetailsCoordinatorProtocol!
 
     func transform(input: Input) -> Output {
-        let currency = currencyRepository.getCurrencies()
-            .map { $0.first! }
-            .share(replay: 1)
         let load = input.load.asObservable().share(replay: 1)
-        let add = input.addExpense
-        let journey = load
-            .flatMapLatest { [weak self] _ -> Observable<Journey> in
-                guard let strongSelf = self else { return .empty() }
-                return strongSelf.journeyRepository
-                    .getJourney(id: strongSelf.journeyId)
-                    .do(onError: { [weak self] _ in
-                        self?.coordinator.didFinish()
-                    })
+        let currency = load.flatMapLatest {  [weak self] _ -> Observable<Currency> in
+            guard let stronSelf = self else { return .empty() }
+            return stronSelf.currencyRepository.getCurrencies().map { $0.first! }
             }
             .share(replay: 1)
-
+        let journey = load.flatMapLatest { [weak self] _ -> Observable<Journey> in
+            guard let strongSelf = self else { return .empty() }
+            return strongSelf.journeyRepository.getJourney(id: strongSelf.journeyId)
+                .do(onError: { [weak self] _ in self?.coordinator.didFinish() })
+            }
+            .share(replay: 1)
         let journeyName = journey.map { $0.name }.asDriver()
+
         let selection = input.currentFilter.startWith("").asObservable()
-        let allItem: Observable<TagViewItem> = .just(.selectable(viewModel: .init(text: Literals.Participant.all))).share(replay: 1)
-        let participants = Observable.combineLatest(selection, allItem, journey)
-            .flatMapLatest { data -> Observable<[TagViewItem]> in
-                let selected = data.0
-                let allItem: TagViewItem = .selectable(viewModel: .init(uuid: data.1.uuid,
-                                                                        text: data.1.text,
-                                                                        selected: (data.1.uuid == selected) || selected.isEmpty))
-                var items: [TagViewItem] = data.2.participants
-                    .enumerated()
-                    .map { .selectable(viewModel: .init(uuid: $0.element.uuid,
-                                                        text: $0.element.name,
-                                                        selected: $0.element.uuid == selected)) }
-                items.insert(allItem, at: 0)
-                return .just(items)
-                }
+        let participants = Observable.combineLatest(selection, journey)
+            .flatMapLatest { [weak self] data -> Observable<[TagViewItem]> in
+                guard let strongSelf = self else { return .empty() }
+                return .just(strongSelf.participantsToTags(selected: data.0, participants: data.1.participants))
+            }
             .distinctUntilChanged()
             .share(replay: 1)
-        
-        let addResult = add.asObservable().withLatestFrom(Observable.combineLatest(participants, currency, journey))
+        let add = input.addExpense.asObservable()
+        let addResult = add.withLatestFrom(Observable.combineLatest(participants, currency, journey))
             .flatMapLatest { [weak self] data -> Observable<Void> in
                 let participants = data.0.selectedItemUuids
                 let currencyId = data.1.uuid
@@ -74,67 +61,22 @@ final class JourneyDetailsViewModel: ViewModelType {
             }
             .asDriver()
 
-        
-        let items = Observable.combineLatest(journey, participants, allItem)
+        let items = Observable.combineLatest(journey, participants)
             .flatMapLatest { [weak self] data -> Observable<[Expense]> in
                 guard let strongSelf = self else { return .just([]) }
-                let allParticipants = data.0.participants.compactMap { $0.uuid }
-                let participants = data.1.selectableItems.filter { $0.selected }.compactMap { $0.uuid }
-                let allItemId = data.2.uuid
-                let isAllItemSelected = data.1.selectableItems.first(where: { $0.uuid == allItemId } )?.selected ?? false
-                
                 return strongSelf.journeyRepository
-                    .getExpenses(journeyId: data.0.uuid, participants: isAllItemSelected ? allParticipants : participants)
+                    .getExpenses(journeyId: data.0.uuid, participants: data.1.selectedItemUuids)
                     .catchAndReturn([])
             }
-            .map { data -> [SectionViewModel<JourneyDetailsListItem>] in
-                if data.isEmpty {
-                    return [.init(items: [.empty(viewModel: .init(image: Assets.Images.Core.bagSuitcaseOutline,
-                                                                  title: Literals.Expense.Empty.title,
-                                                                  description: Literals.Expense.Empty.description))])]
-                }
-                return data
-                    .reduce(into: [String: [Expense]]()) { partialResult, expense in
-                        if partialResult[expense.date.ddMMyyyyDoted] != nil {
-                            partialResult[expense.date.ddMMyyyyDoted]?.append(expense)
-                        } else {
-                            partialResult[expense.date.ddMMyyyyDoted] = [expense]
-                        }
-                    }
-                    .map { tuple -> SectionViewModel<JourneyDetailsListItem> in
-                        let items = tuple.value
-                            .sorted(by: { $0.date > $1.date })
-                            .map { JourneyExpenseCellViewModel(uuid: $0.uuid,
-                                                               title: $0.name,
-                                                               persons: $0.expenseParts.map { $0.participant.name }.joined(separator: String.Common.commaSeparator),
-                                                               cost: Amount(value: $0.totalCost, currency: $0.currency.symbol).formated())
-                            }
-                        return SectionViewModel<JourneyDetailsListItem>(title: tuple.key, items: items.map { .expense(viewModel: $0) })
-                    }
+            .map { [weak self] items -> [SectionViewModel<JourneyDetailsListItem>] in
+                guard let strongSelf = self else { return [] }
+                return strongSelf.mapToSection(items: items)
             }
             .asDriver(onErrorJustReturn: [])
-        return Output(journeyName: journeyName, participantFilters: participants.asDriver(), items: items, addResult: addResult)
-    }
-}
-
-extension Array where Element == TagViewItem {
-    var selectableItems: [SelectableTagViewCellViewModel] {
-        compactMap { item -> SelectableTagViewCellViewModel? in
-            guard case let .selectable(model) = item else { return nil }
-            return model
-        }
-    }
-    
-    var selectedItemUuids: [String] {
-        let selectableItems = selectableItems
-        let allItemSelected = selectableItems.first?.selected == true
-        if allItemSelected {
-            return selectableItems.map { $0.uuid }.dropFirst().compactMap { $0 }
-        } else if let selected = selectableItems.first(where: { $0.selected } )?.uuid {
-            return [selected]
-        } else {
-            return []
-        }
+        return Output(journeyName: journeyName,
+                      participantFilters: participants.asDriver(),
+                      items: items,
+                      addResult: addResult)
     }
 }
 
@@ -149,5 +91,42 @@ extension JourneyDetailsViewModel {
         var participantFilters: Driver<[TagViewItem]>
         var items: Driver<[SectionViewModel<JourneyDetailsListItem>]>
         var addResult: Driver<Void>
+    }
+}
+
+// MARK: - Private
+private extension JourneyDetailsViewModel {
+    var emptyViewModel: JourneyDetailsListItem {
+        .empty(viewModel: .init(image: Assets.Images.Core.bagSuitcaseOutline,
+                                title: Literals.Expense.Empty.title,
+                                description: Literals.Expense.Empty.description))
+    }
+
+    func mapToSection(items: [Expense]) -> [SectionViewModel<JourneyDetailsListItem>] {
+        guard !items.isEmpty else {
+            return [.init(items: [emptyViewModel])]
+        }
+        return Dictionary(grouping: items, by: { $0.date.ddMMyyyyDoted })
+            .map { group -> SectionViewModel<JourneyDetailsListItem> in
+                let items = group.value
+                    .sorted(by: { $0.date > $1.date })
+                    .map { expenceToCellViewModel(expense: $0) }
+                    .map { JourneyDetailsListItem.expense(viewModel: $0) }
+                return .init(title: group.key, items: items)
+            }
+    }
+
+    func expenceToCellViewModel(expense: Expense) -> JourneyExpenseCellViewModel {
+        .init(uuid: expense.uuid,
+              title: expense.name,
+              persons: expense.expenseParts.map { $0.participant.name }.joined,
+              cost: Amount(value: expense.totalCost, currency: expense.currency.symbol).formated())
+    }
+
+    func participantsToTags(selected: String, participants: [Participant]) -> [TagViewItem] {
+        let selected = selected.isEmpty ? participants.first?.uuid : selected
+        return participants
+            .map { SelectableTagViewCellViewModel(uuid: $0.uuid, text: $0.name, selected: $0.uuid == selected) }
+            .map { .selectable(viewModel: $0) }
     }
 }

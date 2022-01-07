@@ -80,6 +80,5 @@ fileprivate extension Journey {
                                          name: name,
                                          startDate: startDate.ddMMyyyy,
                                          totalCosts: calculatedCosts)
-        
     }
 }

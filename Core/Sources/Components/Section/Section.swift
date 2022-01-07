@@ -17,17 +17,17 @@ final public class Section: UICollectionReusableView, Reusable {
     private lazy var stackView = UIStackView()
     private lazy var titleLabel = UILabel()
     private lazy var actionButton = Button()
-    
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(frame: .zero)
         commonInit()
     }
-    
+
     private func commonInit() {
         backgroundColor = Assets.Colors.Core.Background.primary
         stackView.axis = .horizontal

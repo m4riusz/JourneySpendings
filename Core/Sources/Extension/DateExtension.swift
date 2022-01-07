@@ -23,7 +23,7 @@ public extension Date {
         formatter.dateFormat = Costants.ddMMyyyyFormat
         return formatter.string(from: self)
     }
-    
+
     var ddMMyyyyDoted: String {
         let formatter = DateFormatter()
         formatter.dateFormat = Costants.ddMMyyyyFormatDoted

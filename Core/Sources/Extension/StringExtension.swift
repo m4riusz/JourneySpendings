@@ -37,6 +37,12 @@ public extension Optional where Wrapped == String {
     }
 }
 
+public extension Array where Element == String {
+    var joined: String {
+        joined(separator: String.Common.commaSeparator)
+    }
+}
+
 public extension String {
     struct Common {
         public static let space = " "

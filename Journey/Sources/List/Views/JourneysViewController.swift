@@ -18,7 +18,7 @@ final class JourneysViewController: UIViewController {
     private lazy var createJourneyButton = UIBarButtonItem(.add)
     var viewModel: JourneysViewModel!
     var layoutFactory: CompositionalLayoutFactoryProtocol!
-    
+
     override func viewDidLoad() {
         setupView()
         bindViewModel()
@@ -39,23 +39,7 @@ final class JourneysViewController: UIViewController {
         let output = viewModel.transform(input: .init(load: loadTrigger,
                                                       createJournerTrigger: createJourney,
                                                       detailsTriger: details))
-        output.items.drive(collectionView.rx.items(dataSource: RxCollectionViewSectionedAnimatedDataSource(
-            configureCell: { _, collectionView, indexPath, item in
-                switch item {
-                case .journey(let viewModel):
-                    let cell = collectionView.dequeueCell(JourneyItemCell.self, indexPath: indexPath)
-                    cell.load(viewModel: viewModel)
-                    return cell
-                case .empty(let viewModel):
-                    let cell = collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
-                    cell.load(viewModel: viewModel)
-                    return cell
-                }
-            }, configureSupplementaryView: { dataSource, collectionView, _, indexPath in
-                let header = collectionView.dequeueHeader(Section.self, indexPath: indexPath)
-                header.load(viewModel: dataSource[indexPath.section])
-                return header
-            })))
+        output.items.drive(collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         output.details
             .drive()
@@ -80,5 +64,27 @@ final class JourneysViewController: UIViewController {
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+    }
+}
+
+fileprivate extension JourneysViewController {
+    var dataSource: RxCollectionViewSectionedAnimatedDataSource<SectionViewModel<JourneysListItem>> {
+        RxCollectionViewSectionedAnimatedDataSource(
+            configureCell: { _, collectionView, indexPath, item in
+                switch item {
+                case .journey(let viewModel):
+                    let cell = collectionView.dequeueCell(JourneyItemCell.self, indexPath: indexPath)
+                    cell.load(viewModel: viewModel)
+                    return cell
+                case .empty(let viewModel):
+                    let cell = collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
+                    cell.load(viewModel: viewModel)
+                    return cell
+                }
+            }, configureSupplementaryView: { dataSource, collectionView, _, indexPath in
+                let header = collectionView.dequeueHeader(Section.self, indexPath: indexPath)
+                header.load(viewModel: dataSource[indexPath.section])
+                return header
+            })
     }
 }

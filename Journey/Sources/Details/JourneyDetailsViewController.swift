@@ -36,24 +36,9 @@ final class JourneyDetailsViewController: UIViewController {
         let addExpense = expenseHeader.actionTap.mapToVoid().asDriver()
 
         let output = viewModel.transform(input: .init(load: loadTrigger, currentFilter: itemSelected, addExpense: addExpense))
-        
-        output.items.drive(collectionView.rx.items(dataSource: RxCollectionViewSectionedAnimatedDataSource(
-            configureCell: { _, collectionView, indexPath, item in
-                switch item {
-                case .expense(let viewModel):
-                    let cell = collectionView.dequeueCell(JourneyExpenseCell.self, indexPath: indexPath)
-                    cell.load(viewModel: viewModel)
-                    return cell
-                case .empty(let viewModel):
-                    let cell = collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
-                    cell.load(viewModel: viewModel)
-                    return cell
-                }
-            }, configureSupplementaryView: { dataSource, collectionView, _, indexPath in
-                let cell = collectionView.dequeueHeader(Section.self, indexPath: indexPath)
-                cell.load(viewModel: dataSource.sectionModels[indexPath.section])
-                return cell
-            })))
+
+        output.items
+            .drive(collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
         output.journeyName
@@ -63,7 +48,7 @@ final class JourneyDetailsViewController: UIViewController {
         output.participantFilters
             .drive(tagView.rx.items)
             .disposed(by: disposeBag)
-        
+
         output.addResult
             .drive()
             .disposed(by: disposeBag)
@@ -81,7 +66,7 @@ final class JourneyDetailsViewController: UIViewController {
         contentView.addSubview(expenseHeader)
         contentView.addSubview(collectionView)
         contentView.snp.makeConstraints { $0.edges.equalTo(view.safeAreaLayoutGuide.snp.edges) }
-        
+
         tagView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.left.equalToSuperview()
@@ -98,5 +83,27 @@ final class JourneyDetailsViewController: UIViewController {
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+    }
+}
+
+fileprivate extension JourneyDetailsViewController {
+    var dataSource: RxCollectionViewSectionedAnimatedDataSource<SectionViewModel<JourneyDetailsListItem>> {
+        RxCollectionViewSectionedAnimatedDataSource(
+            configureCell: { _, collectionView, indexPath, item in
+                switch item {
+                case .expense(let viewModel):
+                    let cell = collectionView.dequeueCell(JourneyExpenseCell.self, indexPath: indexPath)
+                    cell.load(viewModel: viewModel)
+                    return cell
+                case .empty(let viewModel):
+                    let cell = collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
+                    cell.load(viewModel: viewModel)
+                    return cell
+                }
+            }, configureSupplementaryView: { dataSource, collectionView, _, indexPath in
+                let cell = collectionView.dequeueHeader(Section.self, indexPath: indexPath)
+                cell.load(viewModel: dataSource.sectionModels[indexPath.section])
+                return cell
+            })
     }
 }
