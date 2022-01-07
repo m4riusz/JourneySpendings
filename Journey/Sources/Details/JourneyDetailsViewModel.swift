@@ -89,7 +89,6 @@ final class JourneyDetailsViewModel: ViewModelType {
             }
             .map { data -> [SectionViewModel<JourneyDetailsListItem>] in
                 data
-                    .sorted(by: { $0.date > $1.date })
                     .reduce(into: [String: [Expense]]()) { partialResult, expense in
                         if partialResult[expense.date.ddMMyyyyDoted] != nil {
                             partialResult[expense.date.ddMMyyyyDoted]?.append(expense)
@@ -98,11 +97,13 @@ final class JourneyDetailsViewModel: ViewModelType {
                         }
                     }
                     .map { tuple -> SectionViewModel<JourneyDetailsListItem> in
-                        let items = tuple.value.map { JourneyExpenseCellViewModel(uuid: $0.uuid,
-                                                                                  title: $0.name,
-                                                                                  persons: "",
-                                                                                  cost: Amount(value: $0.totalCost, currency: "PLN").formated())
-                        }
+                        let items = tuple.value
+                            .sorted(by: { $0.date > $1.date })
+                            .map { JourneyExpenseCellViewModel(uuid: $0.uuid,
+                                                               title: $0.name,
+                                                               persons: $0.expenseParts.map { $0.participant.name }.joined(separator: ","),
+                                                               cost: Amount(value: $0.totalCost, currency: $0.currency.symbol).formated())
+                            }
                         return SectionViewModel<JourneyDetailsListItem>(title: tuple.key, items: items.map { .expense(viewModel: $0) })
                     }
             }
@@ -124,7 +125,7 @@ extension Array where Element == TagViewItem {
         let allItemSelected = selectableItems.first?.selected == true
         if allItemSelected {
             return selectableItems.map { $0.uuid }.dropFirst().compactMap { $0 }
-        } else if let selected = selectableItems.first(where: { $0.selected} )?.uuid {
+        } else if let selected = selectableItems.first(where: { $0.selected } )?.uuid {
             return [selected]
         } else {
             return []

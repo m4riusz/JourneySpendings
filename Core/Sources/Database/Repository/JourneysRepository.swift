@@ -44,7 +44,8 @@ final class JourneysRepository: JourneysRepositoryProtocol {
         ValueObservation
             .tracking {
                 try GRDBJourneyInfo.fetchAll($0, GRDBJourney.including(all: GRDBJourney.participants)
-                                                            .including(all: GRDBJourney.expenses)) }
+                                                            .including(all: GRDBJourney.expenses
+                                                                        .including(required: GRDBExpense.currency))) }
             .rx
             .observe(in: dbQueue)
             .map { items in items.map { $0.asJourney } }
@@ -55,7 +56,8 @@ final class JourneysRepository: JourneysRepositoryProtocol {
             .tracking { db in
                 try GRDBJourneyInfo.fetchOne(db, GRDBJourney.filter(GRDBJourney.Columns.uuid == id)
                                                             .including(all: GRDBJourney.participants)
-                                                            .including(all: GRDBJourney.expenses))
+                                                            .including(all: GRDBJourney.expenses
+                                                                        .including(required: GRDBExpense.currency)))
             }
             .rx
             .observe(in: dbQueue)
@@ -68,13 +70,14 @@ final class JourneysRepository: JourneysRepositoryProtocol {
     func getExpenses(journeyId: String, participants: [String]) -> Observable<[Expense]> {
         ValueObservation
             .tracking { db in
-                try GRDBExpenseInfo.fetchAll(db, GRDBExpense.filter(GRDBExpense.Columns.journeyId == journeyId)
-                                                .including(all: GRDBExpense.partExpenses
-                                                                .filter(participants.contains(GRDBExpensePart.Columns.participantId))
-                                                                .including(required: GRDBExpensePart.participant)
-                                                                .including(required: GRDBExpensePart.currency))
-                                                .having(GRDBExpense.partExpenses.filter(participants.contains(GRDBExpensePart.Columns.participantId)).count > 0)
-                                                .including(required: GRDBExpense.currency))
+                try GRDBExpense.filter(GRDBExpense.Columns.journeyId == journeyId)
+                    .including(all: GRDBExpense.partExpenses
+                                .including(required: GRDBExpensePart.participant)
+                                .including(required: GRDBExpensePart.currency))
+                    .having(GRDBExpense.partExpenses.filter(participants.contains(GRDBExpensePart.Columns.participantId)).count > 0)
+                    .including(required: GRDBExpense.currency)
+                    .asRequest(of: GRDBExpenseDetailsInfo.self)
+                    .fetchAll(db)
             }
             .rx
             .observe(in: dbQueue)
@@ -110,14 +113,14 @@ final class JourneysRepository: JourneysRepositoryProtocol {
 private struct GRDBJourneyInfo: FetchableRecord, Decodable {
     let grdbJourney: GRDBJourney
     let grdbParticipants: [GRDBParticipant]
-    let grdbExpenses: [GRDBExpense]
+    let grdbExpenses: [GRDBExpenseInfo]
 
     var asJourney: Journey {
         .init(uuid: grdbJourney.uuid!,
               name: grdbJourney.name,
               startDate: grdbJourney.startDate,
-              totalCost: 0,
-              currency: "PL",
+              totalCost: grdbExpenses.reduce(0, { $0 + $1.grdbExpense.totalCost} ),
+              expenses: grdbExpenses.map { $0.asExpense },
               participants: grdbParticipants.map { .init(uuid: $0.uuid!, name: $0.name) })
     }
 }
@@ -125,7 +128,21 @@ private struct GRDBJourneyInfo: FetchableRecord, Decodable {
 private struct GRDBExpenseInfo: FetchableRecord, Decodable {
     let grdbExpense: GRDBExpense
     let grdbCurrency: GRDBCurrency
-    let grdbExpenseParts: [GRDBExpensePartInfo]
+    
+    var asExpense: Expense {
+        .init(uuid: grdbExpense.uuid!,
+              currency: grdbCurrency.asCurrency,
+              expenseParts: [],
+              name: grdbExpense.name,
+              date: grdbExpense.date,
+              totalCost: grdbExpense.totalCost)
+    }
+}
+
+private struct GRDBExpenseDetailsInfo: FetchableRecord, Decodable {
+    let grdbExpense: GRDBExpense
+    let grdbCurrency: GRDBCurrency
+    let grdbExpenseParts: [GRDBExpensePartDetailsInfo]
     
     var asExpense: Expense {
         .init(uuid: grdbExpense.uuid!,
@@ -137,13 +154,13 @@ private struct GRDBExpenseInfo: FetchableRecord, Decodable {
     }
 }
 
-private struct GRDBExpensePartInfo: FetchableRecord, Decodable {
+private struct GRDBExpensePartDetailsInfo: FetchableRecord, Decodable {
     let grdbExpensePart: GRDBExpensePart
     let grdbCurrency: GRDBCurrency
     let grdbParticipant: GRDBParticipant
 }
 
-private extension GRDBExpensePartInfo {
+private extension GRDBExpensePartDetailsInfo {
     var asExpensePart: ExpensePart {
         .init(uuid: grdbExpensePart.uuid!,
               participant: grdbParticipant.asParticipant,

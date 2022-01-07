@@ -57,7 +57,7 @@ final class JourneysViewModelTests: XCTestCase {
                                                            name: "Name",
                                                            startDate: Date.from(year: 2000, month: 1, day: 1),
                                                            totalCost: 100,
-                                                           currency: "zł",
+                                                           expenses: [],
                                                            participants: [])])
         let loadEvent = PublishSubject<Void>()
         let createJourneyTrigger = PublishSubject<Void>()
@@ -71,7 +71,7 @@ final class JourneysViewModelTests: XCTestCase {
             .next(100, [.init(items: [.journey(viewModel: .init(uuid: "1",
                                                                 name: "Name",
                                                                 startDate: "01-01-2000",
-                                                                totalCost: "100,00 zł"))])])
+                                                                totalCosts: []))])])
         ]
         scheduler.scheduleAt(.zero) {
             output.items

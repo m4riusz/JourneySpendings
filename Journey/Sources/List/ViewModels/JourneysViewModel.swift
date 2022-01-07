@@ -68,9 +68,18 @@ extension JourneysViewModel {
 
 fileprivate extension Journey {
     var asViewModel: JourneysItemCellViewModel {
-        .init(uuid: uuid,
-              name: name,
-              startDate: startDate.ddMMyyyy,
-              totalCost: Amount(value: totalCost, currency: currency).formated())
+        let calculatedCosts = expenses.reduce(into: [String: Double]()) { partialResult, expense in
+            if partialResult[expense.currency.symbol] != nil {
+                partialResult[expense.currency.symbol]? += expense.totalCost
+            } else {
+                partialResult[expense.currency.symbol] = expense.totalCost
+            }
+        }
+            .map { Amount(value: $0.value, currency: $0.key).formated() }
+        return JourneysItemCellViewModel(uuid: uuid,
+                                         name: name,
+                                         startDate: startDate.ddMMyyyy,
+                                         totalCosts: calculatedCosts)
+        
     }
 }

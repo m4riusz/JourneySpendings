@@ -11,7 +11,7 @@ struct JourneysItemCellViewModel {
     let uuid: String
     let name: String
     let startDate: String
-    let totalCost: String
+    let totalCosts: [String]
 }
 
 // MARK: - Equatable

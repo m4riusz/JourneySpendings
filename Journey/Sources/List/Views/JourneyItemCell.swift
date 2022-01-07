@@ -45,6 +45,8 @@ extension JourneyItemCell: Loadable {
     func load(viewModel: JourneysItemCellViewModel) {
         titleLabel.attributedText = viewModel.name.styled(.title3)
         startDateLabel.attributedText = viewModel.startDate.styled(.body)
-        totalCostLabel.attributedText = viewModel.totalCost.styled(.headline)
+        totalCostLabel.attributedText = viewModel.totalCosts
+            .joined(separator: String.Common.commaSeparator)
+            .styled(.headline)
     }
 }

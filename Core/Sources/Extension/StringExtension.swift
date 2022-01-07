@@ -41,5 +41,6 @@ public extension String {
     struct Common {
         public static let space = " "
         public static let comma = ","
+        public static let commaSeparator = ", "
     }
 }
