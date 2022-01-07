@@ -29,7 +29,7 @@ final class DatabaseManager: DatabaseManagerProtocol {
     private var migrator: DatabaseMigrator {
         var migrator = DatabaseMigrator()
         migrator.eraseDatabaseOnSchemaChange = true
-        migrator.registerMigration("creteProject") { database in
+        migrator.registerMigration("createProject") { database in
             try database.create(table: "grdbJourney") { t in
                 t.column("uuid", .text).primaryKey()
                 t.column("name", .text).notNull(onConflict: .rollback).unique(onConflict: .rollback)

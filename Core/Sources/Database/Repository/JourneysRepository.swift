@@ -73,6 +73,7 @@ final class JourneysRepository: JourneysRepositoryProtocol {
                                                                 .filter(participants.contains(GRDBExpensePart.Columns.participantId))
                                                                 .including(required: GRDBExpensePart.participant)
                                                                 .including(required: GRDBExpensePart.currency))
+                                                .having(GRDBExpense.partExpenses.filter(participants.contains(GRDBExpensePart.Columns.participantId)).count > 0)
                                                 .including(required: GRDBExpense.currency))
             }
             .rx
