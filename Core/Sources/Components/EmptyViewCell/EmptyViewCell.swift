@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final public class EmptyViewCell: BaseTableViewCell, Reusable {
+final public class EmptyViewCell: BaseCollectionViewCell, Reusable {
     private struct Constants {
         static let maxTitleLines = 1
         static let maxDescriptionLines = 3
@@ -22,7 +22,6 @@ final public class EmptyViewCell: BaseTableViewCell, Reusable {
         emptyImageView.contentMode = .scaleAspectFit
         titleLabel.numberOfLines = Constants.maxTitleLines
         descriptionLabel.numberOfLines = Constants.maxDescriptionLines
-        selectionStyle = .none
         contentView.addSubview(emptyImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)
@@ -31,7 +30,7 @@ final public class EmptyViewCell: BaseTableViewCell, Reusable {
             make.top.equalToSuperview().offset(Spacings.huge)
             make.left.equalToSuperview().offset(Spacings.normal)
             make.right.equalToSuperview().offset(-Spacings.normal)
-            make.height.equalTo(Constants.imageViewHeight)
+            make.height.equalTo(Constants.imageViewHeight).priority(.high)
         }
 
         titleLabel.snp.makeConstraints { make in
@@ -49,6 +48,7 @@ final public class EmptyViewCell: BaseTableViewCell, Reusable {
     }
 }
 
+// MARK: - Loadable
 extension EmptyViewCell: Loadable {
     public func load(viewModel: EmptyViewCellViewModel) {
         emptyImageView.image = viewModel.image

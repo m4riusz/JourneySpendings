@@ -15,8 +15,8 @@ final public class AboutCoordinator: Coordinator {
     public let navigationController: UINavigationController
     public let container: Container
 
-    public init(container: Container) {
-        navigationController = UINavigationController()
+    public init(container: Container, navigationController: UINavigationController) {
+        self.navigationController = navigationController
         self.container = container
     }
 

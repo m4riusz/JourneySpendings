@@ -12,15 +12,18 @@ struct GRDBJourney {
     var uuid: String?
     var name: String
     var startDate: Date
-    var totalCost: Double
-    var currency: String
 }
 
 extension GRDBJourney {
     static let participants = hasMany(GRDBParticipant.self)
+    static let expenses = hasMany(GRDBExpense.self)
 
     var participants: QueryInterfaceRequest<GRDBParticipant> {
         request(for: GRDBJourney.participants)
+    }
+    
+    var expenses: QueryInterfaceRequest<GRDBExpense> {
+        request(for: GRDBJourney.expenses)
     }
 }
 
@@ -33,8 +36,6 @@ extension GRDBJourney: TableRecord {
         static let uuid = Column(CodingKeys.uuid)
         static let name = Column(CodingKeys.name)
         static let startDate = Column(CodingKeys.startDate)
-        static let totalCost = Column(CodingKeys.totalCost)
-        static let currency = Column(CodingKeys.currency)
     }
 }
 

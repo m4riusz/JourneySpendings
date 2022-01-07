@@ -12,4 +12,8 @@ public extension Reactive where Base: TagView {
     var deleteTagEvent: ControlEvent<String> {
         ControlEvent<String>(events: base.deleteItemSubject)
     }
+
+    var selectTagEvent: ControlEvent<String> {
+        ControlEvent<String>(events: base.selectItemSubject)
+    }
 }

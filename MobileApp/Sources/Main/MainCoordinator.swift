@@ -17,21 +17,19 @@ final class MainCoordinator: Coordinator {
     let container: Container
 
     private lazy var journeysCoordinator: JourneysCoordinator = {
-        let coordinator = JourneysCoordinator(container: container)
-        let tabBarItem = UITabBarItem(title: Assets.Strings.MobileApp.journeyTab,
-                                      image: Assets.Images.MobileApp.cardTravel,
-                                      tag: 0)
-        coordinator.navigationController.tabBarItem = tabBarItem
-        return coordinator
+        let navigationController = UINavigationController()
+        navigationController.tabBarItem = UITabBarItem(title: Assets.Strings.MobileApp.journeyTab,
+                                                       image: Assets.Images.MobileApp.cardTravel,
+                                                       tag: 0)
+        return JourneysCoordinator(container: container, navigationController: navigationController)
     }()
 
     private lazy var aboutCoordinator: AboutCoordinator = {
-        let coordinator = AboutCoordinator(container: container)
-        coordinator.navigationController.tabBarItem = .init(title: Assets.Strings.MobileApp.aboutTab,
-                                                            image: Assets.Images.MobileApp.infoOutline,
-                                                            tag: 1)
-
-        return coordinator
+        let navigationController = UINavigationController()
+        navigationController.tabBarItem = .init(title: Assets.Strings.MobileApp.aboutTab,
+                                                image: Assets.Images.MobileApp.infoOutline,
+                                                tag: 1)
+        return AboutCoordinator(container: container, navigationController: navigationController)
     }()
 
     init(navigationController: UINavigationController, container: Container) {

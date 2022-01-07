@@ -26,6 +26,7 @@ final public class TagView: UIView {
     private lazy var stackView = UIStackView()
     private let collectionView: UICollectionView
     lazy var deleteItemSubject = PublishSubject<String>()
+    lazy var selectItemSubject = PublishSubject<String>()
 
     public var titleText: String? {
         didSet {
@@ -84,6 +85,7 @@ final public class TagView: UIView {
         errorLabel.numberOfLines = Constants.errorLabelNumberOfLines
         collectionView.backgroundColor = .clear
         collectionView.register(DeletableTagViewCell.self)
+        collectionView.register(SelectableTagViewCell.self)
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
         addSubview(stackView)
@@ -121,6 +123,14 @@ extension TagView: UICollectionViewDataSource {
             cell.didTapDelete
                 .map { _ in viewModel.uuid }
                 .bind(to: deleteItemSubject)
+                .disposed(by: cell.disposeBag)
+            return cell
+        case .selectable(let viewModel):
+            let cell = collectionView.dequeueCell(SelectableTagViewCell.self, indexPath: indexPath)
+            cell.load(viewModel: viewModel)
+            cell.didTap
+                .map { _ in viewModel.uuid }
+                .bind(to: selectItemSubject)
                 .disposed(by: cell.disposeBag)
             return cell
         }

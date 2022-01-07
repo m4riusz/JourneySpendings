@@ -36,7 +36,7 @@ final class JourneysViewModel: ViewModelType {
                 }
                 return items.map { .journey(viewModel: $0.asViewModel) }
             }
-            .map { [Section(items: $0)] }
+            .map { [SectionViewModel(items: $0)] }
             .asDriver()
         let createJourney = input.createJournerTrigger
             .do(onNext: { [weak self] _ in
@@ -44,8 +44,8 @@ final class JourneysViewModel: ViewModelType {
             })
 
         let details = input.detailsTriger
-        .do(onNext: { [weak self] item in
-            self?.coordinator.toDetails(journeyId: item.uuid)
+        .do(onNext: { [weak self] journeyId in
+            self?.coordinator.toDetails(journeyId: journeyId)
         })
         .map { _ in Void() }
 
@@ -57,10 +57,10 @@ extension JourneysViewModel {
     struct Input {
         var load: Driver<Void>
         var createJournerTrigger: Driver<Void>
-        var detailsTriger: Driver<JourneysItemCellViewModel>
+        var detailsTriger: Driver<String>
     }
     struct Output {
-        var items: Driver<[Section<JourneysListItem>]>
+        var items: Driver<[SectionViewModel<JourneysListItem>]>
         var createJourney: Driver<Void>
         var details: Driver<Void>
     }
@@ -68,9 +68,18 @@ extension JourneysViewModel {
 
 fileprivate extension Journey {
     var asViewModel: JourneysItemCellViewModel {
-        .init(uuid: uuid,
-              name: name,
-              startDate: startDate.ddMMyyyy,
-              totalCost: Amount(value: totalCost, currency: currency).formated())
+        let calculatedCosts = expenses.reduce(into: [String: Double]()) { partialResult, expense in
+            if partialResult[expense.currency.symbol] != nil {
+                partialResult[expense.currency.symbol]? += expense.totalCost
+            } else {
+                partialResult[expense.currency.symbol] = expense.totalCost
+            }
+        }
+            .map { Amount(value: $0.value, currency: $0.key).formated() }
+        return JourneysItemCellViewModel(uuid: uuid,
+                                         name: name,
+                                         startDate: startDate.ddMMyyyy,
+                                         totalCosts: calculatedCosts)
+        
     }
 }

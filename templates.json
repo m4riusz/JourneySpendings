@@ -41,19 +41,19 @@
 			"preBuildScripts": [
 				{
 					"name": "Generate strings",
-					"script": "./Scripts/StringGenerator.rb ${target_name} ${target_name}/Resources/en.lproj/${target_name}.strings ${target_name}/Resources/Generated/${target_name}Strings.swift",
+					"script": "if [ $ACTION == \"indexbuild\" ]; then\n  echo \"indexbuild action - skipping\"\n  exit 0\nfi\n./Scripts/StringGenerator.rb ${target_name} ${target_name}/Resources/en.lproj/${target_name}.strings ${target_name}/Resources/Generated/${target_name}Strings.swift",
 					"inputFiles": ["${target_name}/Resources/en.lproj/${target_name}.strings"],
 					"outputFiles": ["${target_name}/Resources/Generated/${target_name}Strings.swift"]
 				},
 				{
 					"name": "Generate images",
-					"script": "./Scripts/ImageGenerator.rb ${target_name} ${target_name}/Resources/Images.xcassets ${target_name}/Resources/Generated/${target_name}Images.swift",
+					"script": "if [ $ACTION == \"indexbuild\" ]; then\n  echo \"indexbuild action - skipping\"\n  exit 0\nfi\n./Scripts/ImageGenerator.rb ${target_name} ${target_name}/Resources/Images.xcassets ${target_name}/Resources/Generated/${target_name}Images.swift",
 					"inputFiles": ["${target_name}/Resources/Images.xcassets"],
 					"outputFiles": ["${target_name}/Resources/Generated/${target_name}Images.swift"]
 				},
 				{
 					"name": "Generate colors",
-					"script": "./Scripts/ColorGenerator.rb ${target_name} ${target_name}/Resources/Colors.xcassets ${target_name}/Resources/Generated/${target_name}Colors.swift",
+					"script": "if [ $ACTION == \"indexbuild\" ]; then\n  echo \"indexbuild action - skipping\"\n  exit 0\nfi\n./Scripts/ColorGenerator.rb ${target_name} ${target_name}/Resources/Colors.xcassets ${target_name}/Resources/Generated/${target_name}Colors.swift",
 					"inputFiles": ["${target_name}/Resources/Colors.xcassets"],
 					"outputFiles": ["${target_name}/Resources/Generated/${target_name}Colors.swift"]
 				}

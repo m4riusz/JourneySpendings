@@ -16,10 +16,6 @@ struct GRDBParticipant {
 
 extension GRDBParticipant {
     static let journey = belongsTo(GRDBJourney.self)
-
-    var journey: QueryInterfaceRequest<GRDBJourney> {
-        request(for: GRDBParticipant.journey)
-    }
 }
 
 // MARK: - Codable
