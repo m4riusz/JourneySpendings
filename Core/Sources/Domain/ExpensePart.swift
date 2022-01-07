@@ -9,7 +9,6 @@ import Foundation
 
 public struct ExpensePart {
     public let uuid: String
-    public let expense: Expense
     public let participant: Participant
     public let currency: Currency
     public let cost: Double

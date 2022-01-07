@@ -126,6 +126,15 @@ private struct GRDBExpenseInfo: FetchableRecord, Decodable {
     let grdbExpense: GRDBExpense
     let grdbCurrency: GRDBCurrency
     let grdbExpenseParts: [GRDBExpensePartInfo]
+    
+    var asExpense: Expense {
+        .init(uuid: grdbExpense.uuid!,
+              currency: grdbCurrency.asCurrency,
+              expenseParts: grdbExpenseParts.map { $0.asExpensePart },
+              name: grdbExpense.name,
+              date: grdbExpense.date,
+              totalCost: grdbExpense.totalCost)
+    }
 }
 
 private struct GRDBExpensePartInfo: FetchableRecord, Decodable {
@@ -137,14 +146,15 @@ private struct GRDBExpensePartInfo: FetchableRecord, Decodable {
 private extension GRDBExpensePartInfo {
     var asExpensePart: ExpensePart {
         .init(uuid: grdbExpensePart.uuid!,
-              expense: Expense(uuid: "", currency: Currency(uuid: "nil", code: "", symbol: ""),
-                               expenseParts: [],
-                               name: "",
-                               date: Date(),
-                               totalCost: 10),
-              participant: Participant(uuid: "1", name: "name"),
+              participant: grdbParticipant.asParticipant,
               currency: grdbCurrency.asCurrency,
               cost: grdbExpensePart.cost)
     }
 }
 
+private extension GRDBParticipant {
+    var asParticipant: Participant {
+        .init(uuid: uuid!,
+              name: name)
+    }
+}
