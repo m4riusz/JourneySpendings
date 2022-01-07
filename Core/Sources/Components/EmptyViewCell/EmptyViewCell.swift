@@ -30,7 +30,7 @@ final public class EmptyViewCell: BaseCollectionViewCell, Reusable {
             make.top.equalToSuperview().offset(Spacings.huge)
             make.left.equalToSuperview().offset(Spacings.normal)
             make.right.equalToSuperview().offset(-Spacings.normal)
-            make.height.equalTo(Constants.imageViewHeight)
+            make.height.equalTo(Constants.imageViewHeight).priority(.high)
         }
 
         titleLabel.snp.makeConstraints { make in

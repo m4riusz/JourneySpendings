@@ -44,6 +44,10 @@ final class JourneyDetailsViewController: UIViewController {
                     let cell = collectionView.dequeueCell(JourneyExpenseCell.self, indexPath: indexPath)
                     cell.load(viewModel: viewModel)
                     return cell
+                case .empty(let viewModel):
+                    let cell = collectionView.dequeueCell(EmptyViewCell.self, indexPath: indexPath)
+                    cell.load(viewModel: viewModel)
+                    return cell
                 }
             }, configureSupplementaryView: { dataSource, collectionView, _, indexPath in
                 let cell = collectionView.dequeueHeader(Section.self, indexPath: indexPath)

@@ -43,6 +43,7 @@ final public class Section: UICollectionReusableView, Reusable {
             make.left.equalToSuperview().offset(Spacings.normal)
             make.right.equalToSuperview().offset(-Spacings.normal)
             make.bottom.equalToSuperview()
+            make.height.equalTo(0).priority(.medium)
         }
     }
 }
@@ -53,5 +54,6 @@ extension Section: Loadable {
         titleLabel.attributedText = viewModel.title.styled(.subhead, attributes: [.color(Assets.Colors.Core.Label.secondary)])
         actionButton.text = viewModel.button ?? ""
         actionButton.isHidden = viewModel.button.isNilOrEmpty
+        titleLabel.isHidden = viewModel.title.isEmpty
     }
 }

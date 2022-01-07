@@ -88,7 +88,12 @@ final class JourneyDetailsViewModel: ViewModelType {
                     .catchAndReturn([])
             }
             .map { data -> [SectionViewModel<JourneyDetailsListItem>] in
-                data
+                if data.isEmpty {
+                    return [.init(items: [.empty(viewModel: .init(image: Assets.Images.Core.bagSuitcaseOutline,
+                                                                  title: Literals.Expense.Empty.title,
+                                                                  description: Literals.Expense.Empty.description))])]
+                }
+                return data
                     .reduce(into: [String: [Expense]]()) { partialResult, expense in
                         if partialResult[expense.date.ddMMyyyyDoted] != nil {
                             partialResult[expense.date.ddMMyyyyDoted]?.append(expense)
@@ -101,7 +106,7 @@ final class JourneyDetailsViewModel: ViewModelType {
                             .sorted(by: { $0.date > $1.date })
                             .map { JourneyExpenseCellViewModel(uuid: $0.uuid,
                                                                title: $0.name,
-                                                               persons: $0.expenseParts.map { $0.participant.name }.joined(separator: ","),
+                                                               persons: $0.expenseParts.map { $0.participant.name }.joined(separator: String.Common.commaSeparator),
                                                                cost: Amount(value: $0.totalCost, currency: $0.currency.symbol).formated())
                             }
                         return SectionViewModel<JourneyDetailsListItem>(title: tuple.key, items: items.map { .expense(viewModel: $0) })

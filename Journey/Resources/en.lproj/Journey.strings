@@ -20,3 +20,5 @@
 "Details/Participant/all" = "All";
 "Details/Expense/add" = "add";
 "Details/Expense/title" = "Expenses";
+"Details/Expense/Empty/title" = "No expenses";
+"Details/Expense/Empty/description" = "";
