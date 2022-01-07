@@ -12,7 +12,7 @@ final class JourneyExpenseCell: BaseCollectionViewCell, Reusable {
     private lazy var titleLabel = UILabel()
     private lazy var personsLabel = UILabel()
     private lazy var costLabel = UILabel()
-    
+
     override func commonInit() {
         super.commonInit()
         titleLabel.numberOfLines = 2
@@ -20,7 +20,7 @@ final class JourneyExpenseCell: BaseCollectionViewCell, Reusable {
         contentView.addSubview(titleLabel)
         contentView.addSubview(personsLabel)
         contentView.addSubview(costLabel)
-        
+
         titleLabel.setContentHuggingPriority(.required, for: .vertical)
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         costLabel.setContentHuggingPriority(.required, for: .horizontal)

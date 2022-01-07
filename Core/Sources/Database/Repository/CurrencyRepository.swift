@@ -15,7 +15,7 @@ final class CurrencyRepository: CurrencyRepositoryProtocol {
     init(databaseManager: DatabaseManagerProtocol) {
         self.databaseManager = databaseManager
     }
-    
+
     public func getCurrencies() -> Observable<[Currency]> {
         ValueObservation
             .tracking { try GRDBCurrency.fetchAll($0) }

@@ -25,7 +25,7 @@ public extension UICollectionView {
     func dequeueCell<T: UICollectionViewCell & Reusable>(_ cell: T.Type, indexPath: IndexPath) -> T {
         dequeueReusableCell(withReuseIdentifier: T.reusableIdentifier, for: indexPath) as! T
     }
-    
+
     func registerHeader<T: UICollectionReusableView & Reusable>(_ cell: T.Type) {
         register(cell, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: T.reusableIdentifier)
     }
@@ -36,7 +36,7 @@ public extension UICollectionView {
                                          for: indexPath) as! T
 
     }
-    
+
     convenience init(layout: UICollectionViewLayout) {
         self.init(frame: .zero, collectionViewLayout: layout)
     }

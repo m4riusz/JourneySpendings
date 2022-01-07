@@ -14,7 +14,7 @@ final class JourneysCoordinatorSpy: JourneysCoordinatorProtocol {
     func toCreateForm() {
         toCreateFormCallCout += 1
     }
-    
+
     func toDetails(journeyId: String) {
         toDetailsJourneyId = journeyId
     }

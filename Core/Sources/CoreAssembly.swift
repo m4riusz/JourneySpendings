@@ -22,7 +22,7 @@ final public class CoreAssembly: ModuleAssembly {
             JourneysRepository(databaseManager: r.resolve(DatabaseManagerProtocol.self)!,
                                dateProvider: r.resolve(DateProviderProtocol.self)!)
         }
-        
+
         container.register(CurrencyRepositoryProtocol.self) { r in
             CurrencyRepository(databaseManager: r.resolve(DatabaseManagerProtocol.self)!)
         }

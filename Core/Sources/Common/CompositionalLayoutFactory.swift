@@ -39,7 +39,7 @@ public final class CompositionalLayoutFactory: CompositionalLayoutFactoryProtoco
         section.contentInsets = .init(top: 0, leading: itemSpacing, bottom: 0, trailing: itemSpacing)
         return UICollectionViewCompositionalLayout(section: section)
     }
-    
+
     public func tableView() -> UICollectionViewLayout {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50)))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1),
